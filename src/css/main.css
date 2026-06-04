@@ -1,0 +1,195 @@
+@import "tailwindcss";
+
+/*
+ * Lailara Design System v2 — Tailwind CSS v4 theme tokens
+ *
+ * All values sourced from LAILARA_DESIGN_SYSTEM.md.
+ * Do not add ad-hoc hex values — every color traces to a family and step.
+ */
+
+@theme {
+  /* ── Canvas ──────────────────────────────────────────────── */
+  --color-canvas: #f5f3ee;
+
+  /* ── Brand Red ───────────────────────────────────────────── */
+  --color-red-95: #fce8e7;
+  --color-red-85: #f4b3b1;
+  --color-red-70: #ee8880;
+  --color-red-65: #e8625d;
+  --color-red-50: #db2418;
+  --color-red-42: #cc100a;
+  --color-red-30: #a80d08;
+  --color-red-20: #8e0b07;
+  --color-red-18: #7a0906;
+  --color-red-8: #4d0604;
+
+  /* ── Chicago (accent blue) ───────────────────────────────── */
+  --color-chicago-95: #e8eaf4;
+  --color-chicago-85: #c5cbe6;
+  --color-chicago-70: #8e9ad0;
+  --color-chicago-60: #6474c0;
+  --color-chicago-55: #475ed1;
+  --color-chicago-40: #3348a8;
+  --color-chicago-20: #1f2e7a;
+  --color-chicago-10: #141e52;
+  --color-chicago-5: #0a0f29;
+
+  /* ── Hong Kong (teal) ────────────────────────────────────── */
+  --color-hk-95: #e4f5f0;
+  --color-hk-85: #b5e4d8;
+  --color-hk-70: #6dcdb5;
+  --color-hk-55: #35b595;
+  --color-hk-45: #1fa282;
+  --color-hk-35: #158f75;
+  --color-hk-25: #0e6e5a;
+  --color-hk-20: #0c6552;
+  --color-hk-15: #0a5c4b;
+  --color-hk-5: #063d32;
+
+  /* ── Tokyo (berry/rose) ──────────────────────────────────── */
+  --color-tokyo-95: #fbe9ed;
+  --color-tokyo-85: #f3c1cb;
+  --color-tokyo-70: #e68a9a;
+  --color-tokyo-55: #d9506e;
+  --color-tokyo-45: #cc3a59;
+  --color-tokyo-40: #b82d4a;
+  --color-tokyo-30: #94243c;
+  --color-tokyo-20: #7e1f34;
+  --color-tokyo-15: #6e1a2c;
+  --color-tokyo-5: #470f1c;
+
+  /* ── Singapore (orange) ──────────────────────────────────── */
+  --color-sg-95: #fdeee0;
+  --color-sg-85: #fbdabc;
+  --color-sg-80: #f9c99a;
+  --color-sg-70: #f6b97c;
+  --color-sg-65: #f4a85c;
+  --color-sg-55: #ee8a2a;
+  --color-sg-45: #c87222;
+  --color-sg-35: #a05a1a;
+  --color-sg-20: #7a3d10;
+  --color-sg-8: #4a2508;
+
+  /* ── New York (amber, reserve) ───────────────────────────── */
+  --color-ny-95: #fef5d8;
+  --color-ny-80: #fce48e;
+  --color-ny-65: #f9d454;
+  --color-ny-55: #f9c31f;
+  --color-ny-45: #d4a518;
+  --color-ny-35: #a88312;
+  --color-ny-20: #7a5e0a;
+  --color-ny-8: #4a3806;
+
+  /* ── London (greyscale) ──────────────────────────────────── */
+  --color-london-95: #f2f2f2;
+  --color-london-90: #e0e0e0;
+  --color-london-85: #d9d9d9;
+  --color-london-70: #b3b3b3;
+  --color-london-40: #666666;
+  --color-london-35: #595959;
+  --color-london-20: #333333;
+  --color-london-10: #1a1a1a;
+  --color-london-5: #0d0d0d;
+
+  /* ── Semantic status colors ──────────────────────────────── */
+  --color-status-pass-bg: #e4f5f0;
+  --color-status-pass-text: #0e6e5a;
+  --color-status-warn-bg: #fdeee0;
+  --color-status-warn-text: #7a3d10;
+  --color-status-fail-bg: #fde8e7;
+  --color-status-fail-text: #7a0906;
+  --color-status-info-bg: #e5e8f5;
+  --color-status-info-text: #1f2e7a;
+
+  /* ── Dark card tokens ────────────────────────────────────── */
+  --color-card-bg: #1a1a1a;
+  --color-card-text: #ffffff;
+  --color-card-subtitle: #d8d8d8;
+  --color-card-muted: #9a9a9a;
+  --color-card-item: #ededed;
+
+  /* ── Typography ──────────────────────────────────────────── */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Source Sans 3', 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* ── Layout ──────────────────────────────────────────────── */
+  --width-content: 900px;
+  --width-body: 660px;
+  --radius-standard: 2px;
+  --spacing-section: 60px;
+}
+
+/* ── Self-hosted font faces ────────────────────────────────── */
+
+/* Playfair Display — variable font, latin subset */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/PlayfairDisplay-Latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Playfair Display — variable font, latin-ext subset */
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/PlayfairDisplay-LatinExt.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* Source Sans 3 — variable font, latin subset */
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/SourceSans3-Latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Source Sans 3 — variable font, latin-ext subset */
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/SourceSans3-LatinExt.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* ── Base styles ───────────────────────────────────────────── */
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-london-20);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  color: var(--color-london-5);
+}
+
+/* ── Print ─────────────────────────────────────────────────── */
+
+@media print {
+  body {
+    background-color: #ffffff;
+  }
+}
