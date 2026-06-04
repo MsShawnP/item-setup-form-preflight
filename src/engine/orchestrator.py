@@ -166,6 +166,215 @@ def do_validate(mapping_json: str, partner: str) -> str:
     return json.dumps({"results": per_row_results, "summary": summary})
 
 
+def do_diff() -> str:
+    """Compare partner schemas pairwise and return structured diff data.
+
+    Computes two comparisons:
+    - Retailer pair: Walmart vs Costco
+    - Distributor pair: UNFI vs KeHE
+
+    For each pair, returns shared required fields (with format comparison),
+    fields unique to each partner, GTIN hierarchy comparison, conditional
+    rule comparison, and overlap percentage.
+
+    Returns:
+        JSON string with keys: retailer_pair, distributor_pair, annotation.
+    """
+    schemas = {}
+    for partner in ("walmart", "costco", "unfi", "kehe"):
+        schema_path = f"/home/pyodide/schemas/{partner}.yaml"
+        schemas[partner] = load_schema(schema_path)
+
+    retailer_pair = _compare_pair(schemas["walmart"], schemas["costco"])
+    distributor_pair = _compare_pair(schemas["unfi"], schemas["kehe"])
+
+    # Data-derived channel-type annotation
+    annotation = _compute_channel_annotation(retailer_pair, distributor_pair)
+
+    return json.dumps({
+        "retailer_pair": retailer_pair,
+        "distributor_pair": distributor_pair,
+        "annotation": annotation,
+    })
+
+
+def _compare_pair(schema_a, schema_b) -> dict:
+    """Compare two partner schemas and return structured diff data."""
+    # Build field lookup dicts: field_name -> FieldSpec
+    fields_a = {f.name: f for f in schema_a.required_fields}
+    fields_b = {f.name: f for f in schema_b.required_fields}
+
+    names_a = set(fields_a.keys())
+    names_b = set(fields_b.keys())
+
+    shared_names = names_a & names_b
+    unique_a_names = names_a - names_b
+    unique_b_names = names_b - names_a
+
+    # Shared fields with format comparison
+    shared_fields = []
+    for name in sorted(shared_names):
+        fa = fields_a[name]
+        fb = fields_b[name]
+        format_match = (fa.format_pattern == fb.format_pattern)
+        entry = {
+            "name": name,
+            "format_a": fa.format_description or "(no format)",
+            "format_b": fb.format_description or "(no format)",
+            "pattern_a": fa.format_pattern,
+            "pattern_b": fb.format_pattern,
+            "format_match": format_match,
+        }
+        shared_fields.append(entry)
+
+    # Unique fields
+    unique_a = []
+    for name in sorted(unique_a_names):
+        f = fields_a[name]
+        unique_a.append({
+            "name": name,
+            "format_description": f.format_description,
+            "format_pattern": f.format_pattern,
+        })
+
+    unique_b = []
+    for name in sorted(unique_b_names):
+        f = fields_b[name]
+        unique_b.append({
+            "name": name,
+            "format_description": f.format_description,
+            "format_pattern": f.format_pattern,
+        })
+
+    # GTIN hierarchy comparison
+    gtin_comparison = {
+        "a_level": schema_a.gtin_hierarchy.expected_level,
+        "a_formats": schema_a.gtin_hierarchy.expected_formats,
+        "b_level": schema_b.gtin_hierarchy.expected_level,
+        "b_formats": schema_b.gtin_hierarchy.expected_formats,
+        "level_match": (
+            schema_a.gtin_hierarchy.expected_level
+            == schema_b.gtin_hierarchy.expected_level
+        ),
+        "formats_match": (
+            set(schema_a.gtin_hierarchy.expected_formats)
+            == set(schema_b.gtin_hierarchy.expected_formats)
+        ),
+    }
+
+    # Conditional rule comparison
+    def _rules_key(rule):
+        return (rule.trigger_field, rule.trigger_value)
+
+    rules_a = {_rules_key(r): r for r in schema_a.conditional_rules}
+    rules_b = {_rules_key(r): r for r in schema_b.conditional_rules}
+
+    rules_a_keys = set(rules_a.keys())
+    rules_b_keys = set(rules_b.keys())
+
+    shared_rules = []
+    for key in sorted(rules_a_keys & rules_b_keys):
+        ra = rules_a[key]
+        rb = rules_b[key]
+        shared_rules.append({
+            "trigger_field": ra.trigger_field,
+            "trigger_value": ra.trigger_value,
+            "required_a": ra.required_fields,
+            "required_b": rb.required_fields,
+            "fields_match": (
+                set(ra.required_fields) == set(rb.required_fields)
+            ),
+        })
+
+    unique_rules_a = []
+    for key in sorted(rules_a_keys - rules_b_keys):
+        r = rules_a[key]
+        unique_rules_a.append({
+            "trigger_field": r.trigger_field,
+            "trigger_value": r.trigger_value,
+            "required_fields": r.required_fields,
+        })
+
+    unique_rules_b = []
+    for key in sorted(rules_b_keys - rules_a_keys):
+        r = rules_b[key]
+        unique_rules_b.append({
+            "trigger_field": r.trigger_field,
+            "trigger_value": r.trigger_value,
+            "required_fields": r.required_fields,
+        })
+
+    conditional_comparison = {
+        "shared_rules": shared_rules,
+        "unique_a": unique_rules_a,
+        "unique_b": unique_rules_b,
+    }
+
+    # Overlap percentage
+    total_unique_fields = len(names_a | names_b)
+    overlap_pct = (
+        round(len(shared_names) / total_unique_fields * 100, 1)
+        if total_unique_fields > 0
+        else 0.0
+    )
+
+    return {
+        "partner_a": schema_a.display_name,
+        "partner_b": schema_b.display_name,
+        "partner_a_key": schema_a.partner,
+        "partner_b_key": schema_b.partner,
+        "total_a": len(names_a),
+        "total_b": len(names_b),
+        "shared_count": len(shared_names),
+        "unique_a_count": len(unique_a_names),
+        "unique_b_count": len(unique_b_names),
+        "overlap_pct": overlap_pct,
+        "shared_fields": shared_fields,
+        "unique_a": unique_a,
+        "unique_b": unique_b,
+        "gtin_comparison": gtin_comparison,
+        "conditional_comparison": conditional_comparison,
+    }
+
+
+def _compute_channel_annotation(
+    retailer_pair: dict, distributor_pair: dict
+) -> str:
+    """Generate a data-derived annotation about channel-type patterns.
+
+    Compares overlap percentages between the retailer and distributor
+    pairs and describes whatever pattern actually emerges.
+    """
+    r_pct = retailer_pair["overlap_pct"]
+    d_pct = distributor_pair["overlap_pct"]
+    r_a = retailer_pair["partner_a"]
+    r_b = retailer_pair["partner_b"]
+    d_a = distributor_pair["partner_a"]
+    d_b = distributor_pair["partner_b"]
+
+    diff = d_pct - r_pct
+
+    if diff > 10:
+        return (
+            f"{d_a} and {d_b} share {d_pct}% of their required fields "
+            f"vs. {r_pct}% for {r_a} and {r_b} — a common pattern among "
+            f"broadline distributors whose warehouse-receiving workflows "
+            f"converge on similar data requirements."
+        )
+    elif diff < -10:
+        return (
+            f"{r_a} and {r_b} share {r_pct}% of their required fields "
+            f"vs. {d_pct}% for {d_a} and {d_b}. Retailer schemas show "
+            f"higher convergence here than the distributor pair."
+        )
+    else:
+        return (
+            f"Both pairs show similar overlap: {r_a}/{r_b} at {r_pct}% "
+            f"and {d_a}/{d_b} at {d_pct}%. Neither channel type shows "
+            f"markedly higher schema convergence in this sample."
+        )
+
+
 def _find_sku_label(row: dict, row_idx: int) -> str:
     """Find a human-readable identifier for a row.
 

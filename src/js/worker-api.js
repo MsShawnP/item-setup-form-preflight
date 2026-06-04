@@ -89,6 +89,19 @@ export function matchColumns(file, filename, partner) {
 }
 
 /**
+ * Compute schema diffs between partner pairs.
+ *
+ * Returns retailer pair (Walmart vs Costco) and distributor pair
+ * (UNFI vs KeHE) comparisons with shared/unique fields, GTIN
+ * divergence, conditional rule comparison, and overlap percentage.
+ *
+ * @returns {Promise<object>} Diff data with retailer_pair, distributor_pair, annotation.
+ */
+export function computeDiff() {
+  return sendToWorker('diff', {})
+}
+
+/**
  * Run four-tier validation using a confirmed column mapping.
  *
  * Operates on the file data cached in the worker from the most

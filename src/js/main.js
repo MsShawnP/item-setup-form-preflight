@@ -5,6 +5,7 @@ import fileUpload from './components/file-upload.js'
 import partnerSelector from './components/partner-selector.js'
 import columnMapper from './components/column-mapper.js'
 import resultsDisplay from './components/results-display.js'
+import schemaDiff from './components/schema-diff.js'
 
 Alpine.store('app', {
   // Pyodide state
@@ -43,6 +44,7 @@ Alpine.data('fileUpload', fileUpload)
 Alpine.data('partnerSelector', partnerSelector)
 Alpine.data('columnMapper', columnMapper)
 Alpine.data('resultsDisplay', resultsDisplay)
+Alpine.data('schemaDiff', schemaDiff)
 
 initWorker()
 

@@ -76,7 +76,7 @@ async function initialize() {
     pyodide.runPython('import sys; sys.path.insert(0, "/home/pyodide")')
 
     // Verify the engine loads
-    pyodide.runPython('from engine.orchestrator import do_match, do_validate')
+    pyodide.runPython('from engine.orchestrator import do_match, do_validate, do_diff')
 
     postStatus('Ready')
   } catch (err) {
@@ -145,6 +145,16 @@ do_validate(${JSON.stringify(mappingJson)}, ${JSON.stringify(data.partner)})
         } else {
           self.postMessage({ id, result })
         }
+        break
+      }
+
+      case 'diff': {
+        const resultJson = pyodide.runPython(`
+from engine.orchestrator import do_diff
+do_diff()
+`)
+        const result = JSON.parse(resultJson)
+        self.postMessage({ id, result })
         break
       }
 

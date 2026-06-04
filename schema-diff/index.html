@@ -41,14 +41,773 @@
       </p>
     </header>
 
+    <!-- Pyodide loading status -->
     <section
       class="border font-sans"
-      style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 24px; text-align: center;"
+      style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
+      x-show="!$store.app.pyodideReady && !$store.app.loadingError"
     >
-      <p class="text-[14px]" style="color: var(--color-london-35);">
-        Schema diff view — coming in U6
-      </p>
+      <div class="flex items-center gap-3">
+        <div
+          class="h-3 w-3 rounded-full animate-pulse"
+          style="background-color: var(--color-chicago-20);"
+        ></div>
+        <span
+          class="text-[14px]"
+          style="color: var(--color-london-35);"
+          x-text="$store.app.loadingStatus"
+        ></span>
+      </div>
     </section>
+
+    <!-- Pyodide load error -->
+    <section
+      class="border font-sans"
+      style="border-color: var(--color-red-42); background-color: var(--color-status-fail-bg); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
+      x-show="$store.app.loadingError"
+      x-cloak
+    >
+      <div class="flex items-center gap-3">
+        <div class="h-3 w-3 rounded-full" style="background-color: var(--color-red-42);"></div>
+        <span class="text-[14px]" style="color: var(--color-status-fail-text);" x-text="$store.app.loadingStatus"></span>
+      </div>
+      <p class="text-[12px] mt-2" style="color: var(--color-red-42);" x-text="$store.app.loadingError"></p>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- Schema Diff Component                                        -->
+    <!-- ============================================================ -->
+    <div x-data="schemaDiff">
+
+      <!-- Loading state (diff computation in progress) -->
+      <section
+        class="border font-sans text-center"
+        style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 48px 24px;"
+        x-show="loading"
+      >
+        <div class="flex items-center justify-center gap-3">
+          <div class="h-3 w-3 rounded-full animate-pulse" style="background-color: var(--color-chicago-20);"></div>
+          <span class="text-[14px]" style="color: var(--color-london-35);">Computing schema differences...</span>
+        </div>
+      </section>
+
+      <!-- Error state -->
+      <section
+        class="border font-sans"
+        style="border-color: var(--color-red-42); background-color: var(--color-status-fail-bg); border-radius: var(--radius-standard); padding: 16px;"
+        x-show="error && !loading"
+        x-cloak
+      >
+        <div class="flex items-start gap-3">
+          <div class="h-3 w-3 rounded-full mt-1 shrink-0" style="background-color: var(--color-red-42);"></div>
+          <span class="text-[14px]" style="color: var(--color-status-fail-text);" x-text="'Failed to compute diff: ' + error"></span>
+        </div>
+      </section>
+
+
+      <!-- ============================================================ -->
+      <!-- Diff Content (shown when data is loaded)                     -->
+      <!-- ============================================================ -->
+      <div x-show="!loading && !error && diffData" x-cloak>
+
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <!-- RETAILER COMPARISON: Walmart vs Costco                     -->
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <section style="margin-bottom: var(--spacing-section);" x-show="retailerPair">
+          <h2 class="font-serif text-[22px] font-bold" style="color: var(--color-london-5); margin-bottom: 8px;">
+            Retailer Comparison
+          </h2>
+          <p class="font-sans text-[14px]" style="color: var(--color-london-35); margin-bottom: 24px;">
+            <span x-text="retailerPair.partner_a"></span> vs <span x-text="retailerPair.partner_b"></span>
+          </p>
+
+          <!-- Summary stats -->
+          <div class="flex flex-wrap gap-3 font-sans text-[12px] mb-6">
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-london-95); color: var(--color-london-20); border-radius: var(--radius-standard);"
+              x-text="retailerPair.shared_count + ' shared fields'"
+            ></span>
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-chicago-95); color: var(--color-chicago-20); border-radius: var(--radius-standard);"
+              x-text="retailerPair.unique_a_count + ' unique to ' + retailerPair.partner_a"
+            ></span>
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-hk-95); color: var(--color-hk-5); border-radius: var(--radius-standard);"
+              x-text="retailerPair.unique_b_count + ' unique to ' + retailerPair.partner_b"
+            ></span>
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-london-95); color: var(--color-london-35); border-radius: var(--radius-standard);"
+              x-text="retailerPair.overlap_pct + '% overlap'"
+            ></span>
+          </div>
+
+
+          <!-- ── GTIN Hierarchy Divergence (most prominent element) ── -->
+          <div
+            class="border font-sans"
+            style="border-radius: var(--radius-standard); padding: 20px; margin-bottom: 24px;"
+            :style="{
+              'background-color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-fail-bg)',
+              'border-color': retailerPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-42)',
+            }"
+          >
+            <h3 class="font-serif text-[18px] font-bold mb-3"
+              :style="{ 'color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)' }"
+            >
+              GTIN Hierarchy
+              <span
+                class="font-sans text-[12px] font-semibold px-2 py-0.5 ml-2 inline-block align-middle"
+                :style="{
+                  'background-color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)',
+                  'color': '#ffffff',
+                  'border-radius': 'var(--radius-standard)',
+                }"
+                x-text="retailerPair.gtin_comparison.level_match ? 'MATCH' : 'DIVERGENT'"
+              ></span>
+            </h3>
+
+            <div class="grid gap-4" style="grid-template-columns: 1fr 1fr;">
+              <!-- Partner A -->
+              <div
+                class="border"
+                style="border-radius: var(--radius-standard); padding: 16px;"
+                :style="{
+                  'border-color': retailerPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-85)',
+                  'background-color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : '#ffffff',
+                }"
+              >
+                <p class="text-[12px] font-semibold mb-2" style="color: var(--color-chicago-20);" x-text="retailerPair.partner_a"></p>
+                <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">
+                  Level: <span x-text="retailerPair.gtin_comparison.a_level.replace('_', ' ')"></span>
+                </p>
+                <p class="text-[13px] mt-1" style="color: var(--color-london-35);">
+                  Formats: <span x-text="retailerPair.gtin_comparison.a_formats.join(', ')"></span>
+                </p>
+              </div>
+              <!-- Partner B -->
+              <div
+                class="border"
+                style="border-radius: var(--radius-standard); padding: 16px;"
+                :style="{
+                  'border-color': retailerPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-85)',
+                  'background-color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : '#ffffff',
+                }"
+              >
+                <p class="text-[12px] font-semibold mb-2" style="color: var(--color-hk-25);" x-text="retailerPair.partner_b"></p>
+                <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">
+                  Level: <span x-text="retailerPair.gtin_comparison.b_level.replace('_', ' ')"></span>
+                </p>
+                <p class="text-[13px] mt-1" style="color: var(--color-london-35);">
+                  Formats: <span x-text="retailerPair.gtin_comparison.b_formats.join(', ')"></span>
+                </p>
+              </div>
+            </div>
+
+            <p
+              class="text-[13px] mt-3 font-sans"
+              :style="{ 'color': retailerPair.gtin_comparison.level_match ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)' }"
+              x-show="!retailerPair.gtin_comparison.level_match"
+            >
+              <span x-text="retailerPair.partner_a"></span> expects
+              <strong x-text="retailerPair.gtin_comparison.a_level.replace('_', ' ')"></strong>-level GTINs;
+              <span x-text="retailerPair.partner_b"></span> expects
+              <strong x-text="retailerPair.gtin_comparison.b_level.replace('_', ' ')"></strong>-level.
+              The same product needs different barcode identifiers for each retailer.
+            </p>
+          </div>
+
+
+          <!-- ── Shared Fields ── -->
+          <div
+            class="border font-sans"
+            style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden; margin-bottom: 24px;"
+          >
+            <div
+              class="text-[12px] font-semibold"
+              style="padding: 10px 16px; background-color: var(--color-london-95); color: var(--color-london-35); border-bottom: 1px solid var(--color-london-85);"
+            >
+              Shared required fields (<span x-text="retailerPair.shared_count"></span>)
+              <template x-if="formatDivergenceCount(retailerPair) > 0">
+                <span style="color: var(--color-status-warn-text); margin-left: 8px;"
+                  x-text="formatDivergenceCount(retailerPair) + ' with format differences'"
+                ></span>
+              </template>
+            </div>
+
+            <template x-for="field in retailerPair.shared_fields" :key="'r-shared-' + field.name">
+              <div
+                class="flex items-center justify-between text-[13px] cursor-pointer"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                :style="{ 'opacity': isDimmed(field.name, 'retailer') ? '0.25' : '1' }"
+                @click="pinField(field.name, 'retailer')"
+              >
+                <span style="color: var(--color-london-20); min-width: 180px;" x-text="formatFieldName(field.name)"></span>
+                <div class="flex items-center gap-4">
+                  <span
+                    class="text-[11px] px-2 py-0.5"
+                    :style="{
+                      'background-color': field.format_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-warn-bg)',
+                      'color': field.format_match ? 'var(--color-status-pass-text)' : 'var(--color-status-warn-text)',
+                      'border-radius': 'var(--radius-standard)',
+                    }"
+                    x-text="field.format_match ? 'Same format' : 'Format differs'"
+                  ></span>
+                </div>
+              </div>
+            </template>
+          </div>
+
+
+          <!-- ── Unique Fields ── -->
+          <div class="grid gap-4" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
+            <!-- Unique to Partner A -->
+            <div
+              class="border font-sans"
+              style="border-color: var(--color-chicago-85); border-radius: var(--radius-standard); overflow: hidden;"
+            >
+              <div
+                class="text-[12px] font-semibold"
+                style="padding: 10px 16px; background-color: var(--color-chicago-95); color: var(--color-chicago-20); border-bottom: 1px solid var(--color-chicago-85);"
+              >
+                Unique to <span x-text="retailerPair.partner_a"></span> (<span x-text="retailerPair.unique_a_count"></span>)
+              </div>
+
+              <template x-for="field in retailerPair.unique_a" :key="'r-ua-' + field.name">
+                <div
+                  class="text-[13px] cursor-pointer"
+                  style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                  :style="{ 'opacity': isDimmed(field.name, 'retailer') ? '0.25' : '1' }"
+                  @click="pinField(field.name, 'retailer')"
+                >
+                  <span style="color: var(--color-london-20);" x-text="formatFieldName(field.name)"></span>
+                  <span
+                    class="text-[11px] ml-2"
+                    style="color: var(--color-london-35);"
+                    x-show="field.format_description"
+                    x-text="field.format_description"
+                  ></span>
+                </div>
+              </template>
+
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; color: var(--color-london-35);"
+                x-show="retailerPair.unique_a.length === 0"
+              >
+                None
+              </div>
+            </div>
+
+            <!-- Unique to Partner B -->
+            <div
+              class="border font-sans"
+              style="border-color: var(--color-hk-85); border-radius: var(--radius-standard); overflow: hidden;"
+            >
+              <div
+                class="text-[12px] font-semibold"
+                style="padding: 10px 16px; background-color: var(--color-hk-95); color: var(--color-hk-5); border-bottom: 1px solid var(--color-hk-85);"
+              >
+                Unique to <span x-text="retailerPair.partner_b"></span> (<span x-text="retailerPair.unique_b_count"></span>)
+              </div>
+
+              <template x-for="field in retailerPair.unique_b" :key="'r-ub-' + field.name">
+                <div
+                  class="text-[13px] cursor-pointer"
+                  style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                  :style="{ 'opacity': isDimmed(field.name, 'retailer') ? '0.25' : '1' }"
+                  @click="pinField(field.name, 'retailer')"
+                >
+                  <span style="color: var(--color-london-20);" x-text="formatFieldName(field.name)"></span>
+                  <span
+                    class="text-[11px] ml-2"
+                    style="color: var(--color-london-35);"
+                    x-show="field.format_description"
+                    x-text="field.format_description"
+                  ></span>
+                </div>
+              </template>
+
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; color: var(--color-london-35);"
+                x-show="retailerPair.unique_b.length === 0"
+              >
+                None
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ── Conditional Rules ── -->
+          <div
+            class="border font-sans"
+            style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden; margin-bottom: 24px;"
+          >
+            <div
+              class="text-[12px] font-semibold"
+              style="padding: 10px 16px; background-color: var(--color-london-95); color: var(--color-london-35); border-bottom: 1px solid var(--color-london-85);"
+            >
+              Conditional rules
+            </div>
+
+            <!-- Shared rules -->
+            <template x-for="rule in retailerPair.conditional_comparison.shared_rules" :key="'r-sr-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                  <span
+                    class="text-[11px] px-2 py-0.5"
+                    :style="{
+                      'background-color': rule.fields_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-warn-bg)',
+                      'color': rule.fields_match ? 'var(--color-status-pass-text)' : 'var(--color-status-warn-text)',
+                      'border-radius': 'var(--radius-standard)',
+                    }"
+                    x-text="rule.fields_match ? 'Both same' : 'Different fields'"
+                  ></span>
+                </div>
+                <div class="flex gap-6 mt-1 text-[12px]" style="color: var(--color-london-35);">
+                  <span><span x-text="retailerPair.partner_a" class="font-semibold" style="color: var(--color-chicago-20);"></span>: <span x-text="rule.required_a.join(', ')"></span></span>
+                  <span><span x-text="retailerPair.partner_b" class="font-semibold" style="color: var(--color-hk-25);"></span>: <span x-text="rule.required_b.join(', ')"></span></span>
+                </div>
+              </div>
+            </template>
+
+            <!-- Unique rules A -->
+            <template x-for="rule in retailerPair.conditional_comparison.unique_a" :key="'r-ura-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); background-color: var(--color-chicago-95);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-chicago-20);">
+                    <span x-text="retailerPair.partner_a"></span> only
+                  </span>
+                  <span style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                </div>
+                <p class="text-[12px] mt-1" style="color: var(--color-london-35);">
+                  Requires: <span x-text="rule.required_fields.join(', ')"></span>
+                </p>
+              </div>
+            </template>
+
+            <!-- Unique rules B -->
+            <template x-for="rule in retailerPair.conditional_comparison.unique_b" :key="'r-urb-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); background-color: var(--color-hk-95);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-hk-25);">
+                    <span x-text="retailerPair.partner_b"></span> only
+                  </span>
+                  <span style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                </div>
+                <p class="text-[12px] mt-1" style="color: var(--color-london-35);">
+                  Requires: <span x-text="rule.required_fields.join(', ')"></span>
+                </p>
+              </div>
+            </template>
+          </div>
+        </section>
+
+
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <!-- DISTRIBUTOR COMPARISON: UNFI vs KeHE                       -->
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <section style="margin-bottom: var(--spacing-section);" x-show="distributorPair">
+          <h2 class="font-serif text-[22px] font-bold" style="color: var(--color-london-5); margin-bottom: 8px;">
+            Distributor Comparison
+          </h2>
+          <p class="font-sans text-[14px]" style="color: var(--color-london-35); margin-bottom: 24px;">
+            <span x-text="distributorPair.partner_a"></span> vs <span x-text="distributorPair.partner_b"></span>
+          </p>
+
+          <!-- Summary stats -->
+          <div class="flex flex-wrap gap-3 font-sans text-[12px] mb-6">
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-london-95); color: var(--color-london-20); border-radius: var(--radius-standard);"
+              x-text="distributorPair.shared_count + ' shared fields'"
+            ></span>
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-chicago-95); color: var(--color-chicago-20); border-radius: var(--radius-standard);"
+              x-text="distributorPair.unique_a_count + ' unique to ' + distributorPair.partner_a"
+            ></span>
+            <span
+              class="inline-block px-3 py-1"
+              style="background-color: var(--color-hk-95); color: var(--color-hk-5); border-radius: var(--radius-standard);"
+              x-text="distributorPair.unique_b_count + ' unique to ' + distributorPair.partner_b"
+            ></span>
+            <span
+              class="inline-block px-3 py-1 font-semibold"
+              style="background-color: var(--color-status-pass-bg); color: var(--color-status-pass-text); border-radius: var(--radius-standard);"
+              x-text="distributorPair.overlap_pct + '% overlap'"
+            ></span>
+          </div>
+
+
+          <!-- ── GTIN Hierarchy ── -->
+          <div
+            class="border font-sans"
+            style="border-radius: var(--radius-standard); padding: 20px; margin-bottom: 24px;"
+            :style="{
+              'background-color': distributorPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-fail-bg)',
+              'border-color': distributorPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-42)',
+            }"
+          >
+            <h3 class="font-serif text-[18px] font-bold mb-3"
+              :style="{ 'color': distributorPair.gtin_comparison.level_match ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)' }"
+            >
+              GTIN Hierarchy
+              <span
+                class="font-sans text-[12px] font-semibold px-2 py-0.5 ml-2 inline-block align-middle"
+                :style="{
+                  'background-color': distributorPair.gtin_comparison.level_match ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)',
+                  'color': '#ffffff',
+                  'border-radius': 'var(--radius-standard)',
+                }"
+                x-text="distributorPair.gtin_comparison.level_match ? 'MATCH' : 'DIVERGENT'"
+              ></span>
+            </h3>
+
+            <div class="grid gap-4" style="grid-template-columns: 1fr 1fr;">
+              <div
+                class="border"
+                style="border-radius: var(--radius-standard); padding: 16px;"
+                :style="{
+                  'border-color': distributorPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-85)',
+                  'background-color': distributorPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : '#ffffff',
+                }"
+              >
+                <p class="text-[12px] font-semibold mb-2" style="color: var(--color-chicago-20);" x-text="distributorPair.partner_a"></p>
+                <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">
+                  Level: <span x-text="distributorPair.gtin_comparison.a_level.replace('_', ' ')"></span>
+                </p>
+                <p class="text-[13px] mt-1" style="color: var(--color-london-35);">
+                  Formats: <span x-text="distributorPair.gtin_comparison.a_formats.join(', ')"></span>
+                </p>
+              </div>
+              <div
+                class="border"
+                style="border-radius: var(--radius-standard); padding: 16px;"
+                :style="{
+                  'border-color': distributorPair.gtin_comparison.level_match ? 'var(--color-hk-85)' : 'var(--color-red-85)',
+                  'background-color': distributorPair.gtin_comparison.level_match ? 'var(--color-status-pass-bg)' : '#ffffff',
+                }"
+              >
+                <p class="text-[12px] font-semibold mb-2" style="color: var(--color-hk-25);" x-text="distributorPair.partner_b"></p>
+                <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">
+                  Level: <span x-text="distributorPair.gtin_comparison.b_level.replace('_', ' ')"></span>
+                </p>
+                <p class="text-[13px] mt-1" style="color: var(--color-london-35);">
+                  Formats: <span x-text="distributorPair.gtin_comparison.b_formats.join(', ')"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ── Shared Fields ── -->
+          <div
+            class="border font-sans"
+            style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden; margin-bottom: 24px;"
+          >
+            <div
+              class="text-[12px] font-semibold"
+              style="padding: 10px 16px; background-color: var(--color-london-95); color: var(--color-london-35); border-bottom: 1px solid var(--color-london-85);"
+            >
+              Shared required fields (<span x-text="distributorPair.shared_count"></span>)
+              <template x-if="formatDivergenceCount(distributorPair) > 0">
+                <span style="color: var(--color-status-warn-text); margin-left: 8px;"
+                  x-text="formatDivergenceCount(distributorPair) + ' with format differences'"
+                ></span>
+              </template>
+            </div>
+
+            <template x-for="field in distributorPair.shared_fields" :key="'d-shared-' + field.name">
+              <div
+                class="flex items-center justify-between text-[13px] cursor-pointer"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                :style="{ 'opacity': isDimmed(field.name, 'distributor') ? '0.25' : '1' }"
+                @click="pinField(field.name, 'distributor')"
+              >
+                <span style="color: var(--color-london-20); min-width: 180px;" x-text="formatFieldName(field.name)"></span>
+                <div class="flex items-center gap-4">
+                  <span
+                    class="text-[11px] px-2 py-0.5"
+                    :style="{
+                      'background-color': field.format_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-warn-bg)',
+                      'color': field.format_match ? 'var(--color-status-pass-text)' : 'var(--color-status-warn-text)',
+                      'border-radius': 'var(--radius-standard)',
+                    }"
+                    x-text="field.format_match ? 'Same format' : 'Format differs'"
+                  ></span>
+                </div>
+              </div>
+            </template>
+          </div>
+
+
+          <!-- ── Unique Fields ── -->
+          <div class="grid gap-4" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
+            <!-- Unique to Partner A -->
+            <div
+              class="border font-sans"
+              style="border-color: var(--color-chicago-85); border-radius: var(--radius-standard); overflow: hidden;"
+            >
+              <div
+                class="text-[12px] font-semibold"
+                style="padding: 10px 16px; background-color: var(--color-chicago-95); color: var(--color-chicago-20); border-bottom: 1px solid var(--color-chicago-85);"
+              >
+                Unique to <span x-text="distributorPair.partner_a"></span> (<span x-text="distributorPair.unique_a_count"></span>)
+              </div>
+
+              <template x-for="field in distributorPair.unique_a" :key="'d-ua-' + field.name">
+                <div
+                  class="text-[13px] cursor-pointer"
+                  style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                  :style="{ 'opacity': isDimmed(field.name, 'distributor') ? '0.25' : '1' }"
+                  @click="pinField(field.name, 'distributor')"
+                >
+                  <span style="color: var(--color-london-20);" x-text="formatFieldName(field.name)"></span>
+                  <span
+                    class="text-[11px] ml-2"
+                    style="color: var(--color-london-35);"
+                    x-show="field.format_description"
+                    x-text="field.format_description"
+                  ></span>
+                </div>
+              </template>
+
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; color: var(--color-london-35);"
+                x-show="distributorPair.unique_a.length === 0"
+              >
+                None
+              </div>
+            </div>
+
+            <!-- Unique to Partner B -->
+            <div
+              class="border font-sans"
+              style="border-color: var(--color-hk-85); border-radius: var(--radius-standard); overflow: hidden;"
+            >
+              <div
+                class="text-[12px] font-semibold"
+                style="padding: 10px 16px; background-color: var(--color-hk-95); color: var(--color-hk-5); border-bottom: 1px solid var(--color-hk-85);"
+              >
+                Unique to <span x-text="distributorPair.partner_b"></span> (<span x-text="distributorPair.unique_b_count"></span>)
+              </div>
+
+              <template x-for="field in distributorPair.unique_b" :key="'d-ub-' + field.name">
+                <div
+                  class="text-[13px] cursor-pointer"
+                  style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); transition: opacity 200ms ease-out;"
+                  :style="{ 'opacity': isDimmed(field.name, 'distributor') ? '0.25' : '1' }"
+                  @click="pinField(field.name, 'distributor')"
+                >
+                  <span style="color: var(--color-london-20);" x-text="formatFieldName(field.name)"></span>
+                  <span
+                    class="text-[11px] ml-2"
+                    style="color: var(--color-london-35);"
+                    x-show="field.format_description"
+                    x-text="field.format_description"
+                  ></span>
+                </div>
+              </template>
+
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; color: var(--color-london-35);"
+                x-show="distributorPair.unique_b.length === 0"
+              >
+                None
+              </div>
+            </div>
+          </div>
+
+
+          <!-- ── Conditional Rules ── -->
+          <div
+            class="border font-sans"
+            style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden; margin-bottom: 24px;"
+          >
+            <div
+              class="text-[12px] font-semibold"
+              style="padding: 10px 16px; background-color: var(--color-london-95); color: var(--color-london-35); border-bottom: 1px solid var(--color-london-85);"
+            >
+              Conditional rules
+            </div>
+
+            <!-- Shared rules -->
+            <template x-for="rule in distributorPair.conditional_comparison.shared_rules" :key="'d-sr-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                  <span
+                    class="text-[11px] px-2 py-0.5"
+                    :style="{
+                      'background-color': rule.fields_match ? 'var(--color-status-pass-bg)' : 'var(--color-status-warn-bg)',
+                      'color': rule.fields_match ? 'var(--color-status-pass-text)' : 'var(--color-status-warn-text)',
+                      'border-radius': 'var(--radius-standard)',
+                    }"
+                    x-text="rule.fields_match ? 'Both same' : 'Different fields'"
+                  ></span>
+                </div>
+                <div class="flex gap-6 mt-1 text-[12px]" style="color: var(--color-london-35);">
+                  <span><span x-text="distributorPair.partner_a" class="font-semibold" style="color: var(--color-chicago-20);"></span>: <span x-text="rule.required_a.join(', ')"></span></span>
+                  <span><span x-text="distributorPair.partner_b" class="font-semibold" style="color: var(--color-hk-25);"></span>: <span x-text="rule.required_b.join(', ')"></span></span>
+                </div>
+              </div>
+            </template>
+
+            <!-- Unique rules A -->
+            <template x-for="rule in distributorPair.conditional_comparison.unique_a" :key="'d-ura-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); background-color: var(--color-chicago-95);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-chicago-20);">
+                    <span x-text="distributorPair.partner_a"></span> only
+                  </span>
+                  <span style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                </div>
+                <p class="text-[12px] mt-1" style="color: var(--color-london-35);">
+                  Requires: <span x-text="rule.required_fields.join(', ')"></span>
+                </p>
+              </div>
+            </template>
+
+            <!-- Unique rules B -->
+            <template x-for="rule in distributorPair.conditional_comparison.unique_b" :key="'d-urb-' + rule.trigger_field + rule.trigger_value">
+              <div
+                class="text-[13px]"
+                style="padding: 8px 16px; border-bottom: 1px solid var(--color-london-85); background-color: var(--color-hk-95);"
+              >
+                <div class="flex items-baseline gap-2">
+                  <span class="font-semibold" style="color: var(--color-hk-25);">
+                    <span x-text="distributorPair.partner_b"></span> only
+                  </span>
+                  <span style="color: var(--color-london-5);">
+                    When <span x-text="formatFieldName(rule.trigger_field)"></span> = "<span x-text="rule.trigger_value"></span>"
+                  </span>
+                </div>
+                <p class="text-[12px] mt-1" style="color: var(--color-london-35);">
+                  Requires: <span x-text="rule.required_fields.join(', ')"></span>
+                </p>
+              </div>
+            </template>
+          </div>
+
+
+          <!-- ── Channel-type annotation ── -->
+          <div
+            class="border-l-[3px] font-sans text-[15px]"
+            style="border-color: var(--color-london-85); padding: 12px 16px; color: var(--color-london-20); line-height: 1.6;"
+            x-show="annotation"
+          >
+            <span x-text="annotation"></span>
+          </div>
+        </section>
+
+
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <!-- Click-to-pin dark callout card                             -->
+        <!-- ──────────────────────────────────────────────────────────── -->
+        <div
+          x-show="pinnedField"
+          x-cloak
+          style="position: fixed; bottom: 24px; right: 24px; width: 380px; max-width: calc(100vw - 48px); z-index: 50; border-radius: var(--radius-standard); overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.12);"
+          :style="{ 'background-color': 'var(--color-card-bg)' }"
+        >
+          <!-- Card header -->
+          <div class="flex items-center justify-between" style="padding: 16px 20px 12px; border-bottom: 1px solid rgba(255,255,255,0.12);">
+            <div>
+              <p class="font-sans text-[12px] font-semibold" style="color: var(--color-card-muted);">
+                Field detail
+              </p>
+              <p class="font-serif text-[18px] font-bold" style="color: var(--color-card-text);" x-text="pinnedField ? formatFieldName(pinnedField.name) : ''"></p>
+            </div>
+            <button
+              class="font-sans text-[12px] cursor-pointer"
+              style="background: none; border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-standard); padding: 4px 10px; color: var(--color-card-subtitle);"
+              @click="dismissPin()"
+            >
+              Close
+            </button>
+          </div>
+
+          <!-- Card body -->
+          <div style="padding: 16px 20px;" x-show="pinnedField">
+            <!-- Partner A spec -->
+            <div style="margin-bottom: 16px;" x-show="pinnedField?.fieldA">
+              <p class="font-sans text-[12px] font-semibold" style="color: var(--color-chicago-70);" x-text="pinnedField?.partnerA"></p>
+              <p class="font-sans text-[14px] mt-1" style="color: var(--color-card-item);" x-text="pinnedField?.fieldA?.format || '(no format constraint)'"></p>
+              <p
+                class="font-sans text-[11px] mt-1"
+                style="color: var(--color-card-muted); font-family: monospace; font-size: 11px;"
+                x-show="pinnedField?.fieldA?.pattern"
+                x-text="pinnedField?.fieldA?.pattern"
+              ></p>
+            </div>
+
+            <!-- Not present in A -->
+            <div style="margin-bottom: 16px;" x-show="!pinnedField?.fieldA">
+              <p class="font-sans text-[12px] font-semibold" style="color: var(--color-chicago-70);" x-text="pinnedField?.partnerA"></p>
+              <p class="font-sans text-[14px] mt-1" style="color: var(--color-card-muted);">Not required</p>
+            </div>
+
+            <div style="border-top: 1px solid rgba(255,255,255,0.12); margin-bottom: 16px;"></div>
+
+            <!-- Partner B spec -->
+            <div x-show="pinnedField?.fieldB">
+              <p class="font-sans text-[12px] font-semibold" style="color: var(--color-hk-70);" x-text="pinnedField?.partnerB"></p>
+              <p class="font-sans text-[14px] mt-1" style="color: var(--color-card-item);" x-text="pinnedField?.fieldB?.format || '(no format constraint)'"></p>
+              <p
+                class="font-sans text-[11px] mt-1"
+                style="color: var(--color-card-muted); font-family: monospace; font-size: 11px;"
+                x-show="pinnedField?.fieldB?.pattern"
+                x-text="pinnedField?.fieldB?.pattern"
+              ></p>
+            </div>
+
+            <!-- Not present in B -->
+            <div x-show="!pinnedField?.fieldB">
+              <p class="font-sans text-[12px] font-semibold" style="color: var(--color-hk-70);" x-text="pinnedField?.partnerB"></p>
+              <p class="font-sans text-[14px] mt-1" style="color: var(--color-card-muted);">Not required</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- End diff content -->
+
+    </div>
+    <!-- End schemaDiff component -->
 
   </main>
 
