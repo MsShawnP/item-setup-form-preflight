@@ -18,6 +18,9 @@ dev = [
     "pytest>=8.0",
 ]
 
+[project.scripts]
+item-preflight = "src.cli.audit:cli"
+
 [tool.ruff]
 line-length = 88
 
