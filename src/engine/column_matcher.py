@@ -110,13 +110,170 @@ _WALMART_ALIASES: dict[str, list[str]] = {
     ],
 }
 
+_COSTCO_ALIASES: dict[str, list[str]] = {
+    "upc": [
+        "upc", "gtin", "gtin14", "gtin-14", "gtin 14", "itf-14",
+        "itf14", "itf 14", "case gtin", "case barcode", "barcode",
+    ],
+    "case_pack_qty": [
+        "club pack qty", "club pack quantity", "pack qty",
+        "pack quantity", "case count", "case pack qty",
+    ],
+    "inner_pack_count": [
+        "inner pack count", "inner pack", "inner pack qty",
+        "inner count", "inners per case",
+    ],
+    "club_pack_length_in": [
+        "club pack length", "club pack length in", "club length",
+        "club pack l",
+    ],
+    "club_pack_width_in": [
+        "club pack width", "club pack width in", "club width",
+        "club pack w",
+    ],
+    "club_pack_height_in": [
+        "club pack height", "club pack height in", "club height",
+        "club pack h",
+    ],
+    "shelf_life_days": [
+        "shelf life", "shelf life days", "best by days",
+        "days of shelf life",
+    ],
+    "club_membership_tier": [
+        "club membership tier", "membership tier", "member tier",
+        "membership level",
+    ],
+    "executive_member_price": [
+        "executive member price", "executive price",
+        "exec member price",
+    ],
+    "executive_discount_pct": [
+        "executive discount pct", "executive discount",
+        "exec discount", "executive discount percent",
+    ],
+}
+
+_UNFI_ALIASES: dict[str, list[str]] = {
+    "upc": [
+        "upc", "gtin", "gtin14", "gtin-14", "gtin 14", "itf-14",
+        "itf14", "itf 14", "case gtin", "case barcode", "barcode",
+    ],
+    "wholesale_price": [
+        "wholesale price", "wholesale", "whs price", "whsl",
+        "wholesale cost",
+    ],
+    "list_price": [
+        "list price", "list", "srp", "retail price",
+        "suggested retail price",
+    ],
+    "map_price": [
+        "map price", "map", "minimum advertised price",
+        "min advertised price",
+    ],
+    "ti": [
+        "ti", "cases per layer", "cases per tier",
+        "case per layer", "tier count",
+    ],
+    "hi": [
+        "hi", "layers per pallet", "layers", "pallet layers",
+        "layer count", "high",
+    ],
+    "pallet_weight_lb": [
+        "pallet weight", "pallet weight lb", "pallet wt",
+        "plt weight", "full pallet weight",
+    ],
+    "shelf_life_days": [
+        "shelf life", "shelf life days", "best by days",
+        "days of shelf life",
+    ],
+    "has_promo_deal": [
+        "has promo deal", "promo deal", "has promotion",
+        "deal flag",
+    ],
+    "promo_start_date": [
+        "promo start date", "promo start", "deal start",
+        "promotion start",
+    ],
+    "promo_end_date": [
+        "promo end date", "promo end", "deal end",
+        "promotion end",
+    ],
+    "promo_price": [
+        "promo price", "deal price", "promotional price",
+        "promotion price",
+    ],
+}
+
+_KEHE_ALIASES: dict[str, list[str]] = {
+    "upc": [
+        "upc", "gtin", "gtin14", "gtin-14", "gtin 14", "itf-14",
+        "itf14", "itf 14", "case gtin", "case barcode", "barcode",
+    ],
+    "wholesale_price": [
+        "wholesale price", "wholesale", "whs price", "whsl",
+        "wholesale cost",
+    ],
+    "list_price": [
+        "list price", "list", "srp", "retail price",
+        "suggested retail price",
+    ],
+    "cases_per_layer": [
+        "cases per layer", "ti", "cases per tier",
+        "case per layer", "tier count",
+    ],
+    "layers_per_pallet": [
+        "layers per pallet", "hi", "layers", "pallet layers",
+        "layer count", "high",
+    ],
+    "pallet_weight_lb": [
+        "pallet weight", "pallet weight lb", "pallet wt",
+        "plt weight", "full pallet weight",
+    ],
+    "shelf_life_days": [
+        "shelf life", "shelf life days", "best by days",
+        "days of shelf life",
+    ],
+    "has_promo_deal": [
+        "has promo deal", "promo deal", "has promotion",
+        "deal flag",
+    ],
+    "promo_start_date": [
+        "promo start date", "promo start", "deal start",
+        "promotion start",
+    ],
+    "promo_end_date": [
+        "promo end date", "promo end", "deal end",
+        "promotion end",
+    ],
+    "promo_price": [
+        "promo price", "deal price", "promotional price",
+        "promotion price",
+    ],
+}
+
+# Unified alias map: merge all partner aliases. When the same field
+# appears in multiple partner maps, combine the alias lists without
+# duplicates. Shared fields (product_name, brand, etc.) inherit from
+# Walmart; partner-specific fields add their own entries.
+_ALIAS_MAP: dict[str, list[str]] = {}
+
+for _partner_map in (_WALMART_ALIASES, _COSTCO_ALIASES, _UNFI_ALIASES, _KEHE_ALIASES):
+    for _field, _aliases in _partner_map.items():
+        if _field not in _ALIAS_MAP:
+            _ALIAS_MAP[_field] = []
+        _seen = set(_ALIAS_MAP[_field])
+        for _a in _aliases:
+            if _a not in _seen:
+                _ALIAS_MAP[_field].append(_a)
+                _seen.add(_a)
+
 
 def get_alias_map() -> dict[str, list[str]]:
-    """Return a copy of the current alias map.
+    """Return a copy of the unified alias map across all partners.
 
-    Useful for extending per-partner later or for tests.
+    Includes Walmart, Costco, UNFI, and KeHE aliases merged together.
     """
-    return {k: list(v) for k, v in _WALMART_ALIASES.items()}
+    return {k: list(v) for k, v in _ALIAS_MAP.items()}
 
 
 # ---------------------------------------------------------------------------
@@ -211,7 +368,7 @@ def _match_single_field(
 ) -> ColumnMatch:
     """Try to match a single schema field to the best available header."""
     norm_field = _normalize(field_name)
-    aliases = _WALMART_ALIASES.get(field_name, [field_name])
+    aliases = _ALIAS_MAP.get(field_name, [field_name])
 
     # Always include the field name itself and its normalized form as aliases
     all_aliases = set(aliases)

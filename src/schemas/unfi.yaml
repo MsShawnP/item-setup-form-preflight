@@ -1,0 +1,91 @@
+partner: unfi
+display_name: "UNFI"
+description: "UNFI new item form requirements"
+
+required_fields:
+  - name: product_name
+    required: true
+  - name: brand
+    required: true
+  - name: upc
+    required: true
+    format_pattern: "^\\d{14}$"
+    format_description: "14-digit case-level GTIN for warehouse receiving"
+  - name: case_gross_weight_lb
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric weight in pounds"
+  - name: case_length_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric length in inches"
+  - name: case_width_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric width in inches"
+  - name: case_height_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric height in inches"
+  - name: case_pack_qty
+    required: true
+    format_pattern: "^\\d+$"
+    format_description: "Whole number"
+  - name: country_of_origin
+    required: true
+  - name: category
+    required: true
+  - name: product_description
+    required: true
+  - name: wholesale_price
+    required: true
+    format_pattern: "^\\d+\\.\\d{2}$"
+    format_description: "Dollar amount with two decimal places"
+  - name: list_price
+    required: true
+    format_pattern: "^\\d+\\.\\d{2}$"
+    format_description: "Dollar amount with two decimal places"
+  - name: map_price
+    required: true
+    format_pattern: "^\\d+\\.\\d{2}$"
+    format_description: "Minimum advertised price with two decimal places"
+  - name: ti
+    required: true
+    format_pattern: "^\\d+$"
+    format_description: "Cases per layer on pallet (whole number)"
+  - name: hi
+    required: true
+    format_pattern: "^\\d+$"
+    format_description: "Layers per pallet (whole number)"
+  - name: pallet_weight_lb
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric weight in pounds"
+  - name: shelf_life_days
+    required: true
+    format_pattern: "^\\d+$"
+    format_description: "Whole number of days"
+
+conditional_rules:
+  - trigger_field: storage_type
+    trigger_value: "Refrigerated"
+    required_fields:
+      - temp_min
+      - temp_max
+  - trigger_field: storage_type
+    trigger_value: "Frozen"
+    required_fields:
+      - temp_min
+      - temp_max
+  - trigger_field: has_promo_deal
+    trigger_value: "true"
+    required_fields:
+      - promo_start_date
+      - promo_end_date
+      - promo_price
+
+gtin_hierarchy:
+  expected_level: "case"
+  expected_formats:
+    - "GTIN-14"
+    - "ITF-14"
