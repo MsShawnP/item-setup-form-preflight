@@ -54,8 +54,13 @@ export function initWorker() {
  * Send an action to the Pyodide worker and await its response.
  * Returns a promise that resolves with the worker's result payload
  * or rejects with an Error if the worker reports a failure.
+ *
+ * @param {string} action - The action name for the worker to handle.
+ * @param {object} data - Payload for the action.
+ * @param {Transferable[]} [transferables] - Optional list of transferable
+ *   objects (e.g. ArrayBuffer) for zero-copy transfer to the worker.
  */
-export function sendToWorker(action, data = {}) {
+export function sendToWorker(action, data = {}, transferables = []) {
   if (!worker) {
     return Promise.reject(new Error('Worker not initialized'))
   }
@@ -64,6 +69,35 @@ export function sendToWorker(action, data = {}) {
 
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject })
-    worker.postMessage({ id, action, data })
+    worker.postMessage({ id, action, data }, transferables)
   })
+}
+
+/**
+ * Parse a file and match its columns against a partner schema.
+ *
+ * Sends the file ArrayBuffer to the worker using zero-copy transfer.
+ * The ArrayBuffer is neutered after this call — do not reuse it.
+ *
+ * @param {ArrayBuffer} file - Raw file bytes.
+ * @param {string} filename - Original filename (for extension detection).
+ * @param {string} partner - Partner key (walmart|costco|unfi|kehe).
+ * @returns {Promise<object>} Mapping result with matched/unmatched columns.
+ */
+export function matchColumns(file, filename, partner) {
+  return sendToWorker('match', { file, filename, partner }, [file])
+}
+
+/**
+ * Run four-tier validation using a confirmed column mapping.
+ *
+ * Operates on the file data cached in the worker from the most
+ * recent matchColumns call.
+ *
+ * @param {object} confirmedMapping - Map of schema field names to uploaded headers.
+ * @param {string} partner - Partner key.
+ * @returns {Promise<object>} Per-row results and aggregate summary.
+ */
+export function validateData(confirmedMapping, partner) {
+  return sendToWorker('validate', { confirmedMapping, partner })
 }

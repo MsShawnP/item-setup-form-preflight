@@ -89,18 +89,584 @@
       </div>
     </section>
 
-    <!-- File drop placeholder (built in U4) -->
+    <!-- Validation error banner -->
     <section
-      class="border-2 border-dashed flex items-center justify-center font-sans"
-      style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 48px 24px; min-height: 200px;"
+      class="border font-sans"
+      style="background-color: var(--color-status-fail-bg); border-color: var(--color-red-42); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 24px;"
+      x-show="$store.app.validationError"
+      x-cloak
     >
-      <div class="text-center">
+      <div class="flex items-start gap-3">
+        <div class="h-3 w-3 rounded-full mt-1 shrink-0" style="background-color: var(--color-red-42);"></div>
+        <span class="text-[14px]" style="color: var(--color-status-fail-text);" x-text="$store.app.validationError"></span>
+      </div>
+    </section>
+
+    <!-- Step indicator -->
+    <div
+      class="font-sans flex items-center gap-2 text-[12px]"
+      style="color: var(--color-london-35); margin-bottom: 24px;"
+      x-show="$store.app.pyodideReady && $store.app.currentStep < 5"
+      x-cloak
+    >
+      <template x-for="step in [
+        { n: 1, label: 'Upload' },
+        { n: 2, label: 'Partner' },
+        { n: 3, label: 'Mapping' },
+        { n: 4, label: 'Validating' },
+      ]" :key="step.n">
+        <div class="flex items-center gap-2">
+          <span
+            class="inline-flex items-center justify-center rounded-full font-semibold"
+            style="width: 22px; height: 22px; font-size: 11px;"
+            :style="{
+              'background-color': $store.app.currentStep >= step.n ? 'var(--color-chicago-20)' : 'var(--color-london-85)',
+              'color': $store.app.currentStep >= step.n ? '#ffffff' : 'var(--color-london-35)',
+            }"
+            x-text="step.n"
+          ></span>
+          <span
+            :style="{ 'font-weight': $store.app.currentStep === step.n ? '600' : '400' }"
+            x-text="step.label"
+          ></span>
+          <span
+            x-show="step.n < 4"
+            style="color: var(--color-london-85); margin: 0 4px;"
+          >&rarr;</span>
+        </div>
+      </template>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- Step 1: File Upload                                          -->
+    <!-- ============================================================ -->
+    <section
+      x-show="$store.app.currentStep === 1"
+      x-data="fileUpload"
+      x-cloak
+    >
+      <div
+        class="border-2 border-dashed flex flex-col items-center justify-center font-sans cursor-pointer transition-colors"
+        style="border-radius: var(--radius-standard); padding: 48px 24px; min-height: 200px;"
+        :style="{
+          'border-color': isDragging ? 'var(--color-chicago-20)' : 'var(--color-london-85)',
+          'background-color': isDragging ? 'var(--color-chicago-95)' : 'transparent',
+        }"
+        @dragover.prevent="handleDragOver($event)"
+        @dragleave="handleDragLeave()"
+        @drop.prevent="handleDrop($event)"
+        @click="$refs.fileInput.click()"
+      >
+        <input
+          type="file"
+          accept=".csv,.xlsx"
+          class="hidden"
+          x-ref="fileInput"
+          @change="handleFileInput($event)"
+        >
         <p class="text-[17px] font-semibold" style="color: var(--color-london-20);">
           Drop Excel or CSV here
         </p>
         <p class="text-[14px] mt-2" style="color: var(--color-london-35);">
-          File drop zone — coming in U4
+          or click to browse — .csv and .xlsx accepted
         </p>
+        <p
+          class="text-[12px] mt-4"
+          style="color: var(--color-london-40);"
+          x-show="!$store.app.pyodideReady"
+        >
+          Waiting for validation engine to finish loading...
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- Step 2: Partner Selection                                    -->
+    <!-- ============================================================ -->
+    <section
+      x-show="$store.app.currentStep === 2"
+      x-data="partnerSelector"
+      x-cloak
+    >
+      <!-- File info -->
+      <div
+        class="border font-sans flex items-center justify-between"
+        style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 12px 16px; margin-bottom: 24px;"
+      >
+        <div class="flex items-center gap-3">
+          <div class="h-3 w-3 rounded-full" style="background-color: var(--color-hk-35);"></div>
+          <span class="text-[14px] font-semibold" style="color: var(--color-london-20);" x-text="$store.app.fileData?.name"></span>
+          <span class="text-[12px]" style="color: var(--color-london-35);" x-text="$store.app.fileData ? (($store.app.fileData.size / 1024).toFixed(1) + ' KB') : ''"></span>
+        </div>
+        <button
+          class="text-[12px] font-semibold cursor-pointer"
+          style="color: var(--color-chicago-20); background: none; border: none; padding: 4px 8px;"
+          @click="$store.app.reset()"
+        >
+          Change file
+        </button>
+      </div>
+
+      <h2 class="font-serif text-[18px] font-bold" style="color: var(--color-london-5); margin-bottom: 16px;">
+        Select partner
+      </h2>
+      <p class="font-sans text-[14px]" style="color: var(--color-london-35); margin-bottom: 24px;">
+        Which retailer or distributor is this submission for?
+      </p>
+
+      <div class="grid grid-cols-2 gap-4" style="max-width: 600px;">
+        <template x-for="partner in partners" :key="partner.id">
+          <button
+            class="border text-left font-sans cursor-pointer transition-colors"
+            style="border-radius: var(--radius-standard); padding: 20px; background: none;"
+            :style="{
+              'border-color': $store.app.selectedPartner === partner.id ? 'var(--color-chicago-20)' : 'var(--color-london-85)',
+              'background-color': $store.app.selectedPartner === partner.id ? 'var(--color-chicago-95)' : 'transparent',
+            }"
+            :disabled="isMatching || !$store.app.pyodideReady"
+            @click="selectPartner(partner.id)"
+          >
+            <span class="block text-[16px] font-semibold" style="color: var(--color-london-5);" x-text="partner.name"></span>
+            <span class="block text-[13px] mt-1" style="color: var(--color-london-35);" x-text="partner.desc"></span>
+            <span class="block text-[11px] mt-2" style="color: var(--color-london-40);" x-text="'GTIN: ' + partner.gtin"></span>
+          </button>
+        </template>
+      </div>
+
+      <!-- Matching spinner -->
+      <div
+        class="flex items-center gap-3 font-sans mt-6"
+        x-show="isMatching"
+      >
+        <div class="h-3 w-3 rounded-full animate-pulse" style="background-color: var(--color-chicago-20);"></div>
+        <span class="text-[14px]" style="color: var(--color-london-35);">
+          Parsing file and matching columns...
+        </span>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- Step 3: Column Mapping Confirmation                          -->
+    <!-- ============================================================ -->
+    <section
+      x-show="$store.app.currentStep === 3"
+      x-data="columnMapper"
+      x-cloak
+    >
+      <!-- Context bar -->
+      <div
+        class="border font-sans flex items-center justify-between"
+        style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 12px 16px; margin-bottom: 24px;"
+      >
+        <div class="flex items-center gap-4 text-[13px]">
+          <span style="color: var(--color-london-20);" x-text="$store.app.fileData?.name"></span>
+          <span style="color: var(--color-london-85);">|</span>
+          <span
+            class="font-semibold"
+            style="color: var(--color-chicago-20);"
+            x-text="{ walmart: 'Walmart', costco: 'Costco', unfi: 'UNFI', kehe: 'KeHE' }[$store.app.selectedPartner]"
+          ></span>
+          <span style="color: var(--color-london-85);">|</span>
+          <span style="color: var(--color-london-35);" x-text="rowCount + ' rows'"></span>
+        </div>
+        <button
+          class="text-[12px] font-semibold cursor-pointer"
+          style="color: var(--color-chicago-20); background: none; border: none; padding: 4px 8px;"
+          @click="$store.app.setStep(2)"
+        >
+          Change partner
+        </button>
+      </div>
+
+      <h2 class="font-serif text-[18px] font-bold" style="color: var(--color-london-5); margin-bottom: 8px;">
+        Column mapping
+      </h2>
+      <p class="font-sans text-[14px]" style="color: var(--color-london-35); margin-bottom: 24px;">
+        Review how your file columns map to the partner's schema fields.
+        Adjust any mismatches before running validation.
+      </p>
+
+      <!-- Status summary chips -->
+      <div class="flex gap-3 font-sans text-[12px] mb-6">
+        <span
+          class="inline-block px-3 py-1"
+          style="background-color: var(--color-status-pass-bg); color: var(--color-status-pass-text); border-radius: var(--radius-standard);"
+          x-text="statusCounts.matched + ' matched'"
+        ></span>
+        <span
+          class="inline-block px-3 py-1"
+          style="background-color: var(--color-status-warn-bg); color: var(--color-status-warn-text); border-radius: var(--radius-standard);"
+          x-show="statusCounts.ambiguous > 0"
+          x-text="statusCounts.ambiguous + ' ambiguous'"
+        ></span>
+        <span
+          class="inline-block px-3 py-1"
+          style="background-color: var(--color-status-fail-bg); color: var(--color-status-fail-text); border-radius: var(--radius-standard);"
+          x-show="statusCounts.unmatched > 0"
+          x-text="statusCounts.unmatched + ' unmatched'"
+        ></span>
+      </div>
+
+      <!-- Mapping table -->
+      <div class="border" style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden; margin-bottom: 24px;">
+        <!-- Table header -->
+        <div
+          class="grid font-sans text-[12px] font-semibold"
+          style="grid-template-columns: 80px 1fr 1fr 100px; padding: 10px 16px; background-color: var(--color-london-95); color: var(--color-london-35); border-bottom: 1px solid var(--color-london-85);"
+        >
+          <span>Status</span>
+          <span>Schema field</span>
+          <span>Your column</span>
+          <span>Confidence</span>
+        </div>
+
+        <!-- Mapping rows -->
+        <template x-for="(entry, idx) in editableMapping" :key="entry.schemaField">
+          <div
+            class="grid font-sans text-[13px] items-center"
+            style="grid-template-columns: 80px 1fr 1fr 100px; padding: 8px 16px; border-bottom: 1px solid var(--color-london-85);"
+          >
+            <!-- Status badge -->
+            <span
+              class="inline-block text-[11px] font-semibold px-2 py-0.5 text-center"
+              :style="{
+                'background-color': statusStyle(entry).bg,
+                'color': statusStyle(entry).text,
+                'border-radius': 'var(--radius-standard)',
+              }"
+              x-text="statusStyle(entry).label"
+            ></span>
+
+            <!-- Schema field name -->
+            <span style="color: var(--color-london-20);" x-text="entry.schemaField"></span>
+
+            <!-- Column dropdown -->
+            <select
+              class="border font-sans text-[13px] w-full"
+              style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 4px 8px; background-color: var(--color-canvas); color: var(--color-london-20); max-width: 250px;"
+              :value="entry.uploadedHeader || ''"
+              @change="assignHeader(idx, $event.target.value)"
+            >
+              <option value="">-- Not mapped --</option>
+              <template x-for="h in allHeaders" :key="h">
+                <option :value="h" x-text="h" :selected="h === entry.uploadedHeader"></option>
+              </template>
+            </select>
+
+            <!-- Confidence -->
+            <span
+              class="text-[12px]"
+              :style="{ 'color': entry.confidence >= 0.8 ? 'var(--color-status-pass-text)' : entry.confidence > 0 ? 'var(--color-status-warn-text)' : 'var(--color-london-35)' }"
+              x-text="entry.confidence > 0 ? (entry.confidence * 100).toFixed(0) + '%' : '—'"
+            ></span>
+          </div>
+        </template>
+      </div>
+
+      <!-- Unmatched uploaded headers (informational) -->
+      <div
+        class="font-sans text-[13px] mb-6"
+        style="color: var(--color-london-35);"
+        x-show="unmatchedHeaders.length > 0"
+      >
+        <p class="font-semibold text-[12px] mb-2" style="color: var(--color-london-20);">
+          Extra columns in your file (not in schema):
+        </p>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="h in unmatchedHeaders" :key="h">
+            <span
+              class="inline-block text-[11px] px-2 py-1"
+              style="background-color: var(--color-london-95); color: var(--color-london-35); border-radius: var(--radius-standard);"
+              x-text="h"
+            ></span>
+          </template>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3">
+        <button
+          class="font-sans text-[14px] font-semibold cursor-pointer"
+          style="background-color: var(--color-chicago-20); color: #ffffff; border: none; border-radius: var(--radius-standard); padding: 10px 24px;"
+          @click="confirmMapping()"
+        >
+          Run validation
+        </button>
+        <button
+          class="font-sans text-[14px] cursor-pointer"
+          style="background: none; border: 1px solid var(--color-london-85); border-radius: var(--radius-standard); padding: 10px 24px; color: var(--color-london-20);"
+          @click="$store.app.setStep(2)"
+        >
+          Back
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- Step 4: Validating (spinner)                                 -->
+    <!-- ============================================================ -->
+    <section
+      x-show="$store.app.currentStep === 4"
+      x-cloak
+    >
+      <div
+        class="border-2 border-dashed flex flex-col items-center justify-center font-sans"
+        style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 48px 24px; min-height: 200px;"
+      >
+        <div class="h-4 w-4 rounded-full animate-pulse mb-4" style="background-color: var(--color-chicago-20);"></div>
+        <p class="text-[17px] font-semibold" style="color: var(--color-london-20);">
+          Running validation...
+        </p>
+        <p class="text-[14px] mt-2" style="color: var(--color-london-35);">
+          Checking every row against the partner schema. This may take a moment for large files.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================ -->
+    <!-- Step 5: Results                                              -->
+    <!-- ============================================================ -->
+    <section
+      x-show="$store.app.currentStep === 5"
+      x-data="resultsDisplay"
+      x-cloak
+    >
+      <!-- Summary banner -->
+      <div
+        class="border font-sans"
+        style="border-radius: var(--radius-standard); padding: 24px; margin-bottom: 24px;"
+        :style="{
+          'background-color': summaryVerdictStyle.bg,
+          'border-color': summaryVerdictStyle.text,
+        }"
+      >
+        <div class="flex items-baseline justify-between mb-3">
+          <h2 class="font-serif text-[22px] font-bold" :style="{ 'color': summaryVerdictStyle.text }">
+            <span x-text="partnerName"></span> readiness
+          </h2>
+          <span
+            class="font-sans text-[12px] font-semibold px-3 py-1"
+            :style="{
+              'background-color': summaryVerdictStyle.text,
+              'color': summaryVerdictStyle.bg,
+              'border-radius': 'var(--radius-standard)',
+            }"
+            x-text="summaryVerdict"
+          ></span>
+        </div>
+        <div class="flex gap-8 text-[14px]" :style="{ 'color': summaryVerdictStyle.text }">
+          <span><strong x-text="summary.passing"></strong> of <strong x-text="summary.totalRows"></strong> rows pass (<span x-text="passingPct"></span>%)</span>
+          <span x-show="summary.failing > 0"><strong x-text="summary.failing"></strong> rows have issues</span>
+        </div>
+      </div>
+
+      <!-- View toggle -->
+      <div class="flex gap-1 font-sans text-[13px] mb-6" style="border-bottom: 1px solid var(--color-london-85);">
+        <button
+          class="cursor-pointer"
+          style="background: none; border: none; padding: 8px 16px;"
+          :style="{
+            'font-weight': viewMode === 'sku' ? '600' : '400',
+            'color': viewMode === 'sku' ? 'var(--color-london-5)' : 'var(--color-london-35)',
+            'border-bottom': viewMode === 'sku' ? '2px solid var(--color-chicago-20)' : '2px solid transparent',
+          }"
+          @click="setView('sku')"
+        >
+          Per-SKU view
+        </button>
+        <button
+          class="cursor-pointer"
+          style="background: none; border: none; padding: 8px 16px;"
+          :style="{
+            'font-weight': viewMode === 'aggregate' ? '600' : '400',
+            'color': viewMode === 'aggregate' ? 'var(--color-london-5)' : 'var(--color-london-35)',
+            'border-bottom': viewMode === 'aggregate' ? '2px solid var(--color-chicago-20)' : '2px solid transparent',
+          }"
+          @click="setView('aggregate')"
+        >
+          Aggregate view
+        </button>
+      </div>
+
+
+      <!-- ── Per-SKU view ── -->
+      <div x-show="viewMode === 'sku'">
+        <template x-for="(row, rowIdx) in results" :key="row.rowIndex">
+          <div
+            class="border font-sans mb-3"
+            style="border-color: var(--color-london-85); border-radius: var(--radius-standard); overflow: hidden;"
+          >
+            <!-- Row header (clickable) -->
+            <div
+              class="flex items-center justify-between cursor-pointer"
+              style="padding: 12px 16px;"
+              :style="{
+                'background-color': row.verdict === 'PASS' ? 'var(--color-status-pass-bg)' : 'var(--color-status-fail-bg)',
+              }"
+              @click="toggleRow(rowIdx)"
+            >
+              <div class="flex items-center gap-3">
+                <span
+                  class="text-[11px] font-semibold px-2 py-0.5"
+                  :style="{
+                    'background-color': row.verdict === 'PASS' ? 'var(--color-status-pass-text)' : 'var(--color-status-fail-text)',
+                    'color': '#ffffff',
+                    'border-radius': 'var(--radius-standard)',
+                  }"
+                  x-text="row.verdict"
+                ></span>
+                <span class="text-[14px] font-semibold" style="color: var(--color-london-5);" x-text="row.skuLabel"></span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span
+                  class="text-[12px]"
+                  style="color: var(--color-london-35);"
+                  x-text="row.errors.length === 0 ? 'No issues' : row.errors.length + ' issue' + (row.errors.length === 1 ? '' : 's')"
+                ></span>
+                <span
+                  class="text-[14px] transition-transform"
+                  style="color: var(--color-london-35);"
+                  :style="{ 'transform': isExpanded(rowIdx) ? 'rotate(180deg)' : 'rotate(0deg)' }"
+                >&#9660;</span>
+              </div>
+            </div>
+
+            <!-- Expanded error list -->
+            <div
+              x-show="isExpanded(rowIdx)"
+              style="padding: 0 16px 16px;"
+            >
+              <!-- Group by severity -->
+              <template x-for="severity in ['CRITICAL', 'WARNING', 'INFO']" :key="severity">
+                <div x-show="groupedErrors(row)[severity].length > 0" class="mt-4">
+                  <p
+                    class="text-[12px] font-semibold mb-2 px-2 py-1 inline-block"
+                    :style="{
+                      'background-color': severityStyle(severity).bg,
+                      'color': severityStyle(severity).text,
+                      'border-radius': 'var(--radius-standard)',
+                    }"
+                    x-text="severity"
+                  ></p>
+                  <template x-for="err in groupedErrors(row)[severity]" :key="err.field + err.errorType">
+                    <div
+                      class="text-[13px] py-2"
+                      style="border-bottom: 1px solid var(--color-london-85);"
+                    >
+                      <div class="flex items-baseline gap-2">
+                        <span class="font-semibold" style="color: var(--color-london-5);" x-text="err.field"></span>
+                        <span class="text-[11px]" style="color: var(--color-london-35);" x-text="formatErrorType(err.errorType)"></span>
+                      </div>
+                      <p class="text-[13px] mt-1" style="color: var(--color-london-20);" x-text="err.message"></p>
+                      <p
+                        class="text-[11px] mt-1"
+                        style="color: var(--color-london-35);"
+                        x-show="err.trigger"
+                        x-text="'Trigger: ' + err.trigger"
+                      ></p>
+                    </div>
+                  </template>
+                </div>
+              </template>
+
+              <!-- Empty state -->
+              <p
+                class="text-[13px] mt-4"
+                style="color: var(--color-status-pass-text);"
+                x-show="row.errors.length === 0"
+              >
+                All fields pass for this row.
+              </p>
+            </div>
+          </div>
+        </template>
+      </div>
+
+
+      <!-- ── Aggregate view ── -->
+      <div x-show="viewMode === 'aggregate'">
+        <!-- Error type breakdown -->
+        <div
+          class="border font-sans"
+          style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px; margin-bottom: 24px;"
+          x-show="summary.errorTypeCounts && Object.keys(summary.errorTypeCounts).length > 0"
+        >
+          <h3 class="font-serif text-[16px] font-bold mb-4" style="color: var(--color-london-5);">
+            Issues by type
+          </h3>
+          <template x-for="(count, errorType) in (summary.errorTypeCounts || {})" :key="errorType">
+            <div class="flex items-center justify-between py-2" style="border-bottom: 1px solid var(--color-london-85);">
+              <span class="text-[13px]" style="color: var(--color-london-20);" x-text="formatErrorType(errorType)"></span>
+              <span class="text-[13px] font-semibold" style="color: var(--color-london-5);" x-text="count"></span>
+            </div>
+          </template>
+        </div>
+
+        <!-- Top failing fields -->
+        <div
+          class="border font-sans"
+          style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px; margin-bottom: 24px;"
+          x-show="summary.topFailingFields && summary.topFailingFields.length > 0"
+        >
+          <h3 class="font-serif text-[16px] font-bold mb-4" style="color: var(--color-london-5);">
+            Most common failing fields
+          </h3>
+          <template x-for="item in (summary.topFailingFields || [])" :key="item.field">
+            <div class="flex items-center justify-between py-2" style="border-bottom: 1px solid var(--color-london-85);">
+              <span class="text-[13px]" style="color: var(--color-london-20);" x-text="item.field"></span>
+              <div class="flex items-center gap-3">
+                <div style="width: 120px; height: 6px; background-color: var(--color-london-85); border-radius: 3px; overflow: hidden;">
+                  <div
+                    style="height: 100%; border-radius: 3px;"
+                    :style="{
+                      'width': Math.min(100, (item.count / summary.totalRows) * 100) + '%',
+                      'background-color': 'var(--color-status-fail-text)',
+                    }"
+                  ></div>
+                </div>
+                <span class="text-[12px] font-semibold" style="color: var(--color-london-5); min-width: 40px; text-align: right;" x-text="item.count + ' / ' + summary.totalRows"></span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- All-pass message -->
+        <div
+          class="border font-sans text-center"
+          style="border-color: var(--color-hk-85); background-color: var(--color-status-pass-bg); border-radius: var(--radius-standard); padding: 32px;"
+          x-show="summary.failing === 0"
+        >
+          <p class="text-[17px] font-semibold" style="color: var(--color-status-pass-text);">
+            All rows pass validation
+          </p>
+          <p class="text-[14px] mt-2" style="color: var(--color-status-pass-text);">
+            This file is ready for submission.
+          </p>
+        </div>
+      </div>
+
+
+      <!-- Actions -->
+      <div class="flex gap-3 mt-8" style="padding-top: 24px; border-top: 1px solid var(--color-london-85);">
+        <button
+          class="font-sans text-[14px] font-semibold cursor-pointer"
+          style="background-color: var(--color-chicago-20); color: #ffffff; border: none; border-radius: var(--radius-standard); padding: 10px 24px;"
+          @click="startOver()"
+        >
+          New check
+        </button>
+        <button
+          class="font-sans text-[14px] cursor-pointer"
+          style="background: none; border: 1px solid var(--color-london-85); border-radius: var(--radius-standard); padding: 10px 24px; color: var(--color-london-20);"
+          @click="$store.app.setStep(3)"
+        >
+          Back to mapping
+        </button>
       </div>
     </section>
 
