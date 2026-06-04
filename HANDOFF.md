@@ -24,3 +24,26 @@ SQLite/pytest/Ruff). Ready for /clarify to scope the build arc.
 **Next:** Run /clarify to scope the work, then /ce:brainstorm to spec.
 
 ---
+
+## 2026-06-04 20:15 — Planning complete, plan reviewed, ready for implementation
+
+**Started from:** Foundation in place, tech stack decided.
+
+**Did this session:**
+1. Ran /clarify — scoped the build arc, confirmed 6 deliverables ship together, readiness tool as centerpiece, UX bar ("assume the user is an idiot"), Excel/CSV input only, analytical integrity (honest data tells the story)
+2. Ran /ce:brainstorm — produced full requirements doc (23 requirements, 3 actors, 3 flows, 5 acceptance examples) at docs/brainstorms/2026-06-04-item-setup-preflight-requirements.md
+3. Ran /ce:plan — produced 8-unit implementation plan at docs/plans/2026-06-04-001-feat-item-setup-preflight-plan.md. Units: U1 (Vite+Tailwind+Alpine+Pyodide scaffold), U2 (validation engine + Walmart schema), U3 (file input + fuzzy column matching), U4 (readiness tool UI + Pyodide integration), U5 (remaining partner schemas), U6 (paired schema-diff view), U7 (audit CLI), U8 (case study + final polish)
+4. Ran headless doc review — applied 5 safe_auto fixes (file tree gaps, wrong GTIN path, wrong function name, SheetJS reference removal, column count fix). 14 actionable findings remain (mostly design-lens interaction state gaps — column mapper UX, error states, drill-down behavior, focus management)
+5. D&W Integrity finished building — verified all 5 field names match plan assumptions exactly. Dependency risk resolved.
+
+**Key findings from doc review (P0/P1, carry into implementation):**
+- P0: Vendored gtin_core.py imports pandas — must strip check_data_completeness() before vendoring into Pyodide
+- P0: Column mapping UI states underspecified (dropdown behavior, skip, zero-match, partner-change)
+- P0: Pyodide loading failure UI fallback path undefined
+- P1: gtin_core.py already has RETAILER_PROFILES and _FIELD_PATTERNS — check for duplication before building adapter and alias map from scratch
+- P1: openpyxl in Pyodide needs explicit verification in U1, not deferred to U3
+- P1: Several interaction states need decisions during implementation (results card expansion, aggregate drill-down, schema-diff callout content, keyboard nav)
+
+**State:** Plan written, reviewed, and ready. All safe_auto fixes applied. D&W dependency resolved. No code written yet.
+
+**Next:** Start /ce-work to implement U1 through U8 in order. Begin with U1 (project foundation — Vite + Tailwind v4 + Alpine.js + Pyodide Worker scaffold).

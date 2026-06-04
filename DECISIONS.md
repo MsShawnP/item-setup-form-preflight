@@ -43,7 +43,30 @@ Each entry:
 
 ## Data & Schema
 
-[Decisions about data sources, schemas, transformations]
+### 2026-06-04 — Pin Pyodide 0.29.4 + pydantic==2.10.5 for browser runtime
+- **Why:** Official Emscripten wheels exist for pydantic-core at this version. Letting micropip resolve to latest pydantic from PyPI causes version skew with the bundled pydantic-core (pyodide-recipes#162). Fallback if v2 proves problematic: attrs + cattrs (pure Python).
+- **Scope:** Browser runtime, Pyodide Web Worker.
+- **Do not:** Let micropip install the latest pydantic. Do not assume pydantic-core wheels exist for arbitrary versions.
+
+### 2026-06-04 — CDN loading for Pyodide, not self-hosted
+- **Why:** Pyodide payload is ~10MB WASM. CDN (cdn.jsdelivr.net/pyodide/v0.29.4/full/) leverages browser caching for repeat visitors and keeps the build artifact small. Preload links for cold-start optimization.
+- **Scope:** Browser runtime.
+- **Do not:** Self-host the Pyodide WASM payload.
+
+### 2026-06-04 — Tailwind CSS v4 with @theme directives for Lailara tokens
+- **Why:** v4 replaces tailwind.config.js with CSS @theme blocks. All Lailara hex values go in one @theme declaration — single source of truth for design tokens. Prevents token drift (institutional learning from sku-rationalization-framework).
+- **Scope:** All CSS.
+- **Do not:** Use tailwind.config.js. Do not scatter raw hex values outside @theme.
+
+### 2026-06-04 — Two-round-trip Worker flow for file validation
+- **Why:** (1) File + partner → worker returns proposed column mapping → UI confirms. (2) Confirmed mapping → worker validates → results returned. Keeps all logic in Python/Pyodide; UI only handles display and user confirmation.
+- **Scope:** Readiness tool browser flow.
+- **Do not:** Implement column matching or validation in JavaScript.
+
+### 2026-06-04 — D&W Integrity field names confirmed matching
+- **Why:** D&W Integrity project completed building on 2026-06-04. All five physical attribute fields match exactly: case_gross_weight_lb, case_length_in, case_width_in, case_height_in, case_pack_qty. Verified across data gen, dbt staging/marts, TypeScript types, and frontend export. Dependency risk resolved.
+- **Scope:** Partner schema library, validation engine (any field referencing physical attributes).
+- **Do not:** Invent alternate field names. Consume these exact names from D&W.
 
 ---
 
