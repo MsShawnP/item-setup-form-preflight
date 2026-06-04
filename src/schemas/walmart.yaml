@@ -1,0 +1,70 @@
+partner: walmart
+display_name: "Walmart"
+description: "Walmart Item 360 item setup requirements"
+
+required_fields:
+  - name: product_name
+    required: true
+  - name: brand
+    required: true
+  - name: upc
+    required: true
+    format_pattern: "^\\d{12}$"
+    format_description: "12-digit UPC-A"
+  - name: case_gross_weight_lb
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric weight in pounds"
+  - name: case_length_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric length in inches"
+  - name: case_width_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric width in inches"
+  - name: case_height_in
+    required: true
+    format_pattern: "^\\d+\\.?\\d*$"
+    format_description: "Numeric height in inches"
+  - name: case_pack_qty
+    required: true
+    format_pattern: "^\\d+$"
+    format_description: "Whole number"
+  - name: country_of_origin
+    required: true
+  - name: category
+    required: true
+  - name: product_description
+    required: true
+  - name: serving_size
+    required: true
+  - name: calories
+    required: true
+  - name: total_fat_g
+    required: true
+  - name: sodium_mg
+    required: true
+
+conditional_rules:
+  - trigger_field: storage_type
+    trigger_value: "Refrigerated"
+    required_fields:
+      - temp_min
+      - temp_max
+  - trigger_field: storage_type
+    trigger_value: "Frozen"
+    required_fields:
+      - temp_min
+      - temp_max
+  - trigger_field: is_hazmat
+    trigger_value: "true"
+    required_fields:
+      - hazmat_class
+      - un_number
+
+gtin_hierarchy:
+  expected_level: "consumer_unit"
+  expected_formats:
+    - "GTIN-12"
+    - "UPC-A"
