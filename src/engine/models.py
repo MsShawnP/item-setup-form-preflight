@@ -31,7 +31,6 @@ class ValidationError(BaseModel):
 class FieldSpec(BaseModel):
     name: str
     required: bool = True
-    category_condition: str | None = None
     format_pattern: str | None = None
     format_description: str | None = None
 
@@ -52,7 +51,6 @@ class SchemaConfig(BaseModel):
     display_name: str
     description: str
     required_fields: list[FieldSpec]
-    format_rules: dict[str, FieldSpec] = {}
     conditional_rules: list[ConditionalRule] = []
     gtin_hierarchy: GTINExpectation
 

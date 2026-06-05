@@ -103,7 +103,6 @@ class TestSchemaConfig:
                 expected_formats=["GTIN-12"],
             ),
         )
-        assert config.format_rules == {}
         assert config.conditional_rules == []
 
     def test_rejects_missing_required_fields(self):

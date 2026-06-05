@@ -153,16 +153,21 @@ def parse_excel(file_bytes: bytes) -> ParseResult:
         wb.close()
         raise ParseError("Excel file contains no headers in the first row.")
 
-    # Remaining rows = data
+    # Remaining rows = data (skip trailing blank rows)
     rows: list[dict[str, str | None]] = []
     for row in row_iter:
         record: dict[str, str | None] = {}
+        has_data = False
         for idx, header in enumerate(headers):
             if idx < len(row):
-                record[header] = _cell_to_string(row[idx].value)
+                val = _cell_to_string(row[idx].value)
+                record[header] = val
+                if val is not None:
+                    has_data = True
             else:
                 record[header] = None
-        rows.append(record)
+        if has_data:
+            rows.append(record)
 
     wb.close()
 

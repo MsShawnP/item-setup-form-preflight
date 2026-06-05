@@ -93,19 +93,21 @@ async function handleMessage(event) {
     return
   }
 
+  const VALID_PARTNERS = new Set(['walmart', 'costco', 'unfi', 'kehe'])
+
   try {
     switch (action) {
-      case 'echo': {
-        const result = pyodide.runPython(`${data.value} + ${data.value}`)
-        self.postMessage({ id, result })
-        break
-      }
-
       case 'match': {
         // data.file is an ArrayBuffer, data.filename is a string,
         // data.partner is a string (walmart|costco|unfi|kehe)
+        if (!VALID_PARTNERS.has(data.partner)) {
+          self.postMessage({ id, error: `Invalid partner: ${data.partner}` })
+          break
+        }
+
         const fileBytes = new Uint8Array(data.file)
-        const tempPath = `/home/pyodide/upload/${data.filename}`
+        const safeName = data.filename.replace(/[/\\]/g, '_')
+        const tempPath = `/home/pyodide/upload/${safeName}`
 
         // Write the uploaded file to Pyodide FS
         pyodide.FS.mkdirTree('/home/pyodide/upload')
@@ -132,6 +134,11 @@ do_match(${JSON.stringify(tempPath)}, ${JSON.stringify(data.filename)}, ${JSON.s
       case 'validate': {
         // data.confirmedMapping is an object: { schemaField: uploadedHeader, ... }
         // data.partner is a string
+        if (!VALID_PARTNERS.has(data.partner)) {
+          self.postMessage({ id, error: `Invalid partner: ${data.partner}` })
+          break
+        }
+
         const mappingJson = JSON.stringify(data.confirmedMapping)
 
         const resultJson = pyodide.runPython(`

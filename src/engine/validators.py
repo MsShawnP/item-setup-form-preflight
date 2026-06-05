@@ -55,13 +55,6 @@ def _tier1_presence(
         if not field_spec.required:
             continue
 
-        # Category-conditional: only required when category matches
-        if field_spec.category_condition is not None:
-            product_category = product.get("category", "")
-            cat_lower = field_spec.category_condition.lower()
-            if str(product_category).strip().lower() != cat_lower:
-                continue
-
         value = product.get(field_spec.name)
         if _is_blank(value):
             failed_fields.add(field_spec.name)
@@ -108,31 +101,6 @@ def _tier2_format(
                 ),
             ))
 
-    # Also check format_rules dict (for fields not in required_fields)
-    for field_name, rule in schema.format_rules.items():
-        if field_name in skip_fields:
-            continue
-        if rule.format_pattern is None:
-            continue
-
-        value = product.get(field_name)
-        if _is_blank(value):
-            continue
-
-        value_str = str(value).strip()
-        if not re.match(rule.format_pattern, value_str):
-            failed_fields.add(field_name)
-            description = rule.format_description or rule.format_pattern
-            errors.append(ValidationError(
-                field=field_name,
-                error_type=ErrorType.FORMAT_INVALID,
-                severity=Severity.WARNING,
-                message=(
-                    f"'{field_name}' value '{value_str}' does not match "
-                    f"expected format: {description}."
-                ),
-            ))
-
     return errors, failed_fields
 
 
@@ -150,7 +118,7 @@ def _tier3_conditional(
         if _is_blank(trigger_value):
             continue
 
-        if str(trigger_value).strip() != rule.trigger_value:
+        if str(trigger_value).strip().lower() != rule.trigger_value.lower():
             continue
 
         # Trigger matches — check that all required_fields are present
@@ -188,7 +156,7 @@ def _tier4_gtin(
     gtin_value = None
     for candidate in ("upc", "gtin", "gtin_12", "gtin_14", "ean"):
         if candidate in skip_fields:
-            return errors
+            continue
         val = product.get(candidate)
         if not _is_blank(val):
             gtin_field = candidate
