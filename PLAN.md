@@ -50,14 +50,14 @@ to the next.
 - [x] Implementation plan written (docs/plans/2026-06-04-001-feat-item-setup-preflight-plan.md)
 - [x] Headless doc review — 5 safe_auto fixes applied, 14 actionable findings noted for implementation
 - [x] D&W Integrity dependency verified — field names match exactly
-- [ ] U1: Project foundation — Vite + Tailwind v4 + Alpine.js + Pyodide Worker scaffold
-- [ ] U2: Validation engine core + Walmart schema
-- [ ] U3: File input + fuzzy column matching
-- [ ] U4: Readiness tool UI + Pyodide integration
-- [ ] U5: Remaining partner schemas — Costco, UNFI, KeHE
-- [ ] U6: Paired schema-diff view
-- [ ] U7: Audit CLI
-- [ ] U8: Case study page + Cinderhaven data + final polish
+- [x] U1: Project foundation — Vite + Tailwind v4 + Alpine.js + Pyodide Worker scaffold
+- [x] U2: Validation engine core + Walmart schema
+- [x] U3: File input + fuzzy column matching
+- [x] U4: Readiness tool UI + Pyodide integration
+- [x] U5: Remaining partner schemas — Costco, UNFI, KeHE
+- [x] U6: Paired schema-diff view
+- [x] U7: Audit CLI
+- [x] U8: Case study page + Cinderhaven data + final polish
 
 ## Out of scope for this arc
 
@@ -70,14 +70,14 @@ to the next.
 
 ## Definition of done for this arc
 
-- [ ] Partner schema library codified in YAML for all four (Walmart, Costco, UNFI, KeHE)
-- [ ] Four-tier validation engine (presence -> format -> conditional -> GTIN hierarchy) with typed error contract
-- [ ] Readiness tool runs in-browser via Pyodide — drop Excel/CSV, pick partner, get plain-English verdict
-- [ ] Fuzzy column matching handles common field name variants
-- [ ] Paired schema-diff view (retailer vs retailer, distributor vs distributor) with whatever pattern honestly emerges
-- [ ] Audit CLI parses standardized master export for local pre-flighting
-- [ ] Case study write-up with Cinderhaven launch scenario
-- [ ] All visual output follows Lailara design system
+- [x] Partner schema library codified in YAML for all four (Walmart, Costco, UNFI, KeHE)
+- [x] Four-tier validation engine (presence -> format -> conditional -> GTIN hierarchy) with typed error contract
+- [x] Readiness tool runs in-browser via Pyodide — drop Excel/CSV, pick partner, get plain-English verdict
+- [x] Fuzzy column matching handles common field name variants
+- [x] Paired schema-diff view (retailer vs retailer, distributor vs distributor) with whatever pattern honestly emerges
+- [x] Audit CLI parses standardized master export for local pre-flighting
+- [x] Case study write-up with Cinderhaven launch scenario
+- [x] All visual output follows Lailara design system
 - [ ] Portfolio-ready — linkable from site, shareable on LinkedIn
 
 ---
