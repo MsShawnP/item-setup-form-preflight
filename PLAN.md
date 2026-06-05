@@ -78,7 +78,7 @@ to the next.
 - [x] Audit CLI parses standardized master export for local pre-flighting
 - [x] Case study write-up with Cinderhaven launch scenario
 - [x] All visual output follows Lailara design system
-- [ ] Portfolio-ready — linkable from site, shareable on LinkedIn
+- [x] Portfolio-ready — linkable from site, shareable on LinkedIn
 
 ---
 
