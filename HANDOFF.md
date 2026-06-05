@@ -59,3 +59,15 @@ SQLite/pytest/Ruff). Ready for /clarify to scope the build arc.
 **State:** All 8 units shipped. 102 tests passing, build clean, pushed to origin. One PLAN.md item remains: "Portfolio-ready — linkable from site, shareable on LinkedIn" (deploy + DNS).
 
 **Next:** Deploy to production (Cloudflare Pages or similar static host), configure DNS subdomain on lailarallc.com, check the last PLAN.md box, close the arc.
+
+---
+
+## 2026-06-05 14:50 — Deployed to production, arc complete
+
+**Started from:** All 8 units complete, reviewed, QA'd. One PLAN.md checkbox remaining: deploy + DNS.
+
+**Did:** Created multi-stage Dockerfile (node build → nginx serve), fly.toml, nginx.conf. Deployed to Fly.io (`item-setup-preflight`). GitHub Actions CI/CD auto-generated. Added A, AAAA, and ACME challenge CNAME records to Cloudflare via API. TLS cert issued. Custom domain live.
+
+**State:** Arc complete. All PLAN.md boxes checked. Live at https://preflight.lailarallc.com. CI/CD deploys on push to main. 102 tests passing.
+
+**Next:** Arc closed. No pending work. Next actions: link from portfolio site, share on LinkedIn, or start a new project.

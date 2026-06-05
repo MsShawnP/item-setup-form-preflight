@@ -118,6 +118,13 @@ Each entry:
 
 ---
 
+### 2026-06-05 — Static portfolio projects deploy to Fly.io with nginx
+- **Why:** Matches existing portfolio pattern (10+ projects on Fly.io). Multi-stage Dockerfile keeps dist/ out of repo while CI builds from source. Fly.io auto-stop machines keep cost near-zero for portfolio pieces.
+- **Scope:** All static Vite/HTML portfolio projects under lailarallc.com
+- **Do not:** Use Cloudflare Pages, Netlify, or Vercel — consolidate on one platform for DNS and deployment simplicity.
+
+---
+
 ## Reversed / Superseded
 
 When a decision is overturned:

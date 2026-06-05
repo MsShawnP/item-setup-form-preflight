@@ -92,6 +92,10 @@ to the next.
 - Outcome: Full requirements doc (23 reqs), 8-unit implementation plan, headless doc review with 5 fixes applied, D&W dependency verified
 - Tag: v0.2-planning
 
+### 2026-06-05 — Arc complete
+- Outcome: All 8 units built, reviewed, QA'd, deployed. Live at preflight.lailarallc.com. CI/CD on push to main. Every definition-of-done item checked.
+- Tag: (pending user confirmation)
+
 ---
 
 ## Improvement history
