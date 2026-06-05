@@ -68,6 +68,36 @@ Each entry:
 - **Scope:** Partner schema library, validation engine (any field referencing physical attributes).
 - **Do not:** Invent alternate field names. Consume these exact names from D&W.
 
+### 2026-06-05 — Remove echo debug action from Pyodide Worker
+- **Why:** Security P0 from code review. The echo action injected `data.value` directly into `pyodide.runPython()` with no sanitization — arbitrary Python execution via Worker postMessage. Removed entirely rather than gated behind a build flag.
+- **Scope:** `src/workers/pyodide-worker.mjs`
+- **Do not:** Add debug actions that pass user-controlled strings to `runPython()` without sanitization.
+
+### 2026-06-05 — Add partner allowlist + filename sanitization in Worker
+- **Why:** Worker is the trust boundary between user input and Python execution. Partner validated against `Set(['walmart', 'costco', 'unfi', 'kehe'])` — prevents crafted partner strings from loading arbitrary YAML as schema. Filename path separators stripped to prevent traversal on Pyodide virtual FS.
+- **Scope:** `src/workers/pyodide-worker.mjs` match and validate actions.
+- **Do not:** Pass unvalidated user strings into Pyodide FS paths or `runPython()` templates.
+
+### 2026-06-05 — Make conditional trigger matching case-insensitive
+- **Why:** Correctness fix from code review. YAML schemas define triggers as `Refrigerated`, `Frozen`, `true`. CSV exports from distributor systems commonly use `refrigerated`, `TRUE`. Case-sensitive matching silently skipped conditional rules, causing false passes.
+- **Scope:** `src/engine/validators.py` `_tier3_conditional`.
+- **Do not:** Assume trigger values from spreadsheets match YAML casing.
+
+### 2026-06-05 — Remove dead code: format_rules, category_condition, analyze_hierarchy export
+- **Why:** All three implemented speculatively with zero consumers. `format_rules` never populated by any YAML schema. `category_condition` never used by any FieldSpec. `analyze_hierarchy` never called outside the vendored module. Dead code with no tests is a liability — removed rather than left to rot.
+- **Scope:** `models.py`, `validators.py`, `gtin/__init__.py`.
+- **Do not:** Re-add speculative features without a consumer and corresponding test.
+
+### 2026-06-05 — Case study hook SKU: CHP-0057 (Harissa Paste)
+- **Why:** Has valid GTIN-14 but all-zeros UPC, creating the critical schema divergence: passes Costco case-level validation, fails Walmart/UNFI/KeHE consumer-unit UPC-12 check. One product, four different verdicts — the most compact demonstration of why per-partner validation matters.
+- **Scope:** Case study page narrative.
+- **Do not:** Change the hook SKU without re-verifying the divergence story.
+
+### 2026-06-05 — Case study numbers verified against CSV
+- **Why:** Bounce counts (Walmart 46, Costco 43, UNFI 46, KeHE 46) and gap counts (29 dims, 29 weight, 17 brand, 6 country, 6 UPC) all verified programmatically against `data/cinderhaven/product_master.csv`. Numbers in the narrative page match the actual data.
+- **Scope:** Case study page, `data/cinderhaven/product_master.csv`.
+- **Do not:** Assert case study numbers from memory — re-verify against the CSV if any data changes.
+
 ---
 
 ## Visualization
