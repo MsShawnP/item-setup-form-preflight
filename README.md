@@ -2,6 +2,8 @@
 
 Codified retailer and distributor item-setup schemas plus a typed validation engine that flags new-item form rejection risks before submission. Runs client-side in the browser via Pyodide — the product master never leaves browser memory.
 
+**Live:** https://preflight.lailarallc.com
+
 ## Status
 
 Under development.
