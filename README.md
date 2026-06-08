@@ -4,10 +4,6 @@ Codified retailer and distributor item-setup schemas plus a typed validation eng
 
 **Live:** https://preflight.lailarallc.com
 
-## Status
-
-Under development.
-
 ## Stack
 
 - Python 3.12+ / Pydantic v2 (validation engine)
@@ -17,6 +13,20 @@ Under development.
 - click / openpyxl (audit CLI)
 - SQLite (case-study data)
 - pytest / Ruff (testing / linting)
+
+## Local setup
+
+```bash
+npm install          # frontend deps
+pip install -e ".[dev,cli]"   # validation engine + CLI + dev tools
+npm run dev          # Vite dev server
+```
+
+Run tests:
+
+```bash
+pytest
+```
 
 ---
 

@@ -47,6 +47,7 @@ dist/
 
 # Claude
 .claude-project-url
+.claude/
 
 # Ruff
 .ruff_cache/
