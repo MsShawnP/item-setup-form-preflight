@@ -1,0 +1,1015 @@
+[
+  {
+    "row": 2,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 3,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 4,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 5,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 16,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 2,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_gross_weight_lb",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_gross_weight_lb' is required but missing or empty."
+      },
+      {
+        "field": "pallet_weight_lb",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'pallet_weight_lb' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 6,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 7,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 8,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_length_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_length_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 9,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 10,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 11,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 3,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 1, but should be 9. Corrected GTIN would be 00614140000099."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 12,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 13,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 14,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 15,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 0, but should be 6. Corrected GTIN would be 00614140000136."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 16,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 16,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 2,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_gross_weight_lb",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_gross_weight_lb' is required but missing or empty."
+      },
+      {
+        "field": "pallet_weight_lb",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'pallet_weight_lb' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 17,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 4, but should be 0. Corrected GTIN would be 00614140000150."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 18,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 3,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "case_length_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_length_in' is required but missing or empty."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 4, but should be 7. Corrected GTIN would be 00614140000167."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 19,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 20,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_length_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_length_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 21,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 22,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 3,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 5, but should be 4. Corrected GTIN would be 00614140000204."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 23,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_length_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_length_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 24,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 25,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 26,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 27,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 28,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 29,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "country_of_origin",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'country_of_origin' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 30,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 9, but should be 0. Corrected GTIN would be 00614140000280."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 31,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 32,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 3,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "country_of_origin",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'country_of_origin' is required but missing or empty."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 7, but should be 3. Corrected GTIN would be 00614140000303."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 33,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 2
+    },
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: Check digit is 7, but should be 0. Corrected GTIN would be 00614140000310."
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+      }
+    ]
+  },
+  {
+    "row": 34,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 16,
+    "fail_count": 2,
+    "tier_summary": {
+      "presence": 2,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_length_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_length_in' is required but missing or empty."
+      },
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 35,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 36,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 37,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 38,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 39,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 40,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 41,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 42,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 43,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_width_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_width_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 44,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 45,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 46,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 47,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 48,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 49,
+    "verdict": "FAIL",
+    "fields_checked": 18,
+    "pass_count": 17,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 1,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": [
+      {
+        "field": "case_height_in",
+        "error_type": "PRESENCE_MISSING",
+        "trigger": null,
+        "severity": "CRITICAL",
+        "message": "'case_height_in' is required but missing or empty."
+      }
+    ]
+  },
+  {
+    "row": 50,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  },
+  {
+    "row": 51,
+    "verdict": "PASS",
+    "fields_checked": 18,
+    "pass_count": 18,
+    "fail_count": 0,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 0
+    },
+    "errors": []
+  }
+]

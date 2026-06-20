@@ -35,13 +35,13 @@
         Case Study
       </p>
       <h1 class="font-serif text-[22px] font-bold" style="color: var(--color-london-5); margin-bottom: 12px;">
-        Cinderhaven Provisions: 90 SKUs, Four Partners, One Product Master
+        Cinderhaven Provisions: 50 SKUs, Four Partners, One Product Master
       </h1>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6;">
         A specialty food brand preparing to launch across Walmart, Costco, UNFI,
-        and KeHE discovers that the same product master produces four different
-        outcomes. The pre-flight engine quantifies the gap before a single form
-        goes out the door.
+        and KeHE discovers that the same product master produces different outcomes
+        for each partner. The pre-flight engine quantifies the gap before a single
+        form goes out the door.
       </p>
     </header>
 
@@ -55,10 +55,10 @@
         One product, four verdicts
       </h2>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 24px;">
-        Cinderhaven's Harissa Paste (CHP-0057) is listed with UNFI, Whole Foods,
-        and Walmart. Its product master record has case dimensions, case weight,
-        brand owner, and country of origin. On paper, it looks complete. The
-        pre-flight engine tells a different story.
+        Cinderhaven's Stone Ground Mustard (CHP-PS-001) is a Pantry Staples item
+        listed with UNFI, KeHE, Walmart, and DTC. Its product master record has
+        case dimensions, case weight, brand owner, and country of origin. On paper,
+        it looks complete. The pre-flight engine tells a different story.
       </p>
 
       <!-- SKU detail card -->
@@ -68,40 +68,40 @@
       >
         <div style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.12);">
           <p class="text-[12px] font-semibold" style="color: var(--color-card-muted); text-transform: uppercase; letter-spacing: 0.04em;">
-            CHP-0057
+            CHP-PS-001
           </p>
           <p class="font-serif text-[22px] font-bold" style="color: var(--color-card-text);">
-            Harissa Paste
+            Stone Ground Mustard
           </p>
           <p class="text-[14px]" style="color: var(--color-card-subtitle);">
-            Specialty Condiments &middot; 12-pack &middot; $11.99 MSRP
+            Pantry Staples &middot; 12-pack &middot; $5.99 MSRP
           </p>
         </div>
         <div style="padding: 16px 24px;">
           <div class="grid gap-x-6 gap-y-3" style="grid-template-columns: 1fr 1fr;">
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">GTIN-14</p>
-              <p class="text-[14px]" style="color: var(--color-card-item);">00850074000576</p>
+              <p class="text-[14px]" style="color: var(--color-card-item);">00614140000105</p>
             </div>
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">UPC-12</p>
-              <p class="text-[14px]" style="color: var(--color-status-fail-text);">000000000000 (invalid)</p>
+              <p class="text-[14px]" style="color: var(--color-status-fail-text);">614140000103 (invalid check digit)</p>
             </div>
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">Case Dimensions</p>
-              <p class="text-[14px]" style="color: var(--color-card-item);">13.65 &times; 13.88 &times; 13.58 in</p>
+              <p class="text-[14px]" style="color: var(--color-card-item);">10.37 &times; 9.37 &times; 7.74 in</p>
             </div>
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">Case Weight</p>
-              <p class="text-[14px]" style="color: var(--color-card-item);">9.98 lb</p>
+              <p class="text-[14px]" style="color: var(--color-card-item);">19.24 lb</p>
             </div>
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">Brand Owner</p>
-              <p class="text-[14px]" style="color: var(--color-card-item);">Cinderhaven Provisions LLC</p>
+              <p class="text-[14px]" style="color: var(--color-card-item);">Cinderhaven Provisions</p>
             </div>
             <div>
               <p class="text-[11px] font-semibold" style="color: var(--color-card-muted);">Country of Origin</p>
-              <p class="text-[14px]" style="color: var(--color-card-item);">US</p>
+              <p class="text-[14px]" style="color: var(--color-card-item);">USA</p>
             </div>
           </div>
         </div>
@@ -128,7 +128,8 @@
             Requires consumer-unit UPC-12 for Item 360
           </p>
           <p class="text-[13px]" style="color: var(--color-london-35);">
-            CHP-0057 has an all-zeros UPC (000000000000).
+            CHP-PS-001's UPC (614140000103) has an invalid check
+            digit&thinsp;&mdash;&thinsp;the last digit is 3, but should be 5.
             Walmart's Item 360 system will reject this on ingestion.
             The valid GTIN-14 is irrelevant&thinsp;&mdash;&thinsp;Walmart indexes on consumer-unit barcode.
           </p>
@@ -150,7 +151,7 @@
             Requires case-level GTIN-14 for warehouse receiving
           </p>
           <p class="text-[13px]" style="color: var(--color-london-35);">
-            CHP-0057 has a valid GTIN-14 (00850074000576), complete case
+            CHP-PS-001 has a valid GTIN-14 (00614140000105), complete case
             dimensions, case weight, brand owner, and country of origin.
             All required fields are present and correctly formatted.
           </p>
@@ -165,43 +166,45 @@
         <!-- UNFI -->
         <div
           class="border font-sans"
-          style="border-color: var(--color-red-42); background-color: var(--color-status-fail-bg); border-radius: var(--radius-standard); padding: 20px;"
+          style="border-color: var(--color-hk-85); background-color: var(--color-status-pass-bg); border-radius: var(--radius-standard); padding: 20px;"
         >
           <div class="flex items-center justify-between" style="margin-bottom: 12px;">
             <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">UNFI</p>
             <span
               class="text-[12px] font-semibold px-2 py-0.5"
-              style="background-color: var(--color-status-fail-text); color: #ffffff; border-radius: var(--radius-standard);"
-            >NOT READY</span>
+              style="background-color: var(--color-status-pass-text); color: #ffffff; border-radius: var(--radius-standard);"
+            >READY</span>
           </div>
-          <p class="text-[13px]" style="color: var(--color-status-fail-text); margin-bottom: 8px;">
-            Requires valid UPC-12 for new item setup
+          <p class="text-[13px]" style="color: var(--color-status-pass-text); margin-bottom: 8px;">
+            Requires case-level GTIN-14 for new item setup
           </p>
           <p class="text-[13px]" style="color: var(--color-london-35);">
-            Same failure as Walmart. UNFI's new item form indexes on consumer-unit
-            UPC. An all-zeros barcode will not pass intake validation.
+            Valid GTIN-14, complete case dimensions, all required logistics
+            and compliance fields present. UNFI reads the GTIN-14
+            column&thinsp;&mdash;&thinsp;the invalid consumer-unit barcode
+            does not affect this submission.
           </p>
         </div>
 
         <!-- KeHE -->
         <div
           class="border font-sans"
-          style="border-color: var(--color-red-42); background-color: var(--color-status-fail-bg); border-radius: var(--radius-standard); padding: 20px;"
+          style="border-color: var(--color-hk-85); background-color: var(--color-status-pass-bg); border-radius: var(--radius-standard); padding: 20px;"
         >
           <div class="flex items-center justify-between" style="margin-bottom: 12px;">
             <p class="text-[14px] font-semibold" style="color: var(--color-london-5);">KeHE</p>
             <span
               class="text-[12px] font-semibold px-2 py-0.5"
-              style="background-color: var(--color-status-fail-text); color: #ffffff; border-radius: var(--radius-standard);"
-            >NOT READY</span>
+              style="background-color: var(--color-status-pass-text); color: #ffffff; border-radius: var(--radius-standard);"
+            >READY</span>
           </div>
-          <p class="text-[13px]" style="color: var(--color-status-fail-text); margin-bottom: 8px;">
-            Requires valid UPC-12 for new item setup
+          <p class="text-[13px]" style="color: var(--color-status-pass-text); margin-bottom: 8px;">
+            Requires case-level GTIN-14 for new item setup
           </p>
           <p class="text-[13px]" style="color: var(--color-london-35);">
-            Same pattern as UNFI. Both distributors share the consumer-unit
-            barcode requirement. The shared-gap pattern between UNFI and KeHE
-            means fixing one fixes both.
+            Same pattern as UNFI. Both distributors share the case-level
+            barcode requirement. A product that clears UNFI will clear KeHE
+            on the barcode gate.
           </p>
         </div>
       </div>
@@ -211,38 +214,40 @@
         class="border-l-[4px] font-sans text-[15px]"
         style="border-color: var(--color-chicago-20); background-color: #ffffff; padding: 12px 16px; color: var(--color-london-20); line-height: 1.6; max-width: var(--width-body);"
       >
-        The same product, the same master record, produces one pass and three
-        failures. The divergence is not a data-quality problem in the traditional
-        sense&thinsp;&mdash;&thinsp;it is a schema-alignment problem. Costco
-        indexes on case-level GTIN-14; the other three index on consumer-unit UPC-12.
-        Without a pre-flight check, Cinderhaven would discover this at submission
-        time, after the forms are filled out, after the broker has been briefed.
+        The same product, the same master record, produces one failure and three
+        passes. The divergence is structural: Walmart indexes on consumer-unit
+        UPC-12; Costco, UNFI, and KeHE index on case-level GTIN-14. CHP-PS-004
+        (Extra Virgin Olive Oil) inverts the pattern&thinsp;&mdash;&thinsp;valid
+        UPC-12, corrupt GTIN-14&thinsp;&mdash;&thinsp;passing Walmart and failing
+        the other three. Without a pre-flight check, Cinderhaven would discover
+        this at submission time, after the forms are filled out, after the broker
+        has been briefed.
       </div>
     </section>
 
 
     <!-- ================================================================ -->
     <!-- ACT 2 — THE PROOF                                                -->
-    <!-- Full 90-SKU launch scenario                                      -->
+    <!-- Full 50-SKU launch scenario                                      -->
     <!-- ================================================================ -->
     <section style="margin-bottom: var(--spacing-section);">
       <h2 class="font-serif text-[22px] font-bold" style="color: var(--color-london-5); margin-bottom: 8px;">
-        The full picture: 90 SKUs across four partners
+        The full picture: 50 SKUs across four partners
       </h2>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 32px;">
-        Cinderhaven's product master contains 90 SKUs across three product
-        lines: Artisan Sauces (30), Specialty Condiments (30), and Pantry
-        Staples (30). The pre-flight engine validates every SKU against every
-        partner's schema. The results are sobering.
+        Cinderhaven's product master contains 50 SKUs across five product
+        lines: Artisan Sauces (10), Pantry Staples (10), Specialty Condiments (10),
+        Dried Goods (10), and Snack Bites (10). The pre-flight engine validates
+        every SKU against every partner's schema.
       </p>
 
       <!-- ── Headline numbers ── -->
-      <div class="grid gap-4" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 32px;">
+      <div class="grid gap-4" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 16px;">
         <div
           class="border font-sans text-center"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px 12px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">46</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">29</p>
           <p class="text-[12px] font-semibold" style="color: var(--color-london-35);">would bounce</p>
           <p class="text-[13px] font-semibold" style="color: var(--color-london-5);">Walmart</p>
         </div>
@@ -250,7 +255,7 @@
           class="border font-sans text-center"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px 12px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">43</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">26</p>
           <p class="text-[12px] font-semibold" style="color: var(--color-london-35);">would bounce</p>
           <p class="text-[13px] font-semibold" style="color: var(--color-london-5);">Costco</p>
         </div>
@@ -258,7 +263,7 @@
           class="border font-sans text-center"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px 12px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">46</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">26</p>
           <p class="text-[12px] font-semibold" style="color: var(--color-london-35);">would bounce</p>
           <p class="text-[13px] font-semibold" style="color: var(--color-london-5);">UNFI</p>
         </div>
@@ -266,11 +271,20 @@
           class="border font-sans text-center"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px 12px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">46</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-status-fail-text);">26</p>
           <p class="text-[12px] font-semibold" style="color: var(--color-london-35);">would bounce</p>
           <p class="text-[13px] font-semibold" style="color: var(--color-london-5);">KeHE</p>
         </div>
       </div>
+
+      <!-- ── Channel scoping ── -->
+      <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 15px; line-height: 1.6; margin-bottom: 32px;">
+        Cinderhaven ships through 10 channels. This analysis covers
+        four&thinsp;&mdash;&thinsp;the two largest retailers (Walmart and Costco)
+        and the two largest natural-channel distributors (UNFI and KeHE). These
+        four represent the critical path to national shelf presence. The remaining
+        channels use overlapping but distinct schemas not yet modeled in the engine.
+      </p>
 
       <!-- ── Gap breakdown ── -->
       <h3 class="font-serif text-[18px] font-bold" style="color: var(--color-london-5); margin-bottom: 16px;">
@@ -297,8 +311,38 @@
           style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
         >
           <span style="color: var(--color-london-20);">Case dimensions (L &times; W &times; H)</span>
-          <span style="color: var(--color-status-fail-text); font-weight: 600;">29 of 90</span>
-          <span style="color: var(--color-status-fail-text); font-weight: 600;">32%</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">18 of 50</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">36%</span>
+        </div>
+
+        <!-- Club pack dimensions (Costco) -->
+        <div
+          class="grid text-[13px]"
+          style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
+        >
+          <span style="color: var(--color-london-20);">Club pack dimensions (Costco)</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">18 of 50</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">36%</span>
+        </div>
+
+        <!-- UPC-12 -->
+        <div
+          class="grid text-[13px]"
+          style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
+        >
+          <span style="color: var(--color-london-20);">UPC-12 invalid check digit (Walmart)</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">10 of 50</span>
+          <span style="color: var(--color-status-fail-text); font-weight: 600;">20%</span>
+        </div>
+
+        <!-- GTIN-14 -->
+        <div
+          class="grid text-[13px]"
+          style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
+        >
+          <span style="color: var(--color-london-20);">GTIN-14 invalid check digit (Costco, UNFI, KeHE)</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">8 of 50</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">16%</span>
         </div>
 
         <!-- Case weight -->
@@ -307,18 +351,8 @@
           style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
         >
           <span style="color: var(--color-london-20);">Case gross weight</span>
-          <span style="color: var(--color-status-fail-text); font-weight: 600;">29 of 90</span>
-          <span style="color: var(--color-status-fail-text); font-weight: 600;">32%</span>
-        </div>
-
-        <!-- Brand owner -->
-        <div
-          class="grid text-[13px]"
-          style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
-        >
-          <span style="color: var(--color-london-20);">Brand owner</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">17 of 90</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">19%</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">2 of 50</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">4%</span>
         </div>
 
         <!-- Country of origin -->
@@ -327,36 +361,27 @@
           style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
         >
           <span style="color: var(--color-london-20);">Country of origin</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">6 of 90</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">7%</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">2 of 50</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">4%</span>
         </div>
 
-        <!-- UPC -->
-        <div
-          class="grid text-[13px]"
-          style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--color-london-85);"
-        >
-          <span style="color: var(--color-london-20);">UPC-12 (missing or invalid)</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">6 of 90</span>
-          <span style="color: var(--color-status-warn-text); font-weight: 600;">7%</span>
-        </div>
-
-        <!-- GTIN-14 -->
+        <!-- Pallet weight -->
         <div
           class="grid text-[13px]"
           style="grid-template-columns: 2fr 1fr 1fr; padding: 10px 16px;"
         >
-          <span style="color: var(--color-london-20);">GTIN-14</span>
-          <span style="color: var(--color-status-pass-text); font-weight: 600;">0 of 90</span>
-          <span style="color: var(--color-status-pass-text); font-weight: 600;">0%</span>
+          <span style="color: var(--color-london-20);">Pallet weight (UNFI, KeHE)</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">2 of 50</span>
+          <span style="color: var(--color-status-warn-text); font-weight: 600;">4%</span>
         </div>
       </div>
 
       <p class="font-sans text-[11px]" style="color: var(--color-london-35); font-style: italic; margin-bottom: 32px;">
-        Note: Case dimensions and case weight gaps are perfectly correlated&thinsp;&mdash;&thinsp;the
-        same 29 SKUs are missing all four logistics fields. These are products that
-        have never been weighed or measured at the case level.
-        UPC-12 count includes 3 empty and 3 all-zeros (000000000000) barcodes.
+        Club pack dimension gaps map exactly to case dimension gaps&thinsp;&mdash;&thinsp;the
+        same 18 SKUs appear in both rows. Club pack measurements are derived from case
+        dimensions; any gap in the source propagates to the derived fields.
+        UPC-12 and GTIN-14 check-digit failures are independent&thinsp;&mdash;&thinsp;different
+        SKUs fail each barcode standard.
       </p>
 
 
@@ -365,37 +390,39 @@
         The GTIN hierarchy mismatch
       </h3>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 16px;">
-        Every Cinderhaven SKU has a valid GTIN-14. Zero have missing GTIN-14s.
-        But 6 SKUs are missing a valid UPC-12&thinsp;&mdash;&thinsp;3 are empty,
-        3 contain an all-zeros placeholder that no scanner will recognize.
+        The product master stores two barcode columns: a 14-digit GTIN-14 for
+        case-level identification and a 12-digit UPC-A for consumer-unit scanning.
+        Both columns are fully populated&thinsp;&mdash;&thinsp;no blanks. But 10
+        UPC-12 values and 8 GTIN-14 values have invalid check digits, the kind of
+        corruption that passes a column-count check but fails barcode validation.
       </p>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 24px;">
-        This creates an asymmetry. Costco requires case-level GTIN-14 for
-        warehouse receiving; all 90 SKUs pass. Walmart, UNFI, and KeHE require
-        consumer-unit UPC-12; 6 SKUs fail immediately, before any other
-        validation runs. The fix is straightforward&thinsp;&mdash;&thinsp;assign
-        valid UPCs to six products&thinsp;&mdash;&thinsp;but without a pre-flight
+        This creates an asymmetry. Walmart reads the UPC-12 column and requires
+        a valid consumer-unit barcode; 10 SKUs fail. Costco, UNFI, and KeHE read
+        the GTIN-14 column and require a valid case-level barcode; 8
+        SKUs fail&thinsp;&mdash;&thinsp;a different set. The fix is
+        straightforward&thinsp;&mdash;&thinsp;recalculate or re-source the
+        corrupted check digits&thinsp;&mdash;&thinsp;but without a pre-flight
         check, the failure surfaces only when the form is rejected.
       </p>
 
 
       <!-- ── The shared-gap pattern ── -->
       <h3 class="font-serif text-[18px] font-bold" style="color: var(--color-london-5); margin-bottom: 16px;">
-        The distributor shared-gap pattern
+        The shared-gap pattern
       </h3>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 16px;">
-        UNFI and KeHE produce identical bounce counts: 46 of 90.
-        Both distributors require the same core fields&thinsp;&mdash;&thinsp;UPC-12,
-        case dimensions, case weight, brand owner, country of origin. The overlap
-        is structural, not coincidental. Both operate warehouse-distribution
-        networks that need the same logistics and compliance data to receive, store,
-        and ship product.
+        Costco, UNFI, and KeHE produce identical bounce counts: 26 of 50.
+        All three read the same GTIN-14 column and share overlapping logistics
+        requirements. The 26 failing SKUs are the same 26 across all three
+        partners.
       </p>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 24px;">
-        The practical consequence: fixing the product master for UNFI
-        simultaneously fixes it for KeHE. One remediation effort covers both
-        distributors. A brand that fails to recognize this pattern does the
-        cleanup work twice.
+        The practical consequence: fixing the product master for any one of these
+        three partners substantially fixes it for the other two. Barcode
+        corrections propagate across all three; case dimension cleanup propagates
+        across all four. A brand that fails to recognize this pattern does the
+        remediation work three times.
       </p>
 
 
@@ -405,8 +432,8 @@
       </h3>
       <p class="font-sans" style="color: var(--color-london-20); max-width: var(--width-body); font-size: 17px; line-height: 1.6; margin-bottom: 24px;">
         Form rejection is not a paperwork inconvenience. It is a revenue event
-        with compounding consequences. For a brand of Cinderhaven's size,
-        the arithmetic is concrete.
+        with compounding consequences. Using Walmart's 29-SKU bounce count as the
+        worst-case baseline:
       </p>
 
       <div class="grid gap-4" style="grid-template-columns: 1fr 1fr; margin-bottom: 24px;">
@@ -415,15 +442,15 @@
           class="border font-sans"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">4&ndash;6 weeks</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">~$93K</p>
           <p class="text-[14px] font-semibold" style="color: var(--color-london-35); margin-bottom: 8px;">
-            Delay per rejection cycle
+            Deferred revenue (illustrative)
           </p>
           <p class="text-[13px]" style="color: var(--color-london-20); line-height: 1.5;">
-            Each rejected form triggers resubmission, re-review, and re-approval.
             At an illustrative velocity of $800/week/SKU across the launch set,
-            a 4-week delay on 46 SKUs represents roughly $147,000 in deferred
-            revenue.
+            a 4-week delay on 29 SKUs represents roughly $92,800 in deferred
+            revenue. This is not lost revenue&thinsp;&mdash;&thinsp;it is revenue
+            that arrives a month late, cascading through quarterly targets.
           </p>
         </div>
 
@@ -449,15 +476,16 @@
           class="border font-sans"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">$150&ndash;$500</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">$4,350&ndash;$14,500</p>
           <p class="text-[14px] font-semibold" style="color: var(--color-london-35); margin-bottom: 8px;">
-            Slotting fee per SKU per retailer
+            Slotting exposure per retailer
           </p>
           <p class="text-[13px]" style="color: var(--color-london-20); line-height: 1.5;">
             Slotting fees are typically non-refundable and paid before the product
             ships. If the item setup form bounces and the shelf space is reallocated,
-            the fee is sunk. Across 46 bounced SKUs at a single retailer,
-            illustrative slotting exposure ranges from $7,000 to $23,000.
+            the fee is sunk. Across 29 bounced SKUs at a single retailer:
+            29&thinsp;&times;&thinsp;$150 at the low end, 29&thinsp;&times;&thinsp;$500
+            at the high end.
           </p>
         </div>
 
@@ -466,7 +494,7 @@
           class="border font-sans"
           style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 20px;"
         >
-          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">80&ndash;120 hrs</p>
+          <p class="font-serif text-[28px] font-bold" style="color: var(--color-london-5);">50&ndash;80 hrs</p>
           <p class="text-[14px] font-semibold" style="color: var(--color-london-35); margin-bottom: 8px;">
             Rework labor across four partners
           </p>
@@ -475,7 +503,7 @@
             re-submitting across four partners is not one task&thinsp;&mdash;&thinsp;it
             is four parallel tasks with different contacts, different portals,
             and different turnaround times. At $45/hour blended ops cost, that
-            is $3,600&ndash;$5,400 in labor alone.
+            is $2,250&ndash;$3,600 in labor alone.
           </p>
         </div>
       </div>
@@ -547,7 +575,7 @@
       <!-- Source data note -->
       <p class="font-sans text-[11px]" style="color: var(--color-london-35); font-style: italic; max-width: var(--width-body);">
         Cinderhaven Provisions is a case-study dataset. The product master contains
-        90 SKUs with 25 columns and reflects realistic data gaps observed in
+        50 SKUs across five product lines with realistic data gaps observed in
         specialty food operations. Margin-impact figures are illustrative and
         based on plausible industry ranges for a brand at this scale.
       </p>

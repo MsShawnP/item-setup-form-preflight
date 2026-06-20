@@ -251,10 +251,16 @@ _KEHE_ALIASES: dict[str, list[str]] = {
     ],
 }
 
-# Unified alias map: merge all partner aliases. When the same field
-# appears in multiple partner maps, combine the alias lists without
-# duplicates. Shared fields (product_name, brand, etc.) inherit from
-# Walmart; partner-specific fields add their own entries.
+# Per-partner alias lookup
+_PARTNER_ALIAS_MAPS: dict[str, dict[str, list[str]]] = {
+    "walmart": _WALMART_ALIASES,
+    "costco": _COSTCO_ALIASES,
+    "unfi": _UNFI_ALIASES,
+    "kehe": _KEHE_ALIASES,
+}
+
+# Unified alias map: merge all partner aliases. Used as fallback for
+# fields not overridden by a specific partner, and by get_alias_map().
 _ALIAS_MAP: dict[str, list[str]] = {}
 
 for _partner_map in (_WALMART_ALIASES, _COSTCO_ALIASES, _UNFI_ALIASES, _KEHE_ALIASES):
@@ -266,6 +272,20 @@ for _partner_map in (_WALMART_ALIASES, _COSTCO_ALIASES, _UNFI_ALIASES, _KEHE_ALI
             if _a not in _seen:
                 _ALIAS_MAP[_field].append(_a)
                 _seen.add(_a)
+
+
+def _get_effective_aliases(partner: str, field_name: str) -> list[str]:
+    """Get aliases for a field, preferring the partner's own map.
+
+    If the partner defines aliases for this field, use those exclusively.
+    Otherwise fall back to the merged global map (covers shared fields
+    like product_name, brand, case dimensions that are defined once in
+    the Walmart baseline).
+    """
+    partner_map = _PARTNER_ALIAS_MAPS.get(partner, {})
+    if field_name in partner_map:
+        return partner_map[field_name]
+    return _ALIAS_MAP.get(field_name, [field_name])
 
 
 def get_alias_map() -> dict[str, list[str]]:
@@ -328,10 +348,11 @@ def match_columns(headers: list[str], schema: SchemaConfig) -> MatchResult:
     # Track which headers and fields have been claimed
     claimed_headers: set[int] = set()  # indices into headers list
     matches: list[ColumnMatch] = []
+    partner = schema.partner
 
     for field_name in schema_fields:
         match = _match_single_field(
-            field_name, headers, norm_headers, claimed_headers,
+            field_name, headers, norm_headers, claimed_headers, partner,
         )
         if match.uploaded_header is not None:
             # Find the index and claim it
@@ -365,10 +386,11 @@ def _match_single_field(
     headers: list[str],
     norm_headers: list[str],
     claimed: set[int],
+    partner: str = "",
 ) -> ColumnMatch:
     """Try to match a single schema field to the best available header."""
     norm_field = _normalize(field_name)
-    aliases = _ALIAS_MAP.get(field_name, [field_name])
+    aliases = _get_effective_aliases(partner, field_name) if partner else _ALIAS_MAP.get(field_name, [field_name])
 
     # Always include the field name itself and its normalized form as aliases
     all_aliases = set(aliases)
