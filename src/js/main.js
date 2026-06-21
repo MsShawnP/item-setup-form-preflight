@@ -52,4 +52,9 @@ window.Alpine = Alpine
 // Start Pyodide worker in background — UI is usable immediately
 initWorker()
 
+// Register service worker for asset caching
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {})
+}
+
 Alpine.start()
