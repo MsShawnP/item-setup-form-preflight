@@ -110,9 +110,12 @@ export default () => ({
   },
 
   formatFieldName(name) {
+    const acronyms = { upc: 'UPC', gtin: 'GTIN', sku: 'SKU' }
     return name
       .replace(/_/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase())
+      .split(' ')
+      .map((w) => acronyms[w.toLowerCase()] || w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')
   },
 
   formatDivergenceCount(pair) {
