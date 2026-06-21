@@ -10,7 +10,7 @@ import schemaDiff from './components/schema-diff.js'
 Alpine.store('app', {
   // Validation engine state (Pyodide loads in background)
   engineReady: false,
-  engineStatus: 'Loading validation engine...',
+  engineStatus: 'Downloading validation engine…',
   engineError: null,
 
   // Workflow state

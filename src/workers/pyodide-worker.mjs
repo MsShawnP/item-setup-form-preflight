@@ -36,17 +36,17 @@ function rewriteImports(source) {
 
 async function initialize() {
   try {
-    postStatus('Downloading validation engine...')
+    postStatus('Downloading validation engine…')
     const { loadPyodide } = await import(`${PYODIDE_CDN}pyodide.mjs`)
 
     pyodide = await loadPyodide({
       indexURL: PYODIDE_CDN,
     })
 
-    postStatus('Loading packages...')
+    postStatus('Loading packages…')
     await pyodide.loadPackage(['pyyaml'])
 
-    postStatus('Starting engine...')
+    postStatus('Starting engine…')
 
     // Write Python engine to Pyodide virtual filesystem
     pyodide.FS.mkdirTree('/home/pyodide/engine/gtin')
