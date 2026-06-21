@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import pathlib
 import sys
+from dataclasses import asdict
 
 import click
 
@@ -149,7 +150,7 @@ def _print_json_results(
             "pass_count": result.pass_count,
             "fail_count": result.fail_count,
             "tier_summary": result.tier_summary,
-            "errors": [e.model_dump(mode="json") for e in result.errors],
+            "errors": [asdict(e) for e in result.errors],
         })
     click.echo(json.dumps(output, indent=2))
 

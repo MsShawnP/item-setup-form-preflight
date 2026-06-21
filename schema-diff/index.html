@@ -6,9 +6,6 @@
   <title>Schema Diff | Item Setup Pre-flight</title>
   <meta name="description" content="Compare item-setup field requirements across retail partners — retailer vs retailer, distributor vs distributor.">
 
-  <link rel="preload" href="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.asm.wasm" as="fetch" crossorigin>
-  <link rel="preload" href="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.asm.mjs" as="script" crossorigin>
-
   <link rel="stylesheet" href="/src/css/main.css">
 </head>
 <body x-data class="min-h-screen">
@@ -40,40 +37,6 @@
         align and where they diverge.
       </p>
     </header>
-
-    <!-- Pyodide loading status -->
-    <section
-      class="border font-sans"
-      style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
-      x-show="!$store.app.pyodideReady && !$store.app.loadingError"
-    >
-      <div class="flex items-center gap-3">
-        <div
-          class="h-3 w-3 rounded-full animate-pulse"
-          style="background-color: var(--color-chicago-20);"
-        ></div>
-        <span
-          class="text-[14px]"
-          style="color: var(--color-london-35);"
-          x-text="$store.app.loadingStatus"
-        ></span>
-      </div>
-    </section>
-
-    <!-- Pyodide load error -->
-    <section
-      class="border font-sans"
-      style="border-color: var(--color-red-42); background-color: var(--color-status-fail-bg); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
-      x-show="$store.app.loadingError"
-      x-cloak
-    >
-      <div class="flex items-center gap-3">
-        <div class="h-3 w-3 rounded-full" style="background-color: var(--color-red-42);"></div>
-        <span class="text-[14px]" style="color: var(--color-status-fail-text);" x-text="$store.app.loadingStatus"></span>
-      </div>
-      <p class="text-[12px] mt-2" style="color: var(--color-red-42);" x-text="$store.app.loadingError"></p>
-    </section>
-
 
     <!-- ============================================================ -->
     <!-- Schema Diff Component                                        -->

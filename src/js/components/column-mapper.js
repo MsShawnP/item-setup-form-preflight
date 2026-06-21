@@ -7,7 +7,8 @@
  * - Acknowledge unmatched schema fields (red)
  * - Adjust any mapping via dropdown of all uploaded headers
  *
- * Confirming sends the final mapping to the worker for validation.
+ * Confirming sends the parsed data + mapping to the Pyodide worker
+ * for four-tier validation.
  */
 
 import { validateData } from '../worker-api.js'
@@ -17,8 +18,11 @@ export default () => ({
   editableMapping: [],
 
   init() {
+    this.$watch('$store.app.columnMapping', (val) => {
+      const mapping = val?.mapping || []
+      this.editableMapping = mapping.map((m) => ({ ...m }))
+    })
     const mapping = this.$store.app.columnMapping?.mapping || []
-    // Deep-copy so edits don't mutate the store directly
     this.editableMapping = mapping.map((m) => ({ ...m }))
   },
 
@@ -108,15 +112,47 @@ export default () => ({
 
     store.confirmedMapping = confirmed
     store.validationError = null
+
+    // Check if validation engine is ready
+    if (!store.engineReady) {
+      store.setStep(4) // Show loading/progress state
+      // Wait for engine to become ready
+      await new Promise((resolve) => {
+        if (store.engineReady) {
+          resolve()
+          return
+        }
+        const check = setInterval(() => {
+          if (store.engineReady) {
+            clearInterval(check)
+            resolve()
+          } else if (store.engineError) {
+            clearInterval(check)
+            resolve()
+          }
+        }, 200)
+      })
+
+      if (store.engineError) {
+        store.validationError = `Validation engine failed to load: ${store.engineError}`
+        store.setStep(3)
+        return
+      }
+    }
+
     store.setStep(4) // Show "validating" spinner
 
     try {
-      const result = await validateData(confirmed, store.selectedPartner)
+      const result = await validateData(
+        store.parsedData.rows,
+        confirmed,
+        store.selectedPartner,
+      )
       store.results = result
       store.setStep(5)
     } catch (err) {
       store.validationError = `Validation failed: ${err.message}`
-      store.setStep(3) // Back to mapping so user can retry
+      store.setStep(3)
     }
   },
 })

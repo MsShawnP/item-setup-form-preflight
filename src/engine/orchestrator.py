@@ -13,9 +13,7 @@ from __future__ import annotations
 
 import json
 
-from engine.file_parser import parse_file
 from engine.schema_loader import load_schema
-from engine.column_matcher import match_columns
 from engine.validators import validate_product
 
 # Module-level cache: parsed rows survive between match and validate calls
@@ -35,6 +33,9 @@ def do_match(file_path: str, filename: str, partner: str) -> str:
         JSON string with keys: mapping, unmatchedHeaders, unmatchedFields,
         rowCount, headers.
     """
+    from engine.file_parser import parse_file
+    from engine.column_matcher import match_columns
+
     global _cached_parse
 
     with open(file_path, "rb") as f:
@@ -90,18 +91,16 @@ def do_validate(mapping_json: str, partner: str) -> str:
 
     # Build reverse mapping: uploaded_header -> schema_field
     header_to_field = {v: k for k, v in mapping.items() if v is not None}
+    mapped_fields = set(header_to_field.values())
 
     per_row_results = []
 
     for row_idx, row in enumerate(_cached_parse.rows):
-        # Remap the row: translate uploaded headers to schema field names
         remapped = {}
         for header, value in row.items():
             if header in header_to_field:
                 remapped[header_to_field[header]] = value
-            else:
-                # Keep unmapped fields as-is (they won't match schema
-                # fields, so the validator will just ignore them)
+            elif header not in mapped_fields:
                 remapped[header] = value
 
         result = validate_product(remapped, schema)
@@ -373,6 +372,99 @@ def _compute_channel_annotation(
             f"and {d_a}/{d_b} at {d_pct}%. Neither channel type shows "
             f"markedly higher schema convergence in this sample."
         )
+
+
+def do_validate_rows(rows_json: str, mapping_json: str, partner: str) -> str:
+    """Validate pre-parsed rows against a partner schema.
+
+    Called from the JS-side worker when file parsing and column matching
+    are handled in JavaScript. Receives rows and mapping as JSON strings.
+
+    Args:
+        rows_json: JSON string — list of dicts (header -> value).
+        mapping_json: JSON string — dict mapping schema field names to
+            uploaded header names.
+        partner: Partner key.
+
+    Returns:
+        JSON string with keys: results (per-row), summary.
+    """
+    rows = json.loads(rows_json)
+    mapping = json.loads(mapping_json)
+
+    schema_path = f"/home/pyodide/schemas/{partner}.yaml"
+    schema = load_schema(schema_path)
+
+    header_to_field = {v: k for k, v in mapping.items() if v is not None}
+
+    per_row_results = []
+
+    mapped_fields = set(header_to_field.values())
+
+    for row_idx, row in enumerate(rows):
+        remapped = {}
+        for header, value in row.items():
+            if header in header_to_field:
+                remapped[header_to_field[header]] = value
+            elif header not in mapped_fields:
+                remapped[header] = value
+
+        result = validate_product(remapped, schema)
+
+        errors = []
+        for e in result.errors:
+            errors.append({
+                "field": e.field,
+                "errorType": e.error_type.value,
+                "trigger": e.trigger,
+                "severity": e.severity.value,
+                "message": e.message,
+            })
+
+        sku_label = _find_sku_label(remapped, row_idx)
+
+        per_row_results.append({
+            "rowIndex": row_idx,
+            "skuLabel": sku_label,
+            "verdict": result.verdict,
+            "errors": errors,
+            "fieldsChecked": result.fields_checked,
+            "passCount": result.pass_count,
+            "failCount": result.fail_count,
+            "tierSummary": result.tier_summary,
+        })
+
+    total = len(per_row_results)
+    passing = sum(1 for r in per_row_results if r["verdict"] == "PASS")
+    failing = total - passing
+
+    error_type_counts: dict[str, int] = {}
+    for r in per_row_results:
+        for e in r["errors"]:
+            key = e["errorType"]
+            error_type_counts[key] = error_type_counts.get(key, 0) + 1
+
+    field_counts: dict[str, int] = {}
+    for r in per_row_results:
+        for e in r["errors"]:
+            key = e["field"]
+            field_counts[key] = field_counts.get(key, 0) + 1
+
+    top_failing_fields = sorted(
+        field_counts.items(), key=lambda x: x[1], reverse=True
+    )[:10]
+
+    summary = {
+        "totalRows": total,
+        "passing": passing,
+        "failing": failing,
+        "errorTypeCounts": error_type_counts,
+        "topFailingFields": [
+            {"field": f, "count": c} for f, c in top_failing_fields
+        ],
+    }
+
+    return json.dumps({"results": per_row_results, "summary": summary})
 
 
 def _find_sku_label(row: dict, row_idx: int) -> str:

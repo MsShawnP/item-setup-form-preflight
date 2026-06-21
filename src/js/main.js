@@ -8,19 +8,20 @@ import resultsDisplay from './components/results-display.js'
 import schemaDiff from './components/schema-diff.js'
 
 Alpine.store('app', {
-  // Pyodide state
-  pyodideReady: false,
-  loadingStatus: 'Initializing...',
-  loadingError: null,
+  // Validation engine state (Pyodide loads in background)
+  engineReady: false,
+  engineStatus: 'Loading validation engine...',
+  engineError: null,
 
   // Workflow state
-  currentStep: 1, // 1=upload, 2=partner, 3=mapping, 4=validating, 5=results
-  fileData: null, // { name, size, type, buffer }
+  currentStep: 1,
+  fileData: null,
+  parsedData: null,
   selectedPartner: null,
-  columnMapping: null, // from worker match step
-  confirmedMapping: null, // user-confirmed mapping
-  results: null, // validation results from worker
-  viewMode: 'sku', // 'sku' or 'aggregate'
+  columnMapping: null,
+  confirmedMapping: null,
+  results: null,
+  viewMode: 'sku',
   validationError: null,
 
   setStep(n) {
@@ -30,6 +31,7 @@ Alpine.store('app', {
   reset() {
     this.currentStep = 1
     this.fileData = null
+    this.parsedData = null
     this.selectedPartner = null
     this.columnMapping = null
     this.confirmedMapping = null
@@ -39,13 +41,15 @@ Alpine.store('app', {
   },
 })
 
-// Register Alpine components
 Alpine.data('fileUpload', fileUpload)
 Alpine.data('partnerSelector', partnerSelector)
 Alpine.data('columnMapper', columnMapper)
 Alpine.data('resultsDisplay', resultsDisplay)
 Alpine.data('schemaDiff', schemaDiff)
 
+window.Alpine = Alpine
+
+// Start Pyodide worker in background — UI is usable immediately
 initWorker()
 
 Alpine.start()

@@ -6,10 +6,6 @@
   <title>Item Setup Pre-flight | Lailara LLC</title>
   <meta name="description" content="Retailer item-setup pre-flight check. Drop a product master, pick a partner, get a plain-English readiness verdict.">
 
-  <!-- Pyodide preloads — version must match src/workers/pyodide-worker.mjs -->
-  <link rel="preload" href="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.asm.wasm" as="fetch" crossorigin>
-  <link rel="preload" href="https://cdn.jsdelivr.net/pyodide/v0.29.4/full/pyodide.asm.mjs" as="script" crossorigin>
-
   <link rel="stylesheet" href="/src/css/main.css">
 </head>
 <body x-data class="min-h-screen">
@@ -43,52 +39,6 @@
       </p>
     </header>
 
-    <!-- Pyodide loading status -->
-    <section
-      class="border font-sans"
-      style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
-      x-show="!$store.app.pyodideReady"
-    >
-      <div class="flex items-center gap-3">
-        <div
-          class="h-3 w-3 rounded-full animate-pulse"
-          style="background-color: var(--color-chicago-20);"
-          x-show="!$store.app.loadingError"
-        ></div>
-        <div
-          class="h-3 w-3 rounded-full"
-          style="background-color: var(--color-red-42);"
-          x-show="$store.app.loadingError"
-        ></div>
-        <span
-          class="text-[14px]"
-          style="color: var(--color-london-35);"
-          x-text="$store.app.loadingStatus"
-        ></span>
-      </div>
-      <p
-        class="text-[12px] mt-2"
-        style="color: var(--color-red-42);"
-        x-show="$store.app.loadingError"
-        x-text="$store.app.loadingError"
-      ></p>
-    </section>
-
-    <!-- Ready confirmation -->
-    <section
-      class="border font-sans"
-      style="background-color: var(--color-status-pass-bg); border-color: var(--color-hk-85); border-radius: var(--radius-standard); padding: 16px; margin-bottom: 32px;"
-      x-show="$store.app.pyodideReady"
-      x-cloak
-    >
-      <div class="flex items-center gap-3">
-        <div class="h-3 w-3 rounded-full" style="background-color: var(--color-hk-35);"></div>
-        <span class="text-[14px]" style="color: var(--color-status-pass-text);">
-          Validation engine ready
-        </span>
-      </div>
-    </section>
-
     <!-- Validation error banner -->
     <section
       class="border font-sans"
@@ -106,7 +56,7 @@
     <div
       class="font-sans flex items-center gap-2 text-[12px]"
       style="color: var(--color-london-35); margin-bottom: 24px;"
-      x-show="$store.app.pyodideReady && $store.app.currentStep < 5"
+      x-show="$store.app.currentStep < 5"
       x-cloak
     >
       <template x-for="step in [
@@ -171,13 +121,6 @@
         <p class="text-[14px] mt-2" style="color: var(--color-london-35);">
           or click to browse — .csv and .xlsx accepted
         </p>
-        <p
-          class="text-[12px] mt-4"
-          style="color: var(--color-london-40);"
-          x-show="!$store.app.pyodideReady"
-        >
-          Waiting for validation engine to finish loading...
-        </p>
       </div>
     </section>
 
@@ -225,7 +168,7 @@
               'border-color': $store.app.selectedPartner === partner.id ? 'var(--color-chicago-20)' : 'var(--color-london-85)',
               'background-color': $store.app.selectedPartner === partner.id ? 'var(--color-chicago-95)' : 'transparent',
             }"
-            :disabled="isMatching || !$store.app.pyodideReady"
+            :disabled="isMatching"
             @click="selectPartner(partner.id)"
           >
             <span class="block text-[16px] font-semibold" style="color: var(--color-london-5);" x-text="partner.name"></span>
@@ -418,12 +361,12 @@
         style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 48px 24px; min-height: 200px;"
       >
         <div class="h-4 w-4 rounded-full animate-pulse mb-4" style="background-color: var(--color-chicago-20);"></div>
-        <p class="text-[17px] font-semibold" style="color: var(--color-london-20);">
-          Running validation...
-        </p>
-        <p class="text-[14px] mt-2" style="color: var(--color-london-35);">
-          Checking every row against the partner schema. This may take a moment for large files.
-        </p>
+        <p class="text-[17px] font-semibold" style="color: var(--color-london-20);"
+          x-text="$store.app.engineReady ? 'Running validation...' : $store.app.engineStatus"
+        ></p>
+        <p class="text-[14px] mt-2" style="color: var(--color-london-35);"
+          x-text="$store.app.engineReady ? 'Checking every row against the partner schema. This may take a moment for large files.' : 'The validation engine is loading in the background. Validation will start automatically when ready.'"
+        ></p>
       </div>
     </section>
 

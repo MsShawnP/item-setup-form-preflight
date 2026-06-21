@@ -1,3 +1,12 @@
+/**
+ * Pyodide Web Worker — validation only.
+ *
+ * File parsing, column matching, and schema diffing now run in JS
+ * on the main thread. This worker handles only the four-tier
+ * validation engine (Pydantic models + GTIN check digit), which
+ * requires Python/Pyodide.
+ */
+
 const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.29.4/full/'
 
 // Import Python source files as raw strings (Vite ?raw imports)
@@ -5,8 +14,6 @@ import engineInit from '../engine/__init__.py?raw'
 import modelsCode from '../engine/models.py?raw'
 import validatorsCode from '../engine/validators.py?raw'
 import schemaLoaderCode from '../engine/schema_loader.py?raw'
-import columnMatcherCode from '../engine/column_matcher.py?raw'
-import fileParserCode from '../engine/file_parser.py?raw'
 import orchestratorCode from '../engine/orchestrator.py?raw'
 import gtinInit from '../engine/gtin/__init__.py?raw'
 import gtinCoreCode from '../engine/gtin/gtin_core.py?raw'
@@ -23,34 +30,23 @@ function postStatus(status) {
   self.postMessage({ status })
 }
 
-/**
- * Rewrite Python import paths for the Pyodide environment.
- *
- * Locally the engine uses `from src.engine.X import Y` but inside
- * Pyodide the package lives at /home/pyodide/engine/ so the imports
- * need to be `from engine.X import Y`.
- */
 function rewriteImports(source) {
   return source.replace(/from src\.engine\./g, 'from engine.')
 }
 
 async function initialize() {
   try {
-    postStatus('Downloading Pyodide...')
+    postStatus('Downloading validation engine...')
     const { loadPyodide } = await import(`${PYODIDE_CDN}pyodide.mjs`)
 
     pyodide = await loadPyodide({
       indexURL: PYODIDE_CDN,
     })
 
-    postStatus('Installing packages...')
-    await pyodide.loadPackage('micropip')
-    const micropip = pyodide.pyimport('micropip')
-    await micropip.install('pydantic==2.10.5')
-    await micropip.install('pyyaml')
-    await micropip.install('openpyxl')
+    postStatus('Loading packages...')
+    await pyodide.loadPackage(['pyyaml'])
 
-    postStatus('Loading engine...')
+    postStatus('Starting engine...')
 
     // Write Python engine to Pyodide virtual filesystem
     pyodide.FS.mkdirTree('/home/pyodide/engine/gtin')
@@ -59,8 +55,6 @@ async function initialize() {
     pyodide.FS.writeFile('/home/pyodide/engine/models.py', rewriteImports(modelsCode))
     pyodide.FS.writeFile('/home/pyodide/engine/validators.py', rewriteImports(validatorsCode))
     pyodide.FS.writeFile('/home/pyodide/engine/schema_loader.py', rewriteImports(schemaLoaderCode))
-    pyodide.FS.writeFile('/home/pyodide/engine/column_matcher.py', rewriteImports(columnMatcherCode))
-    pyodide.FS.writeFile('/home/pyodide/engine/file_parser.py', rewriteImports(fileParserCode))
     pyodide.FS.writeFile('/home/pyodide/engine/orchestrator.py', rewriteImports(orchestratorCode))
     pyodide.FS.writeFile('/home/pyodide/engine/gtin/__init__.py', rewriteImports(gtinInit))
     pyodide.FS.writeFile('/home/pyodide/engine/gtin/gtin_core.py', rewriteImports(gtinCoreCode))
@@ -76,7 +70,7 @@ async function initialize() {
     pyodide.runPython('import sys; sys.path.insert(0, "/home/pyodide")')
 
     // Verify the engine loads
-    pyodide.runPython('from engine.orchestrator import do_match, do_validate, do_diff')
+    pyodide.runPython('from engine.orchestrator import do_validate')
 
     postStatus('Ready')
   } catch (err) {
@@ -87,9 +81,8 @@ async function initialize() {
 async function handleMessage(event) {
   const { id, action, data } = event.data
 
-  // Wait for init before processing requests
   if (!pyodide) {
-    self.postMessage({ id, error: 'Pyodide not yet initialized' })
+    self.postMessage({ id, error: 'Validation engine not yet initialized' })
     return
   }
 
@@ -97,53 +90,19 @@ async function handleMessage(event) {
 
   try {
     switch (action) {
-      case 'match': {
-        // data.file is an ArrayBuffer, data.filename is a string,
-        // data.partner is a string (walmart|costco|unfi|kehe)
-        if (!VALID_PARTNERS.has(data.partner)) {
-          self.postMessage({ id, error: `Invalid partner: ${data.partner}` })
-          break
-        }
-
-        const fileBytes = new Uint8Array(data.file)
-        const safeName = data.filename.replace(/[/\\]/g, '_')
-        const tempPath = `/home/pyodide/upload/${safeName}`
-
-        // Write the uploaded file to Pyodide FS
-        pyodide.FS.mkdirTree('/home/pyodide/upload')
-        pyodide.FS.writeFile(tempPath, fileBytes)
-
-        // Run the Python orchestrator
-        const resultJson = pyodide.runPython(`
-from engine.orchestrator import do_match
-do_match(${JSON.stringify(tempPath)}, ${JSON.stringify(data.filename)}, ${JSON.stringify(data.partner)})
-`)
-        const result = JSON.parse(resultJson)
-
-        // Clean up the uploaded file
-        try {
-          pyodide.FS.unlink(tempPath)
-        } catch (_) {
-          // Non-critical cleanup
-        }
-
-        self.postMessage({ id, result })
-        break
-      }
-
       case 'validate': {
-        // data.confirmedMapping is an object: { schemaField: uploadedHeader, ... }
-        // data.partner is a string
         if (!VALID_PARTNERS.has(data.partner)) {
           self.postMessage({ id, error: `Invalid partner: ${data.partner}` })
           break
         }
 
+        // Receive pre-parsed rows and mapping from JS
+        const rowsJson = JSON.stringify(data.rows)
         const mappingJson = JSON.stringify(data.confirmedMapping)
 
         const resultJson = pyodide.runPython(`
-from engine.orchestrator import do_validate
-do_validate(${JSON.stringify(mappingJson)}, ${JSON.stringify(data.partner)})
+from engine.orchestrator import do_validate_rows
+do_validate_rows(${JSON.stringify(rowsJson)}, ${JSON.stringify(mappingJson)}, ${JSON.stringify(data.partner)})
 `)
         const result = JSON.parse(resultJson)
 
@@ -152,16 +111,6 @@ do_validate(${JSON.stringify(mappingJson)}, ${JSON.stringify(data.partner)})
         } else {
           self.postMessage({ id, result })
         }
-        break
-      }
-
-      case 'diff': {
-        const resultJson = pyodide.runPython(`
-from engine.orchestrator import do_diff
-do_diff()
-`)
-        const result = JSON.parse(resultJson)
-        self.postMessage({ id, result })
         break
       }
 

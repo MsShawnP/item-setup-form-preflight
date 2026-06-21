@@ -2,10 +2,13 @@
  * partner-selector — Four partner cards for retailer/distributor selection.
  *
  * After a file is uploaded (step 2), the user picks which partner schema
- * to validate against. Selecting a partner triggers the match round trip.
+ * to validate against. Selecting a partner triggers column matching in JS
+ * (no Pyodide needed for this step).
  */
 
-import { matchColumns } from '../worker-api.js'
+import { parseFile } from '../file-parser.js'
+import { matchColumns } from '../column-matcher.js'
+import { loadSchema } from '../schema-loader.js'
 
 const PARTNERS = [
   {
@@ -45,16 +48,23 @@ export default () => ({
     this.isMatching = true
 
     try {
-      // Clone the ArrayBuffer since transferable transfer neuters it
-      const originalBuffer = store.fileData.buffer
-      const bufferCopy = originalBuffer.slice(0)
+      const { name, buffer } = store.fileData
 
-      const result = await matchColumns(
-        bufferCopy,
-        store.fileData.name,
-        partnerId,
-      )
-      store.columnMapping = result
+      // Parse the file in JS (no Pyodide needed)
+      const parsed = parseFile(buffer, name)
+
+      // Store parsed data for the validation step
+      store.parsedData = parsed
+
+      // Load the schema and match columns in JS
+      const schema = loadSchema(partnerId)
+      const result = matchColumns(parsed.headers, schema, partnerId)
+
+      store.columnMapping = {
+        ...result,
+        rowCount: parsed.rowCount,
+        headers: parsed.headers,
+      }
       store.setStep(3)
     } catch (err) {
       store.validationError = `Column matching failed: ${err.message}`

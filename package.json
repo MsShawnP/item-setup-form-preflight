@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "alpinejs": "^3.14.9"
+    "alpinejs": "^3.14.9",
+    "js-yaml": "^5.0.0",
+    "papaparse": "^5.5.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.8",

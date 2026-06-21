@@ -7,7 +7,7 @@ from src.engine.validators import validate_product
 
 def _walmart_schema() -> SchemaConfig:
     """Minimal Walmart-like schema for testing."""
-    return SchemaConfig.model_validate({
+    return SchemaConfig.from_dict({
         "partner": "walmart",
         "display_name": "Walmart",
         "description": "Walmart Item 360 item setup requirements",

@@ -1,10 +1,19 @@
+/**
+ * worker-api — Bridge between UI and validation worker.
+ *
+ * File parsing, column matching, and schema diffing now run in JS
+ * on the main thread (no Pyodide needed). Only validation is
+ * delegated to the Pyodide Web Worker.
+ */
+
 let worker = null
 let messageId = 0
 const pending = new Map()
 
 /**
- * Boot the Pyodide Web Worker and wire up message handling.
+ * Boot the Pyodide Web Worker for validation.
  * Called once at app startup — subsequent calls are no-ops.
+ * The worker begins downloading Pyodide immediately in the background.
  */
 export function initWorker() {
   if (worker) return
@@ -17,19 +26,17 @@ export function initWorker() {
   worker.addEventListener('message', (event) => {
     const { id, result, error, status } = event.data
 
-    // Status broadcasts (no id) update the Alpine store directly
     if (status) {
       const store = window.Alpine?.store('app')
       if (!store) return
 
-      store.loadingStatus = status
+      store.engineStatus = status
       if (status === 'Ready') {
-        store.pyodideReady = true
+        store.engineReady = true
       }
       return
     }
 
-    // Correlated responses resolve/reject the matching promise
     const entry = pending.get(id)
     if (!entry) return
     pending.delete(id)
@@ -44,21 +51,14 @@ export function initWorker() {
   worker.addEventListener('error', (event) => {
     const store = window.Alpine?.store('app')
     if (store) {
-      store.loadingStatus = 'Worker failed to load'
-      store.loadingError = event.message || 'Unknown worker error'
+      store.engineStatus = 'Worker failed to load'
+      store.engineError = event.message || 'Unknown worker error'
     }
   })
 }
 
 /**
  * Send an action to the Pyodide worker and await its response.
- * Returns a promise that resolves with the worker's result payload
- * or rejects with an Error if the worker reports a failure.
- *
- * @param {string} action - The action name for the worker to handle.
- * @param {object} data - Payload for the action.
- * @param {Transferable[]} [transferables] - Optional list of transferable
- *   objects (e.g. ArrayBuffer) for zero-copy transfer to the worker.
  */
 export function sendToWorker(action, data = {}, transferables = []) {
   if (!worker) {
@@ -74,43 +74,22 @@ export function sendToWorker(action, data = {}, transferables = []) {
 }
 
 /**
- * Parse a file and match its columns against a partner schema.
+ * Run four-tier validation via the Pyodide worker.
  *
- * Sends the file ArrayBuffer to the worker using zero-copy transfer.
- * The ArrayBuffer is neutered after this call — do not reuse it.
+ * Sends pre-parsed rows and confirmed mapping to the worker.
+ * The worker applies the mapping, loads the schema, and runs
+ * validate_product() per row.
  *
- * @param {ArrayBuffer} file - Raw file bytes.
- * @param {string} filename - Original filename (for extension detection).
- * @param {string} partner - Partner key (walmart|costco|unfi|kehe).
- * @returns {Promise<object>} Mapping result with matched/unmatched columns.
- */
-export function matchColumns(file, filename, partner) {
-  return sendToWorker('match', { file, filename, partner }, [file])
-}
-
-/**
- * Compute schema diffs between partner pairs.
- *
- * Returns retailer pair (Walmart vs Costco) and distributor pair
- * (UNFI vs KeHE) comparisons with shared/unique fields, GTIN
- * divergence, conditional rule comparison, and overlap percentage.
- *
- * @returns {Promise<object>} Diff data with retailer_pair, distributor_pair, annotation.
- */
-export function computeDiff() {
-  return sendToWorker('diff', {})
-}
-
-/**
- * Run four-tier validation using a confirmed column mapping.
- *
- * Operates on the file data cached in the worker from the most
- * recent matchColumns call.
- *
- * @param {object} confirmedMapping - Map of schema field names to uploaded headers.
+ * @param {Object[]} rows - Parsed rows (array of header→value dicts).
+ * @param {Object} confirmedMapping - Map of schema field names to uploaded headers.
  * @param {string} partner - Partner key.
- * @returns {Promise<object>} Per-row results and aggregate summary.
+ * @returns {Promise<Object>} Per-row results and aggregate summary.
  */
-export function validateData(confirmedMapping, partner) {
-  return sendToWorker('validate', { confirmedMapping, partner })
+export function validateData(rows, confirmedMapping, partner) {
+  // Strip Alpine reactive proxies — proxies can't be structured-cloned for postMessage
+  return sendToWorker('validate', {
+    rows: JSON.parse(JSON.stringify(rows)),
+    confirmedMapping: JSON.parse(JSON.stringify(confirmedMapping)),
+    partner,
+  })
 }

@@ -1,10 +1,9 @@
-"""Pydantic v2 models for the four-tier validation engine."""
+"""Dataclass models for the four-tier validation engine."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from enum import StrEnum
-
-from pydantic import BaseModel
 
 
 class Severity(StrEnum):
@@ -20,42 +19,63 @@ class ErrorType(StrEnum):
     GTIN_HIERARCHY_WRONG = "GTIN_HIERARCHY_WRONG"
 
 
-class ValidationError(BaseModel):
+@dataclass
+class ValidationError:
     field: str
     error_type: ErrorType
-    trigger: str | None = None
     severity: Severity
     message: str
+    trigger: str | None = None
 
 
-class FieldSpec(BaseModel):
+@dataclass
+class FieldSpec:
     name: str
     required: bool = True
     format_pattern: str | None = None
     format_description: str | None = None
 
 
-class ConditionalRule(BaseModel):
+@dataclass
+class ConditionalRule:
     trigger_field: str
     trigger_value: str
-    required_fields: list[str]
+    required_fields: list[str] = field(default_factory=list)
 
 
-class GTINExpectation(BaseModel):
+@dataclass
+class GTINExpectation:
     expected_level: str
-    expected_formats: list[str]
+    expected_formats: list[str] = field(default_factory=list)
 
 
-class SchemaConfig(BaseModel):
+@dataclass
+class SchemaConfig:
     partner: str
     display_name: str
     description: str
     required_fields: list[FieldSpec]
-    conditional_rules: list[ConditionalRule] = []
     gtin_hierarchy: GTINExpectation
+    conditional_rules: list[ConditionalRule] = field(default_factory=list)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> SchemaConfig:
+        return cls(
+            partner=data["partner"],
+            display_name=data["display_name"],
+            description=data["description"],
+            required_fields=[
+                FieldSpec(**f) for f in data["required_fields"]
+            ],
+            gtin_hierarchy=GTINExpectation(**data["gtin_hierarchy"]),
+            conditional_rules=[
+                ConditionalRule(**r) for r in data.get("conditional_rules", [])
+            ],
+        )
 
 
-class ValidationResult(BaseModel):
+@dataclass
+class ValidationResult:
     errors: list[ValidationError]
     fields_checked: int
     pass_count: int

@@ -16,13 +16,11 @@ def load_schema(path: str) -> SchemaConfig:
         path: Filesystem path to a .yaml schema file.
 
     Returns:
-        Validated SchemaConfig instance.
+        SchemaConfig instance.
 
     Raises:
         FileNotFoundError: If the YAML file does not exist.
         yaml.YAMLError: If the file contains invalid YAML.
-        pydantic.ValidationError: If the parsed data does not match
-            the SchemaConfig structure.
     """
     resolved = Path(path).resolve()
     if not resolved.exists():
@@ -39,16 +37,14 @@ def load_schema_from_string(yaml_string: str) -> SchemaConfig:
         yaml_string: Raw YAML content.
 
     Returns:
-        Validated SchemaConfig instance.
+        SchemaConfig instance.
 
     Raises:
         yaml.YAMLError: If the string is not valid YAML.
-        pydantic.ValidationError: If the parsed data does not match
-            the SchemaConfig structure.
     """
     data = yaml.safe_load(yaml_string)
     if not isinstance(data, dict):
         raise ValueError(
             f"Expected a YAML mapping at top level, got {type(data).__name__}"
         )
-    return SchemaConfig.model_validate(data)
+    return SchemaConfig.from_dict(data)

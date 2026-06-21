@@ -27,7 +27,7 @@ KEHE_YAML = os.path.join(_SCHEMA_DIR, "kehe.yaml")
 
 def _walmart_schema() -> SchemaConfig:
     """Minimal Walmart schema for validation tests."""
-    return SchemaConfig.model_validate({
+    return SchemaConfig.from_dict({
         "partner": "walmart",
         "display_name": "Walmart",
         "description": "Walmart Item 360 item setup requirements",
@@ -63,7 +63,7 @@ def _walmart_schema() -> SchemaConfig:
 
 def _costco_schema() -> SchemaConfig:
     """Minimal Costco schema for validation tests."""
-    return SchemaConfig.model_validate({
+    return SchemaConfig.from_dict({
         "partner": "costco",
         "display_name": "Costco",
         "description": "Costco item setup workbook requirements",
@@ -310,7 +310,7 @@ class TestGTINHierarchyDivergence:
         mechanism independently of Tier 2.
         """
         # Schema expects GTIN-14 but has no format_pattern on upc
-        costco_no_format = SchemaConfig.model_validate({
+        costco_no_format = SchemaConfig.from_dict({
             "partner": "costco",
             "display_name": "Costco",
             "description": "test",

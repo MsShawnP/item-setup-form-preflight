@@ -10,7 +10,7 @@ from src.engine.models import SchemaConfig
 
 def _walmart_schema() -> SchemaConfig:
     """Minimal Walmart-like schema for column matching tests."""
-    return SchemaConfig.model_validate({
+    return SchemaConfig.from_dict({
         "partner": "walmart",
         "display_name": "Walmart",
         "description": "Walmart Item 360 item setup requirements",
