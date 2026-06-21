@@ -71,3 +71,27 @@ SQLite/pytest/Ruff). Ready for /clarify to scope the build arc.
 **State:** Arc complete. All PLAN.md boxes checked. Live at https://preflight.lailarallc.com. CI/CD deploys on push to main. 102 tests passing.
 
 **Next:** Arc closed. No pending work. Next actions: link from portfolio site, share on LinkedIn, or start a new project.
+
+---
+
+## 2026-06-20 — Case study regeneration from canonical 50-SKU data
+
+**Started from:** Arc complete, deployed. Case study page stale — built against 90 SKUs/3 product lines/4 partners. Cinderhaven platform rebuilt with 50 SKUs, 5 product lines, expanded partner set.
+
+**Did:**
+1. Regenerated product master: 50 SKUs (5 lines × 10), matching CINDERHAVEN_CANONICAL.md defect profile (DEFECT_SEED=300, ~20% GTIN corruption, 12% missing case dims, etc.)
+2. Found and fixed structural column matcher bug: the merged global alias map caused all partners to read the same barcode column (gtin14). Added partner-aware alias resolution — Walmart routes to UPC-12, Costco/UNFI/KeHE route to GTIN-14
+3. Ran validation: Walmart 29/50 bounce, Costco/UNFI/KeHE 26/50 each (same 26 SKUs)
+4. Fact-checked all numbers against validation output, corrected product line names (DG = Dried Goods, SB = Snack Bites)
+5. Installed updated case study into case-study/index.html: hero SKU CHP-PS-001 (Stone Ground Mustard), mirror SKU CHP-PS-004 (Extra Virgin Olive Oil), gap table, cost recalculation from 29-SKU Walmart baseline
+6. Verified page renders, no old 90-SKU content remains, all numbers match validation JSON
+
+**Key files changed:**
+- `data/cinderhaven/product_master.csv` — regenerated 50-SKU master
+- `src/engine/column_matcher.py` — partner-aware alias resolution
+- `case-study/index.html` — full content rewrite
+- `scripts/` — generation script, analysis script, validation JSON results
+
+**State:** Committed and pushed (3a2d7af). 102 tests passing. Case study page current with canonical platform data. GTIN hierarchy divergence pattern confirmed working.
+
+**Next:** Deploy to update live site (CI/CD should auto-deploy on push to main). No other pending work.

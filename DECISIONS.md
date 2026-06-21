@@ -88,15 +88,28 @@ Each entry:
 - **Scope:** `models.py`, `validators.py`, `gtin/__init__.py`.
 - **Do not:** Re-add speculative features without a consumer and corresponding test.
 
-### 2026-06-05 — Case study hook SKU: CHP-0057 (Harissa Paste)
-- **Why:** Has valid GTIN-14 but all-zeros UPC, creating the critical schema divergence: passes Costco case-level validation, fails Walmart/UNFI/KeHE consumer-unit UPC-12 check. One product, four different verdicts — the most compact demonstration of why per-partner validation matters.
-- **Scope:** Case study page narrative.
-- **Do not:** Change the hook SKU without re-verifying the divergence story.
+### ~~2026-06-05 — Case study hook SKU: CHP-0057 (Harissa Paste)~~
+- ~~**Why:** Has valid GTIN-14 but all-zeros UPC, creating the critical schema divergence: passes Costco case-level validation, fails Walmart/UNFI/KeHE consumer-unit UPC-12 check. One product, four different verdicts — the most compact demonstration of why per-partner validation matters.~~
+- **Superseded by:** 2026-06-20 entry below.
 
-### 2026-06-05 — Case study numbers verified against CSV
-- **Why:** Bounce counts (Walmart 46, Costco 43, UNFI 46, KeHE 46) and gap counts (29 dims, 29 weight, 17 brand, 6 country, 6 UPC) all verified programmatically against `data/cinderhaven/product_master.csv`. Numbers in the narrative page match the actual data.
+### ~~2026-06-05 — Case study numbers verified against CSV~~
+- ~~**Why:** Bounce counts (Walmart 46, Costco 43, UNFI 46, KeHE 46) and gap counts (29 dims, 29 weight, 17 brand, 6 country, 6 UPC) all verified programmatically against `data/cinderhaven/product_master.csv`. Numbers in the narrative page match the actual data.~~
+- **Superseded by:** 2026-06-20 entry below.
+
+### 2026-06-20 — Partner-aware column matcher for barcode routing
+- **Why:** The merged global alias map caused all partners to read the same barcode column (gtin14 claimed for all partners' `upc` field because "gtin14" appeared in the merged alias list). Fix: `_get_effective_aliases(partner, field_name)` consults only the partner's own alias map for fields it defines, falling back to the global map for shared fields (case dims, brand, etc.). Walmart now routes `upc` → CSV `upc` column (12-digit); Costco/UNFI/KeHE route `upc` → CSV `gtin14` column (14-digit).
+- **Scope:** `src/engine/column_matcher.py`, all validation flows.
+- **Do not:** Merge partner alias maps for barcode fields. Do not change the YAML schemas — the fix is in column resolution, not schema definitions.
+
+### 2026-06-20 — Case study hook SKU: CHP-PS-001 (Stone Ground Mustard)
+- **Why:** Valid GTIN-14 (00614140000105) but corrupt UPC-12 check digit (614140000103, digit 3 should be 5). Fails Walmart (reads UPC-12), passes Costco/UNFI/KeHE (read GTIN-14). Mirror SKU CHP-PS-004 (Extra Virgin Olive Oil) inverts the pattern — valid UPC-12, corrupt GTIN-14. Together they demonstrate the core thesis: same product master, different partner schemas, different outcomes.
+- **Scope:** Case study page narrative.
+- **Do not:** Change the hook or mirror SKU without re-verifying the divergence story.
+
+### 2026-06-20 — Case study numbers verified against 50-SKU canonical data
+- **Why:** Bounce counts (Walmart 29, Costco 26, UNFI 26, KeHE 26), gap counts (18 case dims, 10 UPC-12 check digit, 8 GTIN-14 check digit, 2 weight, 2 country), and cost figures ($93K deferred revenue, $4,350–$14,500 slotting) all verified against `scripts/results/*.json` and `data/cinderhaven/product_master.csv`. Product lines: Artisan Sauces, Pantry Staples, Specialty Condiments, Dried Goods, Snack Bites (not "Deli & Grab" / "Snack Bars").
 - **Scope:** Case study page, `data/cinderhaven/product_master.csv`.
-- **Do not:** Assert case study numbers from memory — re-verify against the CSV if any data changes.
+- **Do not:** Assert case study numbers from memory — re-run `scripts/analyze_results.py` if any data changes.
 
 ---
 
