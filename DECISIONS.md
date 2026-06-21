@@ -24,10 +24,9 @@ Each entry:
 - **Scope:** Global — affects all browser-facing validation.
 - **Do not:** Run Pyodide on the main thread. Do not create a JS/TS copy of validation logic.
 
-### 2026-06-04 — Use Pydantic v2 for the four-tier validation topology
-- **Why:** v2's Rust core is 5-17x faster than v1. Model validators map naturally to the four tiers (presence -> format -> conditional -> GTIN hierarchy). Structured error contract (field/error_type/trigger/rejection_risk) returns as typed dicts, not nested JSON-Schema if/then/else.
-- **Scope:** Validation engine.
-- **Do not:** Use JSON Schema for conditional validation rules.
+### ~~2026-06-04 — Use Pydantic v2 for the four-tier validation topology~~
+- ~~**Why:** v2's Rust core is 5-17x faster than v1. Model validators map naturally to the four tiers (presence -> format -> conditional -> GTIN hierarchy). Structured error contract (field/error_type/trigger/rejection_risk) returns as typed dicts, not nested JSON-Schema if/then/else.~~
+- **Superseded by:** 2026-06-20 — replaced with stdlib dataclasses. Pydantic's validation features were unused; the four tiers are implemented in `validators.py` as plain functions, not model validators.
 
 ### 2026-06-04 — Use Vite + Alpine.js + Tailwind CSS for the frontend
 - **Why:** Vite handles Pyodide WASM loading cleanly, gives fast dev server + optimized static builds. Alpine.js provides lightweight reactivity for schema-diff toggling, file-drop, and result display without framework overhead. Tailwind config maps directly to Lailara design tokens.
@@ -43,10 +42,14 @@ Each entry:
 
 ## Data & Schema
 
-### 2026-06-04 — Pin Pyodide 0.29.4 + pydantic==2.10.5 for browser runtime
-- **Why:** Official Emscripten wheels exist for pydantic-core at this version. Letting micropip resolve to latest pydantic from PyPI causes version skew with the bundled pydantic-core (pyodide-recipes#162). Fallback if v2 proves problematic: attrs + cattrs (pure Python).
-- **Scope:** Browser runtime, Pyodide Web Worker.
-- **Do not:** Let micropip install the latest pydantic. Do not assume pydantic-core wheels exist for arbitrary versions.
+### ~~2026-06-04 — Pin Pyodide 0.29.4 + pydantic==2.10.5 for browser runtime~~
+- ~~**Why:** Official Emscripten wheels exist for pydantic-core at this version. Letting micropip resolve to latest pydantic from PyPI causes version skew with the bundled pydantic-core (pyodide-recipes#162). Fallback if v2 proves problematic: attrs + cattrs (pure Python).~~
+- **Superseded by:** 2026-06-20 entry below.
+
+### 2026-06-20 — Replace Pydantic with stdlib dataclasses for validation models
+- **Why:** All six Pydantic models were thin wrappers (field name, type, default) with no validators, discriminated unions, or custom serialization. Dropping pydantic eliminates the single heaviest Pyodide package download (pydantic-core, ~2.5MB compressed Rust extension). Worker now loads only pyyaml (Pyodide built-in). `SchemaConfig.from_dict()` handles nested deserialization that `model_validate()` previously did. StrEnum values serialize correctly through `dataclasses.asdict()`.
+- **Scope:** `models.py`, `schema_loader.py`, `audit.py`, all test files, Pyodide worker.
+- **Do not:** Re-add Pydantic unless validation logic grows complex enough to justify the download cost (discriminated unions, custom validators, recursive models).
 
 ### 2026-06-04 — CDN loading for Pyodide, not self-hosted
 - **Why:** Pyodide payload is ~10MB WASM. CDN (cdn.jsdelivr.net/pyodide/v0.29.4/full/) leverages browser caching for repeat visitors and keeps the build artifact small. Preload links for cold-start optimization.

@@ -95,3 +95,15 @@ SQLite/pytest/Ruff). Ready for /clarify to scope the build arc.
 **State:** Committed and pushed (3a2d7af). 102 tests passing. Case study page current with canonical platform data. GTIN hierarchy divergence pattern confirmed working.
 
 **Next:** Deploy to update live site (CI/CD should auto-deploy on push to main). No other pending work.
+
+---
+
+## 2026-06-20 21:45 — Preflight performance items 2-6
+
+**Started from:** Arc complete, deployed. Step 1 (JS/Python split) code changes done but uncommitted. Task: items 2-6.
+
+**Did:** Confirmed items 2/3/6 were already in place. Item 4: replaced Pydantic with stdlib dataclasses — eliminated heaviest Pyodide package (pydantic-core Rust extension). Item 5: added service worker caching Pyodide CDN assets and hashed static assets. Deployed to Fly.io, verified cold-load performance and all 7 verification items (bounce counts 29/26/26/26, 102 tests, no console errors).
+
+**State:** All performance items committed and deployed (3 commits: 836e741, 86cf778, 3d0e28c). Live at preflight.lailarallc.com. Cold load: file-drop ready ~250ms, Pyodide background ~5-8s. Service worker eliminates Pyodide download on repeat visits. 102 tests pass.
+
+**Next:** Performance arc complete. No pending work. Pre-existing CLI `-m` invocation issue is minor (tests and browser flow work). Project is done.
