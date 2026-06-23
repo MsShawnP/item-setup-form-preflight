@@ -32,6 +32,28 @@ export default () => ({
     if (file) this.processFile(file)
   },
 
+  async loadSampleData() {
+    const store = this.$store.app
+    store.validationError = null
+
+    try {
+      const response = await fetch('/sample/product_master.csv')
+      if (!response.ok) throw new Error('Failed to load sample data')
+      const buffer = await response.arrayBuffer()
+
+      store.fileData = {
+        name: 'product_master.csv',
+        size: buffer.byteLength,
+        type: 'text/csv',
+        buffer,
+      }
+      store.selectedPartner = 'walmart'
+      store.setStep(2)
+    } catch (err) {
+      store.validationError = `Could not load sample data: ${err.message}`
+    }
+  },
+
   processFile(file) {
     const store = this.$store.app
     store.validationError = null

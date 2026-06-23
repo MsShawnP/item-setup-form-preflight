@@ -122,6 +122,20 @@
           or click to browse — .csv and .xlsx accepted
         </p>
       </div>
+
+      <!-- Sample data shortcut -->
+      <div class="flex flex-col items-center mt-6">
+        <button
+          class="font-sans text-[14px] font-semibold cursor-pointer"
+          style="background: none; border: 1px solid var(--color-london-85); border-radius: var(--radius-standard); padding: 10px 24px; color: var(--color-london-20);"
+          @click="loadSampleData()"
+        >
+          See it in action
+        </button>
+        <p class="font-sans text-[13px] mt-2" style="color: var(--color-london-40);">
+          Loads a 50-SKU product master with real-world data gaps.
+        </p>
+      </div>
     </section>
 
 
