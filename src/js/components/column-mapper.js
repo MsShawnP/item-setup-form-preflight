@@ -67,7 +67,7 @@ export default () => ({
       return {
         bg: 'var(--color-status-warn-bg)',
         text: 'var(--color-status-warn-text)',
-        label: 'Low confidence',
+        label: 'Review',
       }
     }
     if (entry.status === 'ambiguous') {

@@ -323,16 +323,24 @@
         </template>
       </div>
 
-      <!-- Unmatched uploaded headers (informational) -->
+      <!-- Unmatched uploaded headers (collapsible) -->
       <div
         class="font-sans text-[13px] mb-6"
         style="color: var(--color-london-35);"
         x-show="unmatchedHeaders.length > 0"
+        x-data="{ extrasOpen: false }"
       >
-        <p class="font-semibold text-[12px] mb-2" style="color: var(--color-london-20);">
-          Extra columns in your file (not in schema):
-        </p>
-        <div class="flex flex-wrap gap-2">
+        <button
+          class="text-[13px] cursor-pointer"
+          style="background: none; border: none; padding: 0; color: var(--color-london-35);"
+          @click="extrasOpen = !extrasOpen"
+        >
+          <span x-text="unmatchedHeaders.length"></span>
+          extra columns not required by
+          <span x-text="{ walmart: 'Walmart', costco: 'Costco', unfi: 'UNFI', kehe: 'KeHE' }[$store.app.selectedPartner]"></span>
+          <span x-text="extrasOpen ? '▾' : '▸'"></span>
+        </button>
+        <div class="flex flex-wrap gap-2 mt-2" x-show="extrasOpen" x-cloak>
           <template x-for="h in unmatchedHeaders" :key="h">
             <span
               class="inline-block text-[11px] px-2 py-1"
