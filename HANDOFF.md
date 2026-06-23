@@ -107,3 +107,15 @@ SQLite/pytest/Ruff). Ready for /clarify to scope the build arc.
 **State:** All performance items committed and deployed (3 commits: 836e741, 86cf778, 3d0e28c). Live at preflight.lailarallc.com. Cold load: file-drop ready ~250ms, Pyodide background ~5-8s. Service worker eliminates Pyodide download on repeat visits. 102 tests pass.
 
 **Next:** Performance arc complete. No pending work. Pre-existing CLI `-m` invocation issue is minor (tests and browser flow work). Project is done.
+
+---
+
+## 2026-06-23 19:30 — Sample data button + column mapping UX cleanup
+
+**Started from:** Arc complete, deployed. No pending work.
+
+**Did:** Added "See it in action" button to Readiness page — loads Cinderhaven 50-SKU CSV into validation flow with Walmart pre-selected. Collapsed extra-columns list behind disclosure toggle ("{n} extra columns not required by {partner} ▸"). Relabeled low-confidence badge from "Low confidence" to "Review". Deployed both changes.
+
+**State:** Two commits deployed (bfce8d4, 31ae893). Live at preflight.lailarallc.com. 102 tests pass, bounce counts unchanged (29/26/26/26).
+
+**Next:** No pending work. Project is done.
