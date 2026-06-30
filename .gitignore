@@ -56,3 +56,8 @@ dist/
 .pytest_cache/
 htmlcov/
 .coverage
+
+# Security - secret leak prevention
+.env.*
+*.pem
+secrets.*
