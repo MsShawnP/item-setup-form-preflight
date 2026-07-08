@@ -47,7 +47,7 @@ def do_match(file_path: str, filename: str, partner: str) -> str:
     schema_path = f"/home/pyodide/schemas/{partner}.yaml"
     schema = load_schema(schema_path)
 
-    result = match_columns(parsed.headers, schema)
+    result = match_columns(parsed.headers, schema, parsed.rows)
 
     mapping = []
     for m in result.matches:

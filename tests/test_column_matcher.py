@@ -71,6 +71,67 @@ class TestFuzzyAliasMatching:
         assert match_map["case_width_in"].uploaded_header == "Item Width (in)"
 
 
+def _costco_schema() -> SchemaConfig:
+    """Minimal Costco-like schema whose upc field expects a 14-digit GTIN."""
+    return SchemaConfig.from_dict({
+        "partner": "costco",
+        "display_name": "Costco",
+        "description": "Costco item setup workbook requirements",
+        "required_fields": [
+            {"name": "product_name", "required": True},
+            {"name": "brand", "required": True},
+            {"name": "upc", "required": True,
+             "format_pattern": r"^\d{14}$",
+             "format_description": "14-digit case-level GTIN"},
+        ],
+        "conditional_rules": [],
+        "gtin_hierarchy": {
+            "expected_level": "case",
+            "expected_formats": ["GTIN-14"],
+        },
+    })
+
+
+class TestExactTieBrokenByFormat:
+    """When 'upc' and 'gtin14' are both exact aliases of the upc field,
+    the match must not be decided by file order — it should prefer the
+    column whose values satisfy the field's format pattern."""
+
+    def test_prefers_gtin14_column_when_upc_appears_first(self):
+        """Differently-ordered upload: the 12-digit 'upc' column precedes
+        the 14-digit 'gtin14' column, but Costco's upc field (^\\d{14}$)
+        must still bind to 'gtin14'."""
+        schema = _costco_schema()
+        headers = ["product_name", "brand", "upc", "gtin14"]
+        rows = [
+            {"product_name": "A", "brand": "X",
+             "upc": "012345678905", "gtin14": "10012345678905"},
+            {"product_name": "B", "brand": "Y",
+             "upc": "049000004502", "gtin14": "20049000004509"},
+        ]
+
+        result = match_columns(headers, schema, rows)
+        match_map = {m.schema_field: m for m in result.matches}
+
+        assert match_map["upc"].status == MatchStatus.MATCHED
+        # The 14-digit column wins even though it comes later in the file.
+        assert match_map["upc"].uploaded_header == "gtin14"
+        # The 12-digit UPC column is left unclaimed (Costco has no 12-digit
+        # field), not silently graded against ^\d{14}$.
+        assert "upc" in result.unmatched_headers
+
+    def test_first_match_wins_without_sample_values(self):
+        """Without sample values the matcher stays order-dependent
+        (backward compatible) — the first exact alias in file order wins."""
+        schema = _costco_schema()
+        headers = ["product_name", "brand", "upc", "gtin14"]
+
+        result = match_columns(headers, schema)
+        match_map = {m.schema_field: m for m in result.matches}
+
+        assert match_map["upc"].uploaded_header == "upc"
+
+
 class TestExactMatch:
     def test_matches_exact_schema_field_names(self):
         """Happy path: file with exact schema field names -> all matched

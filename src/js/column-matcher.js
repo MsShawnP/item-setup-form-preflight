@@ -274,22 +274,86 @@ function getEffectiveAliases(partner, fieldName) {
   return ALIAS_MAP[fieldName] || [fieldName]
 }
 
+/** Collect the non-blank string values under each header. */
+function collectColumnValues(headers, rows) {
+  const values = {}
+  for (const h of headers) values[h] = []
+  for (const row of rows) {
+    for (const h of headers) {
+      const v = row[h]
+      if (v !== null && v !== undefined && String(v).trim() !== '') {
+        values[h].push(String(v).trim())
+      }
+    }
+  }
+  return values
+}
+
+/** Fraction of sample values that satisfy the format pattern. */
+function formatMatchRatio(sample, pattern) {
+  if (!sample || sample.length === 0) return 0
+  let re
+  try {
+    re = new RegExp(pattern)
+  } catch {
+    return 0
+  }
+  let hits = 0
+  for (const v of sample) {
+    if (re.test(v)) hits++
+  }
+  return hits / sample.length
+}
+
+/**
+ * Choose among equally-exact header matches. With a format pattern and
+ * sample values, prefer the header whose values best satisfy the pattern;
+ * ties keep file order. Otherwise the first header in file order wins.
+ */
+function preferByFormat(idxs, headers, formatPattern, columnValues) {
+  if (idxs.length === 1 || !formatPattern || !columnValues) return idxs[0]
+  let best = idxs[0]
+  let bestRatio = formatMatchRatio(columnValues[headers[idxs[0]]] || [], formatPattern)
+  for (let k = 1; k < idxs.length; k++) {
+    const ratio = formatMatchRatio(columnValues[headers[idxs[k]]] || [], formatPattern)
+    if (ratio > bestRatio) {
+      bestRatio = ratio
+      best = idxs[k]
+    }
+  }
+  return best
+}
+
 /**
  * Match uploaded file headers to schema fields.
+ *
+ * When several headers are exact aliases of the same field (e.g. both
+ * "upc" and "gtin14" alias the upc field for Costco/UNFI/KeHE), the match
+ * is order-dependent unless sample values are supplied: pass `rows` so the
+ * field prefers the column whose values satisfy its format pattern.
  *
  * @param {string[]} headers - Column headers from the uploaded file.
  * @param {Object} schema - Parsed schema config with required_fields array.
  * @param {string} partner - Partner key (walmart|costco|unfi|kehe).
+ * @param {Object[]|null} rows - Optional parsed rows to break exact ties by format.
  * @returns {{ mapping: Object[], unmatchedHeaders: string[], unmatchedFields: string[], rowCount: number, headers: string[] }}
  */
-export function matchColumns(headers, schema, partner) {
+export function matchColumns(headers, schema, partner, rows = null) {
   const schemaFields = schema.required_fields.map((f) => f.name)
+  const fieldPatterns = {}
+  for (const f of schema.required_fields) {
+    fieldPatterns[f.name] = f.format_pattern || null
+  }
   const normHeaders = headers.map((h) => normalize(h))
+  const columnValues = rows ? collectColumnValues(headers, rows) : null
   const claimed = new Set()
   const matches = []
 
   for (const fieldName of schemaFields) {
-    const match = matchSingleField(fieldName, headers, normHeaders, claimed, partner)
+    const match = matchSingleField(
+      fieldName, headers, normHeaders, claimed, partner,
+      fieldPatterns[fieldName], columnValues,
+    )
     if (match.uploadedHeader !== null) {
       const idx = headers.findIndex(
         (h, i) => h === match.uploadedHeader && !claimed.has(i),
@@ -311,7 +375,10 @@ export function matchColumns(headers, schema, partner) {
   }
 }
 
-function matchSingleField(fieldName, headers, normHeaders, claimed, partner) {
+function matchSingleField(
+  fieldName, headers, normHeaders, claimed, partner,
+  formatPattern = null, columnValues = null,
+) {
   const normField = normalize(fieldName)
   const aliases = partner
     ? getEffectiveAliases(partner, fieldName)
@@ -325,17 +392,22 @@ function matchSingleField(fieldName, headers, normHeaders, claimed, partner) {
     normAliases.add(normalize(a))
   }
 
-  // Layer 1: Exact match
+  // Layer 1: Exact match. Gather every unclaimed exact alias; with more
+  // than one, prefer the column whose values fit the field's format
+  // pattern so a "upc" column ahead of "gtin14" can't grab a 14-digit field.
+  const exactIdxs = []
   for (let idx = 0; idx < normHeaders.length; idx++) {
     if (claimed.has(idx)) continue
-    if (normAliases.has(normHeaders[idx])) {
-      return {
-        schemaField: fieldName,
-        uploadedHeader: headers[idx],
-        confidence: EXACT_CONFIDENCE,
-        status: 'matched',
-        candidates: [],
-      }
+    if (normAliases.has(normHeaders[idx])) exactIdxs.push(idx)
+  }
+  if (exactIdxs.length > 0) {
+    const chosen = preferByFormat(exactIdxs, headers, formatPattern, columnValues)
+    return {
+      schemaField: fieldName,
+      uploadedHeader: headers[chosen],
+      confidence: EXACT_CONFIDENCE,
+      status: 'matched',
+      candidates: [],
     }
   }
 

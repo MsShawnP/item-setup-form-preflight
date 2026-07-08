@@ -56,9 +56,11 @@ export default () => ({
       // Store parsed data for the validation step
       store.parsedData = parsed
 
-      // Load the schema and match columns in JS
+      // Load the schema and match columns in JS. Pass parsed rows so an
+      // exact tie between alias columns (e.g. "upc" vs "gtin14") is broken
+      // by which column's values satisfy the field's format pattern.
       const schema = loadSchema(partnerId)
-      const result = matchColumns(parsed.headers, schema, partnerId)
+      const result = matchColumns(parsed.headers, schema, partnerId, parsed.rows)
 
       store.columnMapping = {
         ...result,

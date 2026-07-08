@@ -320,7 +320,11 @@ _CONTAINMENT_CONFIDENCE_LOW = 0.7
 _FUZZY_THRESHOLD = 0.6
 
 
-def match_columns(headers: list[str], schema: SchemaConfig) -> MatchResult:
+def match_columns(
+    headers: list[str],
+    schema: SchemaConfig,
+    rows: list[dict[str, str | None]] | None = None,
+) -> MatchResult:
     """Match uploaded file headers to schema fields.
 
     Algorithm layers (each schema field tries in order):
@@ -330,20 +334,36 @@ def match_columns(headers: list[str], schema: SchemaConfig) -> MatchResult:
       4. If multiple fuzzy candidates tie, mark AMBIGUOUS
 
     Each uploaded header can match at most one schema field. Each
-    schema field can match at most one header. First-best-match wins.
+    schema field can match at most one header.
+
+    When several headers are exact aliases of the same field (e.g. both
+    "upc" and "gtin14" alias the `upc` field for Costco/UNFI/KeHE), the
+    match is order-dependent unless sample values are supplied: pass
+    ``rows`` so the field prefers the column whose values satisfy its
+    format pattern (a 14-digit GTIN column over a 12-digit UPC column
+    when the schema expects ``^\\d{14}$``). Without ``rows`` the first
+    matching header in file order wins.
 
     Args:
         headers: Column headers from the uploaded file.
         schema: Partner schema config with required_fields.
+        rows: Optional parsed rows (header -> value) used to break exact
+            ties by format pattern.
 
     Returns:
         MatchResult with every field and header accounted for.
     """
-    # Build list of schema field names
+    # Build list of schema field names and their format patterns
     schema_fields = [f.name for f in schema.required_fields]
+    field_patterns = {
+        f.name: f.format_pattern for f in schema.required_fields
+    }
 
     # Normalize headers once
     norm_headers = [_normalize(h) for h in headers]
+
+    # Per-header sample values (only when rows are supplied)
+    column_values = _collect_column_values(headers, rows) if rows else None
 
     # Track which headers and fields have been claimed
     claimed_headers: set[int] = set()  # indices into headers list
@@ -353,6 +373,7 @@ def match_columns(headers: list[str], schema: SchemaConfig) -> MatchResult:
     for field_name in schema_fields:
         match = _match_single_field(
             field_name, headers, norm_headers, claimed_headers, partner,
+            field_patterns.get(field_name), column_values,
         )
         if match.uploaded_header is not None:
             # Find the index and claim it
@@ -381,12 +402,63 @@ def match_columns(headers: list[str], schema: SchemaConfig) -> MatchResult:
     )
 
 
+def _collect_column_values(
+    headers: list[str],
+    rows: list[dict[str, str | None]],
+) -> dict[str, list[str]]:
+    """Collect the non-blank string values under each header.
+
+    Used to break exact-match ties by format pattern.
+    """
+    values: dict[str, list[str]] = {h: [] for h in headers}
+    for row in rows:
+        for header in headers:
+            val = row.get(header)
+            if val is not None and str(val).strip() != "":
+                values[header].append(str(val).strip())
+    return values
+
+
+def _format_match_ratio(sample: list[str], pattern: str) -> float:
+    """Fraction of sample values that satisfy the format pattern."""
+    if not sample:
+        return 0.0
+    hits = sum(1 for v in sample if re.match(pattern, v))
+    return hits / len(sample)
+
+
+def _prefer_by_format(
+    idxs: list[int],
+    headers: list[str],
+    format_pattern: str | None,
+    column_values: dict[str, list[str]] | None,
+) -> int:
+    """Choose among equally-exact header matches.
+
+    With a format pattern and sample values, prefer the header whose
+    values best satisfy the pattern; ties keep file order. Otherwise the
+    first header in file order wins (backward-compatible).
+    """
+    if len(idxs) == 1 or format_pattern is None or column_values is None:
+        return idxs[0]
+    # idxs are already in ascending (file) order, so max() keeps the
+    # earliest header on a tie.
+    return max(
+        idxs,
+        key=lambda i: _format_match_ratio(
+            column_values.get(headers[i], []), format_pattern
+        ),
+    )
+
+
 def _match_single_field(
     field_name: str,
     headers: list[str],
     norm_headers: list[str],
     claimed: set[int],
     partner: str = "",
+    format_pattern: str | None = None,
+    column_values: dict[str, list[str]] | None = None,
 ) -> ColumnMatch:
     """Try to match a single schema field to the best available header."""
     norm_field = _normalize(field_name)
@@ -400,16 +472,23 @@ def _match_single_field(
     norm_aliases = {_normalize(a) for a in all_aliases}
 
     # --- Layer 1: Exact match ---
-    for idx, norm_h in enumerate(norm_headers):
-        if idx in claimed:
-            continue
-        if norm_h in norm_aliases:
-            return ColumnMatch(
-                schema_field=field_name,
-                uploaded_header=headers[idx],
-                confidence=_EXACT_CONFIDENCE,
-                status=MatchStatus.MATCHED,
-            )
+    # Gather every unclaimed header that is an exact alias. With more than
+    # one, prefer the column whose values fit the field's format pattern so
+    # a "upc" column ahead of a "gtin14" column can't grab a 14-digit field.
+    exact_idxs = [
+        idx for idx, norm_h in enumerate(norm_headers)
+        if idx not in claimed and norm_h in norm_aliases
+    ]
+    if exact_idxs:
+        chosen = _prefer_by_format(
+            exact_idxs, headers, format_pattern, column_values,
+        )
+        return ColumnMatch(
+            schema_field=field_name,
+            uploaded_header=headers[chosen],
+            confidence=_EXACT_CONFIDENCE,
+            status=MatchStatus.MATCHED,
+        )
 
     # --- Layer 2: Containment (alias in header or header in alias) ---
     best_containment: tuple[int, float] | None = None
