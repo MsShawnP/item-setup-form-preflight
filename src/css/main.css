@@ -96,9 +96,9 @@
   --color-status-pass-text: #0e6e5a;
   --color-status-warn-bg: #fdeee0;
   --color-status-warn-text: #7a3d10;
-  --color-status-fail-bg: #fde8e7;
+  --color-status-fail-bg: #fce8e7;
   --color-status-fail-text: #7a0906;
-  --color-status-info-bg: #e5e8f5;
+  --color-status-info-bg: #e8eaf4;
   --color-status-info-text: #1f2e7a;
 
   /* ── Dark card tokens ────────────────────────────────────── */
