@@ -13,6 +13,9 @@ from src.engine.gtin.gtin_core import (
     GTINType,
     validate_single_gtin,
 )
+from src.engine.gtin.gtin_core import (
+    Severity as GTINSeverity,
+)
 from src.engine.models import (
     ErrorType,
     SchemaConfig,
@@ -31,6 +34,15 @@ _FORMAT_TO_GTIN_TYPE: dict[str, GTINType] = {
     "EAN": GTINType.GTIN_13,
     "GTIN-14": GTINType.GTIN_14,
     "ITF-14": GTINType.GTIN_14,
+}
+
+# GTIN core issues carry their own severity scale; map it onto the engine's
+# severity enum so an INFO advisory is reported as INFO rather than being
+# forced to CRITICAL.
+_GTIN_SEVERITY_TO_MODEL: dict[GTINSeverity, Severity] = {
+    GTINSeverity.CRITICAL: Severity.CRITICAL,
+    GTINSeverity.WARNING: Severity.WARNING,
+    GTINSeverity.INFO: Severity.INFO,
 }
 
 
@@ -169,11 +181,18 @@ def _tier4_gtin(
     result = validate_single_gtin(gtin_value, row_number=1)
 
     if not result.is_valid:
+        # An invalid GTIN carries one blocking issue (e.g. BAD_CHECK_DIGIT)
+        # plus optional advisories that merely ride along (e.g. the
+        # UPC_NOT_GTIN13 INFO note). Surface only the blocking issue(s) at
+        # their real severity: stamping the advisory CRITICAL both mislabels
+        # it and double-counts the GTIN in the aggregate (20 for 10 bad UPCs).
         for issue in result.issues:
+            if issue.severity is not GTINSeverity.CRITICAL:
+                continue
             errors.append(ValidationError(
                 field=gtin_field,
                 error_type=ErrorType.GTIN_HIERARCHY_WRONG,
-                severity=Severity.CRITICAL,
+                severity=_GTIN_SEVERITY_TO_MODEL[issue.severity],
                 message=f"GTIN check failed: {issue.message}",
             ))
         return errors

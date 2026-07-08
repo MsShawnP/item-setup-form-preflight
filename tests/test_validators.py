@@ -1,6 +1,7 @@
 """Tests for the four-tier validation engine."""
 
 
+from src.engine.gtin.gtin_core import calculate_check_digit
 from src.engine.models import ErrorType, SchemaConfig, Severity
 from src.engine.validators import validate_product
 
@@ -76,6 +77,15 @@ def _valid_product() -> dict:
         "total_fat_g": "0",
         "sodium_mg": "110",
     }
+
+
+def _bad_check_digit_upc(seed: int) -> str:
+    """Build a distinct 12-digit UPC-A whose check digit is deliberately
+    wrong (valid length, valid format, invalid check digit)."""
+    payload = f"49000000{seed:03d}"  # 11 digits
+    correct = calculate_check_digit(payload)
+    wrong = (correct + 1) % 10
+    return payload + str(wrong)
 
 
 class TestHappyPath:
@@ -192,6 +202,37 @@ class TestGTINValidation:
         ]
         assert len(gtin_errors) >= 1
         assert any("check digit" in e.message.lower() for e in gtin_errors)
+
+    def test_bad_gtin_counted_once_at_true_severity(self):
+        """A bad UPC surfaces exactly one GTIN error (the real check-digit
+        failure) at CRITICAL — not the check-digit failure PLUS the
+        UPC_NOT_GTIN13 advisory both stamped CRITICAL.
+
+        Before the fix each bad UPC produced two GTIN_HIERARCHY_WRONG
+        errors, so 10 bad UPCs aggregated to 20 and an INFO advisory was
+        reported as CRITICAL.
+        """
+        schema = _walmart_schema()
+
+        gtin_error_total = 0
+        for seed in range(10):
+            product = _valid_product()
+            product["upc"] = _bad_check_digit_upc(seed)
+            result = validate_product(product, schema)
+
+            gtin_errors = [
+                e for e in result.errors
+                if e.error_type == ErrorType.GTIN_HIERARCHY_WRONG
+            ]
+            # Exactly one GTIN error per bad UPC — the advisory no longer
+            # rides along as a second (mislabelled) critical.
+            assert len(gtin_errors) == 1
+            assert gtin_errors[0].severity == Severity.CRITICAL
+            assert "check digit" in gtin_errors[0].message.lower()
+            gtin_error_total += len(gtin_errors)
+
+        # 10 bad UPCs -> 10 GTIN errors, not 20.
+        assert gtin_error_total == 10
 
 
 class TestGracefulErrorHandling:
