@@ -120,10 +120,16 @@ def _tier3_conditional(
     product: dict,
     schema: SchemaConfig,
     skip_fields: set[str],
-) -> tuple[list[ValidationError], set[str]]:
-    """Tier 3: Cross-field conditional requirement checks."""
+) -> tuple[list[ValidationError], set[str], set[str]]:
+    """Tier 3: Cross-field conditional requirement checks.
+
+    Also returns the set of conditionally-triggered fields that were
+    evaluated, so the caller can count them toward fields_checked (they
+    are only checked when their trigger fires).
+    """
     errors: list[ValidationError] = []
     failed_fields: set[str] = set()
+    checked_fields: set[str] = set()
 
     for rule in schema.conditional_rules:
         trigger_value = product.get(rule.trigger_field)
@@ -138,6 +144,7 @@ def _tier3_conditional(
         for req_field in rule.required_fields:
             if req_field in skip_fields:
                 continue
+            checked_fields.add(req_field)
             value = product.get(req_field)
             if _is_blank(value):
                 failed_fields.add(req_field)
@@ -152,16 +159,22 @@ def _tier3_conditional(
                     ),
                 ))
 
-    return errors, failed_fields
+    return errors, failed_fields, checked_fields
 
 
 def _tier4_gtin(
     product: dict,
     schema: SchemaConfig,
     skip_fields: set[str],
-) -> list[ValidationError]:
-    """Tier 4: GTIN hierarchy validation using vendored gtin_core."""
+) -> tuple[list[ValidationError], set[str]]:
+    """Tier 4: GTIN hierarchy validation using vendored gtin_core.
+
+    Returns the errors plus the set of GTIN fields that failed, so the
+    caller folds them into the row's failed-field count (a GTIN failure
+    is a field failure like any other tier's).
+    """
     errors: list[ValidationError] = []
+    failed_fields: set[str] = set()
 
     # Find the UPC/GTIN field — check common field names
     gtin_field = None
@@ -176,7 +189,7 @@ def _tier4_gtin(
             break
 
     if gtin_field is None or gtin_value is None:
-        return errors
+        return errors, failed_fields
 
     result = validate_single_gtin(gtin_value, row_number=1)
 
@@ -195,7 +208,8 @@ def _tier4_gtin(
                 severity=_GTIN_SEVERITY_TO_MODEL[issue.severity],
                 message=f"GTIN check failed: {issue.message}",
             ))
-        return errors
+        failed_fields.add(gtin_field)
+        return errors, failed_fields
 
     # Check that the GTIN type matches what the schema expects
     expected_types = set()
@@ -218,8 +232,9 @@ def _tier4_gtin(
                 "submissions."
             ),
         ))
+        failed_fields.add(gtin_field)
 
-    return errors
+    return errors, failed_fields
 
 
 def validate_product(product: dict, schema: SchemaConfig) -> ValidationResult:
@@ -237,6 +252,10 @@ def validate_product(product: dict, schema: SchemaConfig) -> ValidationResult:
     """
     all_errors: list[ValidationError] = []
     failed_fields: set[str] = set()
+    # Fields we actually evaluated: every required field, plus any
+    # conditionally-triggered field. pass/fail counts are derived from
+    # this set so they always foot to fields_checked.
+    checked_fields: set[str] = {f.name for f in schema.required_fields}
     tier_summary = {"presence": 0, "format": 0, "conditional": 0, "gtin": 0}
 
     # Tier 1: Presence
@@ -252,27 +271,41 @@ def validate_product(product: dict, schema: SchemaConfig) -> ValidationResult:
     tier_summary["format"] = len(t2_errors)
 
     # Tier 3: Conditional
-    t3_errors, t3_failed = _tier3_conditional(product, schema, failed_fields)
+    t3_errors, t3_failed, t3_checked = _tier3_conditional(
+        product, schema, failed_fields
+    )
     all_errors.extend(t3_errors)
     failed_fields.update(t3_failed)
+    checked_fields.update(t3_checked)
     tier_summary["conditional"] = len(t3_errors)
 
     # Tier 4: GTIN hierarchy
-    t4_errors = _tier4_gtin(product, schema, failed_fields)
+    t4_errors, t4_failed = _tier4_gtin(product, schema, failed_fields)
     all_errors.extend(t4_errors)
+    failed_fields.update(t4_failed)
+    checked_fields.update(t4_failed)
     tier_summary["gtin"] = len(t4_errors)
 
-    # Count fields checked: required fields + conditionally-triggered fields
-    fields_checked = len(schema.required_fields)
-    fail_count = len(all_errors)
-    pass_count = fields_checked - len(failed_fields)
+    # Counts foot: pass_count + fail_count == fields_checked, and every
+    # failed field is a checked field, so a FAIL row can never report
+    # "all fields pass".
+    fields_checked = len(checked_fields)
+    fail_count = len(failed_fields)
+    pass_count = max(0, fields_checked - fail_count)
 
-    verdict = "PASS" if fail_count == 0 else "FAIL"
+    # Verdict is severity-aware rather than "any error fails": a row bounces
+    # on a blocking issue (CRITICAL missing/invalid, or WARNING format/type
+    # mismatch — both reject on submission), but an INFO-level advisory does
+    # not fail the row on its own.
+    has_blocking = any(
+        e.severity in (Severity.CRITICAL, Severity.WARNING) for e in all_errors
+    )
+    verdict = "FAIL" if has_blocking else "PASS"
 
     return ValidationResult(
         errors=all_errors,
         fields_checked=fields_checked,
-        pass_count=max(0, pass_count),
+        pass_count=pass_count,
         fail_count=fail_count,
         verdict=verdict,
         tier_summary=tier_summary,

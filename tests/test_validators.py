@@ -235,6 +235,82 @@ class TestGTINValidation:
         assert gtin_error_total == 10
 
 
+class TestCountCoherence:
+    def test_fail_row_does_not_report_all_fields_passing(self):
+        """A row that fails only on the GTIN must not report that every
+        field passed. Before the fix, GTIN failures were never added to
+        failed_fields, so a FAIL row could show '15 of 15 fields pass'."""
+        schema = _walmart_schema()
+        product = _valid_product()
+        product["upc"] = _bad_check_digit_upc(3)  # only defect is the GTIN
+
+        result = validate_product(product, schema)
+
+        assert result.verdict == "FAIL"
+        assert result.fail_count >= 1
+        assert result.pass_count < result.fields_checked
+        # Counts foot.
+        assert result.pass_count + result.fail_count == result.fields_checked
+
+    def test_counts_foot_for_valid_product(self):
+        """pass_count + fail_count == fields_checked, with zero failures."""
+        schema = _walmart_schema()
+        result = validate_product(_valid_product(), schema)
+
+        assert result.fail_count == 0
+        assert result.pass_count == result.fields_checked
+
+    def test_triggered_conditional_fields_count_toward_total(self):
+        """Conditionally-required fields are counted only when triggered,
+        and still foot."""
+        schema = _walmart_schema()
+        product = _valid_product()
+        product["storage_type"] = "Refrigerated"  # triggers temp_min/temp_max
+
+        result = validate_product(product, schema)
+
+        # 15 required + 2 triggered conditional fields.
+        assert result.fields_checked == 17
+        assert result.fail_count == 2  # temp_min, temp_max missing
+        assert result.pass_count + result.fail_count == result.fields_checked
+
+
+class TestSeverityAwareVerdict:
+    """Verdict derives from severity, not from a raw error count. A blocking
+    issue (CRITICAL or WARNING) bounces the row; an INFO advisory does not.
+    """
+
+    def test_clean_row_passes(self):
+        schema = _walmart_schema()
+        result = validate_product(_valid_product(), schema)
+        assert result.verdict == "PASS"
+        assert len(result.errors) == 0
+
+    def test_critical_issue_bounces(self):
+        """A CRITICAL issue (missing required field) is a hard bounce."""
+        schema = _walmart_schema()
+        product = _valid_product()
+        del product["brand"]  # PRESENCE_MISSING (CRITICAL)
+
+        result = validate_product(product, schema)
+
+        assert result.verdict == "FAIL"
+
+    def test_warning_issue_bounces(self):
+        """A WARNING-level format violation is a real bounce (it rejects on
+        submission), so the row still fails."""
+        schema = _walmart_schema()
+        product = _valid_product()
+        product["case_pack_qty"] = "not-a-number"  # FORMAT_INVALID (WARNING)
+
+        result = validate_product(product, schema)
+
+        severities = {e.severity for e in result.errors}
+        assert Severity.CRITICAL not in severities
+        assert Severity.WARNING in severities
+        assert result.verdict == "FAIL"
+
+
 class TestGracefulErrorHandling:
     def test_unknown_field_in_conditional_handled(self):
         """Unknown field in conditional rule -> handled without crashing."""
