@@ -264,8 +264,14 @@ class TestGTINHierarchyDivergence:
         # Walmart: UPC-12 passes everything
         walmart_result = validate_product(product, walmart)
         assert walmart_result.verdict == "PASS"
-        upc_errors = [e for e in walmart_result.errors if e.field == "upc"]
-        assert len(upc_errors) == 0
+        # The valid UPC-12 carries only a non-blocking INFO advisory for
+        # Walmart; there is no blocking upc error.
+        blocking_upc_errors = [
+            e for e in walmart_result.errors
+            if e.field == "upc"
+            and e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking_upc_errors) == 0
 
         # Costco: UPC-12 fails format (12 digits vs. expected 14)
         # Also missing Costco-specific required fields, but the UPC failure
@@ -287,8 +293,14 @@ class TestGTINHierarchyDivergence:
 
         # Costco: GTIN-14 passes everything
         costco_result = validate_product(costco_product, costco)
-        upc_errors = [e for e in costco_result.errors if e.field == "upc"]
-        assert len(upc_errors) == 0
+        # The valid case-level GTIN-14 carries only a non-blocking INFO
+        # advisory (case-level indicator) for Costco; no blocking upc error.
+        blocking_upc_errors = [
+            e for e in costco_result.errors
+            if e.field == "upc"
+            and e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking_upc_errors) == 0
 
         # Create a Walmart-shaped product but with the GTIN-14
         walmart_product = _valid_walmart_product()
@@ -333,9 +345,16 @@ class TestGTINHierarchyDivergence:
             e for e in result.errors
             if e.error_type == ErrorType.GTIN_HIERARCHY_WRONG
         ]
-        assert len(gtin_errors) == 1
-        assert "GTIN-12" in gtin_errors[0].message
-        assert "Costco" in gtin_errors[0].message
+        # The hierarchy catch is a single blocking WARNING (wrong type). A
+        # non-blocking INFO advisory (UPC_NOT_GTIN13) also rides along on the
+        # valid 12-digit UPC, but it does not count toward the failure.
+        blocking = [
+            e for e in gtin_errors
+            if e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking) == 1
+        assert "GTIN-12" in blocking[0].message
+        assert "Costco" in blocking[0].message
 
     def test_gtin14_expected_formats_match(self):
         """Costco and UNFI both expect GTIN-14/ITF-14, and these formats
@@ -421,14 +440,26 @@ class TestUNFIAndKeHEValidation:
         product = _valid_unfi_product()
         result = validate_product(product, unfi)
         assert result.verdict == "PASS"
-        assert len(result.errors) == 0
+        # A valid case-level GTIN-14 carries a non-blocking INFO advisory
+        # (case-level indicator); the row still passes with no blocking errors.
+        blocking = [
+            e for e in result.errors
+            if e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking) == 0
 
     def test_valid_kehe_product_passes(self):
         kehe = load_schema(KEHE_YAML)
         product = _valid_kehe_product()
         result = validate_product(product, kehe)
         assert result.verdict == "PASS"
-        assert len(result.errors) == 0
+        # A valid case-level GTIN-14 carries a non-blocking INFO advisory
+        # (case-level indicator); the row still passes with no blocking errors.
+        blocking = [
+            e for e in result.errors
+            if e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking) == 0
 
     def test_unfi_product_passes_kehe_with_minor_gaps(self):
         """A product prepared for UNFI should need only minor additions

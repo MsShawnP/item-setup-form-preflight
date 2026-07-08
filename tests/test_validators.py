@@ -90,27 +90,38 @@ def _bad_check_digit_upc(seed: int) -> str:
 
 class TestHappyPath:
     def test_valid_product_passes_all_tiers(self):
-        """AE1: Valid product passes all tiers, PASS verdict, zero errors."""
+        """AE1: Valid product passes all tiers, PASS verdict, no blocking errors.
+
+        A valid 12-digit UPC carries a non-blocking INFO advisory
+        (UPC_NOT_GTIN13), so the row still passes with zero blocking errors.
+        """
         schema = _walmart_schema()
         product = _valid_product()
         result = validate_product(product, schema)
 
         assert result.verdict == "PASS"
-        assert len(result.errors) == 0
+        blocking = [
+            e for e in result.errors
+            if e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking) == 0
         assert result.fail_count == 0
         assert result.fields_checked > 0
 
     def test_valid_upc12_passes_gtin_check(self):
-        """AE2: SKU with valid UPC-12 passes GTIN check for Walmart."""
+        """AE2: SKU with valid UPC-12 passes the GTIN check for Walmart — the
+        only GTIN note is the non-blocking INFO advisory, no blocking failure.
+        """
         schema = _walmart_schema()
         product = _valid_product()
         result = validate_product(product, schema)
 
-        gtin_errors = [
+        blocking_gtin_errors = [
             e for e in result.errors
             if e.error_type == ErrorType.GTIN_HIERARCHY_WRONG
+            and e.severity in (Severity.CRITICAL, Severity.WARNING)
         ]
-        assert len(gtin_errors) == 0
+        assert len(blocking_gtin_errors) == 0
 
 
 class TestConditionalRules:
@@ -235,6 +246,63 @@ class TestGTINValidation:
         assert gtin_error_total == 10
 
 
+class TestGTINInfoAdvisory:
+    """A GTIN INFO advisory (e.g. UPC_NOT_GTIN13) is surfaced for visibility
+    at INFO severity, but is non-blocking: it stays out of the critical/fail
+    aggregate and never flips the row verdict. The genuine blocking issue
+    (BAD_CHECK_DIGIT) still surfaces at CRITICAL, counted once.
+    """
+
+    def test_valid_upc_surfaces_info_advisory_but_row_passes(self):
+        """A 12-digit UPC with a valid check digit surfaces the UPC_NOT_GTIN13
+        advisory at INFO — visible, but non-blocking. The row still PASSES and
+        the advisory is excluded from the fail aggregate."""
+        schema = _walmart_schema()
+        product = _valid_product()  # upc 049000004502 is a valid 12-digit UPC
+
+        result = validate_product(product, schema)
+
+        gtin_errors = [
+            e for e in result.errors
+            if e.error_type == ErrorType.GTIN_HIERARCHY_WRONG
+        ]
+        # The advisory is surfaced (not suppressed)...
+        assert len(gtin_errors) == 1
+        advisory = gtin_errors[0]
+        # ...at INFO severity, not stamped CRITICAL/WARNING...
+        assert advisory.severity == Severity.INFO
+        assert "gtin-13" in advisory.message.lower()
+
+        # ...and it neither flips the verdict nor enters the fail aggregate.
+        assert result.verdict == "PASS"
+        assert result.fail_count == 0
+        assert result.pass_count == result.fields_checked
+        assert not any(
+            e.severity in (Severity.CRITICAL, Severity.WARNING)
+            for e in result.errors
+        )
+
+    def test_bad_check_digit_still_one_critical(self):
+        """A bad-check-digit GTIN still surfaces exactly one CRITICAL blocking
+        issue — the advisory does not ride along to double-count the GTIN."""
+        schema = _walmart_schema()
+        product = _valid_product()
+        product["upc"] = _bad_check_digit_upc(1)
+
+        result = validate_product(product, schema)
+
+        gtin_errors = [
+            e for e in result.errors
+            if e.error_type == ErrorType.GTIN_HIERARCHY_WRONG
+        ]
+        critical = [e for e in gtin_errors if e.severity == Severity.CRITICAL]
+        assert len(critical) == 1
+        assert "check digit" in critical[0].message.lower()
+        # Counted once: no second (advisory) GTIN error rides along.
+        assert len(gtin_errors) == 1
+        assert result.verdict == "FAIL"
+
+
 class TestCountCoherence:
     def test_fail_row_does_not_report_all_fields_passing(self):
         """A row that fails only on the GTIN must not report that every
@@ -284,7 +352,12 @@ class TestSeverityAwareVerdict:
         schema = _walmart_schema()
         result = validate_product(_valid_product(), schema)
         assert result.verdict == "PASS"
-        assert len(result.errors) == 0
+        # A non-blocking GTIN INFO advisory may be present; no blocking errors.
+        blocking = [
+            e for e in result.errors
+            if e.severity in (Severity.CRITICAL, Severity.WARNING)
+        ]
+        assert len(blocking) == 0
 
     def test_critical_issue_bounces(self):
         """A CRITICAL issue (missing required field) is a hard bounce."""

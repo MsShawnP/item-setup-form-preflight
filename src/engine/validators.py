@@ -211,6 +211,23 @@ def _tier4_gtin(
         failed_fields.add(gtin_field)
         return errors, failed_fields
 
+    # The GTIN is structurally valid. Surface any INFO-level advisory it
+    # carries (e.g. UPC_NOT_GTIN13 — a 12-digit UPC that some systems want
+    # expressed as GTIN-13) at INFO severity so it is visible. An advisory is
+    # informational only: it does not mark the field failed and does not flip
+    # the row verdict, so it stays out of the critical/fail aggregate. Only
+    # INFO issues are surfaced here; a blocking type mismatch on a valid GTIN
+    # is handled by the schema check below.
+    for issue in result.issues:
+        if issue.severity is not GTINSeverity.INFO:
+            continue
+        errors.append(ValidationError(
+            field=gtin_field,
+            error_type=ErrorType.GTIN_HIERARCHY_WRONG,
+            severity=_GTIN_SEVERITY_TO_MODEL[issue.severity],
+            message=f"GTIN advisory: {issue.message}",
+        ))
+
     # Check that the GTIN type matches what the schema expects
     expected_types = set()
     for fmt in schema.gtin_hierarchy.expected_formats:
