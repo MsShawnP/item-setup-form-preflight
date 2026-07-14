@@ -113,6 +113,7 @@
           accept=".csv,.xlsx"
           class="hidden"
           x-ref="fileInput"
+          aria-label="Upload product master file (CSV or Excel)"
           @change="handleFileInput($event)"
         >
         <p class="text-[17px] font-semibold" style="color: var(--color-london-20);">
@@ -305,6 +306,7 @@
               class="border font-sans text-[13px] w-full"
               style="border-color: var(--color-london-85); border-radius: var(--radius-standard); padding: 4px 8px; background-color: var(--color-canvas); color: var(--color-london-20); max-width: 250px;"
               :value="entry.uploadedHeader || ''"
+              :aria-label="'Map uploaded column to ' + entry.schemaField"
               @change="assignHeader(idx, $event.target.value)"
             >
               <option value="">-- Not mapped --</option>
