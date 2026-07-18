@@ -33,6 +33,29 @@ export default () => ({
     return map[this.$store.app.selectedPartner] || this.$store.app.selectedPartner
   },
 
+  /**
+   * Prefilled mailto for the results CTA. Summary metrics only — the file
+   * itself never leaves the browser; the user attaches it from their own mail
+   * client, keeping the "the file never leaves this page" promise literally true.
+   */
+  get mailtoLink() {
+    const s = this.summary
+    const partner = this.partnerName || 'my retailer'
+    const subject = `Item setup pre-flight — ${partner}`
+    const body =
+      'Hi Shawn,\r\n\r\n' +
+      `I ran my product master through your ${partner} item-setup pre-flight and got:\r\n\r\n` +
+      `Partner: ${partner}\r\n` +
+      ` Rows checked: ${s.totalRows || 0}\r\n` +
+      ` Rows passing: ${s.passing || 0}\r\n` +
+      ` Rows with issues: ${s.failing || 0}\r\n\r\n` +
+      'My file is attached. Which of these will actually cost me?\r\n\r\n' +
+      'Thanks,\r\n'
+    return `mailto:shawn@lailarallc.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`
+  },
+
   get passingPct() {
     const s = this.summary
     if (!s.totalRows) return '0'
