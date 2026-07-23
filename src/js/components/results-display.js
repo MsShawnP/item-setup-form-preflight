@@ -56,6 +56,27 @@ export default () => ({
     )}&body=${encodeURIComponent(body)}`
   },
 
+  /**
+   * Clean-case variant of mailtoLink — same mechanism, adapted body for a
+   * 0-failing result. Summary metrics only; nothing uploaded.
+   */
+  get cleanMailtoLink() {
+    const s = this.summary
+    const partner = this.partnerName || 'my retailer'
+    const subject = `Item setup pre-flight — ${partner}`
+    const body =
+      'Hi Shawn,\r\n\r\n' +
+      `My product master passed your ${partner} item-setup pre-flight:\r\n\r\n` +
+      `Partner: ${partner}\r\n` +
+      ` Rows checked: ${s.totalRows || 0}\r\n` +
+      ` Rows passing: ${s.passing || 0}\r\n\r\n` +
+      'My file is attached — can you run the same check against my other retailers and my full product master?\r\n\r\n' +
+      'Thanks,\r\n'
+    return `mailto:shawn@lailarallc.com?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`
+  },
+
   get passingPct() {
     const s = this.summary
     if (!s.totalRows) return '0'
