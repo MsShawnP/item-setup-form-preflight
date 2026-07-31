@@ -134,10 +134,13 @@ def do_validate(mapping_json: str, partner: str) -> str:
     passing = sum(1 for r in per_row_results if r["verdict"] == "PASS")
     failing = total - passing
 
-    # Most common failure types
+    # Most common failure types. INFO advisories are shown per-row but stay
+    # out of the failure aggregates (owner decision 2026-07-08).
     error_type_counts: dict[str, int] = {}
     for r in per_row_results:
         for e in r["errors"]:
+            if e["severity"] == "INFO":
+                continue
             key = e["errorType"]
             error_type_counts[key] = error_type_counts.get(key, 0) + 1
 
@@ -145,6 +148,8 @@ def do_validate(mapping_json: str, partner: str) -> str:
     field_counts: dict[str, int] = {}
     for r in per_row_results:
         for e in r["errors"]:
+            if e["severity"] == "INFO":
+                continue
             key = e["field"]
             field_counts[key] = field_counts.get(key, 0) + 1
 
@@ -438,15 +443,21 @@ def do_validate_rows(rows_json: str, mapping_json: str, partner: str) -> str:
     passing = sum(1 for r in per_row_results if r["verdict"] == "PASS")
     failing = total - passing
 
+    # INFO advisories are shown per-row but stay out of the failure
+    # aggregates (owner decision 2026-07-08).
     error_type_counts: dict[str, int] = {}
     for r in per_row_results:
         for e in r["errors"]:
+            if e["severity"] == "INFO":
+                continue
             key = e["errorType"]
             error_type_counts[key] = error_type_counts.get(key, 0) + 1
 
     field_counts: dict[str, int] = {}
     for r in per_row_results:
         for e in r["errors"]:
+            if e["severity"] == "INFO":
+                continue
             key = e["field"]
             field_counts[key] = field_counts.get(key, 0) + 1
 
