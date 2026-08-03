@@ -11,8 +11,9 @@ import pytest
 
 pytest.importorskip("lailara_engagement")
 
-import client_mode  # noqa: E402
 from lailara_engagement.errors import ReadError  # noqa: E402
+
+import client_mode  # noqa: E402
 
 # Headers that already equal the canonical Walmart field names, so only `upc`
 # needs an explicit mapping (identity handles the rest).

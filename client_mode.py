@@ -177,7 +177,8 @@ def _summary_html(config, partner: str, schema, batch: dict, report,
     fill = P.LL_HK_SURFACE if all_clean else P.LL_SG_SURFACE
     text = P.LL_HK_DARK if all_clean else P.LL_SG_DARK
     banner_msg = (
-        f"All {batch['total']} SKUs are submission-ready for {esc(schema.display_name)}."
+        f"All {batch['total']} SKUs are submission-ready "
+        f"for {esc(schema.display_name)}."
         if all_clean else
         f"{batch['failing']} of {batch['total']} SKUs would bounce at "
         f"{esc(schema.display_name)} item setup."
@@ -261,16 +262,24 @@ def _css(draft: bool) -> str:
     return f"""
 :root{{--s:{P.LL_SERIF};--f:{P.LL_SANS}}}
 *{{box-sizing:border-box}}
-body{{margin:0;background:{P.LL_CANVAS};color:{P.LL_TEXT};font-family:var(--f);line-height:1.6}}
-.ll-page{{position:relative;z-index:1;max-width:{P.LL_MAX_WIDTH};margin:0 auto;padding:48px 24px}}
-.ll-header{{border-bottom:1px solid {P.LL_GRIDLINE};padding-bottom:24px;margin-bottom:24px}}
-.ll-eyebrow{{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:{P.LL_RED};font-weight:600}}
-.ll-title{{font-family:var(--s);font-weight:700;color:{P.LL_INK};font-size:34px;margin:8px 0 16px}}
-.ll-client{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 24px;font-size:14px}}
-.ll-k{{display:block;color:{P.LL_TEXT_SEC};font-size:11px;text-transform:uppercase;letter-spacing:.04em}}
+body{{margin:0;background:{P.LL_CANVAS};color:{P.LL_TEXT};
+font-family:var(--f);line-height:1.6}}
+.ll-page{{position:relative;z-index:1;max-width:{P.LL_MAX_WIDTH};
+margin:0 auto;padding:48px 24px}}
+.ll-header{{border-bottom:1px solid {P.LL_GRIDLINE};
+padding-bottom:24px;margin-bottom:24px}}
+.ll-eyebrow{{font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+color:{P.LL_RED};font-weight:600}}
+.ll-title{{font-family:var(--s);font-weight:700;color:{P.LL_INK};
+font-size:34px;margin:8px 0 16px}}
+.ll-client{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:8px 24px;font-size:14px}}
+.ll-k{{display:block;color:{P.LL_TEXT_SEC};font-size:11px;
+text-transform:uppercase;letter-spacing:.04em}}
 .ll-banner{{border-radius:2px;padding:16px 20px;margin-bottom:32px}}
 .ll-score{{font-family:var(--s);font-weight:700;font-size:22px}}
-.ll-h2{{font-family:var(--s);font-weight:700;color:{P.LL_INK};font-size:22px;margin:0 0 12px;padding-bottom:6px;border-bottom:1px solid {P.LL_GRIDLINE}}}
+.ll-h2{{font-family:var(--s);font-weight:700;color:{P.LL_INK};font-size:22px;
+margin:0 0 12px;padding-bottom:6px;border-bottom:1px solid {P.LL_GRIDLINE}}}
 .ll-table{{width:100%;border-collapse:collapse;font-size:14px}}
 .ll-table th{{text-align:left;background:{P.LL_CHICAGO};color:#fff;padding:8px 12px}}
 .ll-table td{{padding:8px 12px;border-bottom:1px solid {P.LL_GRIDLINE}}}
@@ -279,13 +288,16 @@ body{{margin:0;background:{P.LL_CANVAS};color:{P.LL_TEXT};font-family:var(--f);l
 .ll-limitations li{{margin-bottom:6px}}
 .mono{{font-family:ui-monospace,Consolas,monospace;font-size:12px}}
 .num{{text-align:right;font-variant-numeric:tabular-nums}}
-.ll-provenance{{margin-top:40px;background:{P.LL_CARD_BG};color:{P.LL_CARD_TEXT};padding:20px 24px;border-radius:2px;font-size:13px}}
+.ll-provenance{{margin-top:40px;background:{P.LL_CARD_BG};color:{P.LL_CARD_TEXT};
+padding:20px 24px;border-radius:2px;font-size:13px}}
 .ll-prov-title{{font-family:var(--s);font-weight:700;font-size:16px;margin-bottom:8px}}
 .ll-provenance div{{margin-bottom:4px;color:{P.LL_CARD_SUBTITLE}}}
 .ll-provenance strong{{color:{P.LL_CARD_TEXT}}}
 .ll-prov-inputs{{width:100%;border-collapse:collapse;margin-top:8px}}
-.ll-prov-inputs th{{text-align:left;border-bottom:1px solid rgba(255,255,255,.12);padding:4px 8px;color:{P.LL_CARD_MUTED}}}
-.ll-prov-inputs td{{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,.08);color:{P.LL_CARD_SUBTITLE}}}
+.ll-prov-inputs th{{text-align:left;border-bottom:1px solid rgba(255,255,255,.12);
+padding:4px 8px;color:{P.LL_CARD_MUTED}}}
+.ll-prov-inputs td{{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,.08);
+color:{P.LL_CARD_SUBTITLE}}}
 .ll-prov-brand{{margin-top:12px;font-family:var(--s);color:{P.LL_CARD_MUTED}}}
 {draft_css}
 @media print{{body{{background:#fff}}}}

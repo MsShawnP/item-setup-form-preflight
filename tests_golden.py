@@ -45,7 +45,9 @@ def _partner_counts(partner):
     schema = _schema(partner)
     parsed = parse_file(_MASTER.read_bytes(), "product_master.csv")
     mapping = match_columns(parsed.headers, schema, parsed.rows)
-    verdicts = [validate_product(_remap(r, mapping), schema).verdict for r in parsed.rows]
+    verdicts = [
+        validate_product(_remap(r, mapping), schema).verdict for r in parsed.rows
+    ]
     passing = sum(1 for v in verdicts if v == "PASS")
     return passing, len(verdicts) - passing
 
