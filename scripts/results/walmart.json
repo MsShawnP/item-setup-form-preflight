@@ -9,15 +9,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000006.",
+        "trigger": null
       }
     ]
   },
@@ -31,15 +38,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000013.",
+        "trigger": null
       }
     ]
   },
@@ -53,9 +67,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000020.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 5,
@@ -67,15 +89,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_gross_weight_lb",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_gross_weight_lb' is required but missing or empty."
+        "message": "'case_gross_weight_lb' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000037.",
+        "trigger": null
       }
     ]
   },
@@ -89,9 +118,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000044.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 7,
@@ -103,9 +140,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000051.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 8,
@@ -117,15 +162,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000068.",
+        "trigger": null
       }
     ]
   },
@@ -139,9 +191,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000075.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 10,
@@ -153,15 +213,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000082.",
+        "trigger": null
       }
     ]
   },
@@ -175,15 +242,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000099.",
+        "trigger": null
       }
     ]
   },
@@ -191,28 +265,21 @@
     "row": 12,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
+    "pass_count": 14,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 3, but should be 5. Corrected GTIN would be 614140000105."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000103."
+        "message": "GTIN check failed: Check digit is 3, but should be 5. Corrected GTIN would be 614140000105.",
+        "trigger": null
       }
     ]
   },
@@ -226,9 +293,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000112.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 14,
@@ -240,9 +315,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000129.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 15,
@@ -254,9 +337,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000136.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 16,
@@ -268,15 +359,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_gross_weight_lb",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_gross_weight_lb' is required but missing or empty."
+        "message": "'case_gross_weight_lb' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000143.",
+        "trigger": null
       }
     ]
   },
@@ -284,28 +382,21 @@
     "row": 17,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
+    "pass_count": 14,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 3, but should be 0. Corrected GTIN would be 614140000150."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000153."
+        "message": "GTIN check failed: Check digit is 3, but should be 0. Corrected GTIN would be 614140000150.",
+        "trigger": null
       }
     ]
   },
@@ -319,15 +410,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000167.",
+        "trigger": null
       }
     ]
   },
@@ -341,9 +439,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000174.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 20,
@@ -355,15 +461,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000181.",
+        "trigger": null
       }
     ]
   },
@@ -377,9 +490,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000198.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 22,
@@ -391,15 +512,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000204.",
+        "trigger": null
       }
     ]
   },
@@ -413,15 +541,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000211.",
+        "trigger": null
       }
     ]
   },
@@ -435,36 +570,37 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
-    },
-    "errors": []
-  },
-  {
-    "row": 25,
-    "verdict": "FAIL",
-    "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
-    "tier_summary": {
-      "presence": 0,
-      "format": 0,
-      "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 6, but should be 5. Corrected GTIN would be 614140000235."
-      },
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000228.",
+        "trigger": null
+      }
+    ]
+  },
+  {
+    "row": 25,
+    "verdict": "FAIL",
+    "fields_checked": 15,
+    "pass_count": 14,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 1
+    },
+    "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000236."
+        "message": "GTIN check failed: Check digit is 6, but should be 5. Corrected GTIN would be 614140000235.",
+        "trigger": null
       }
     ]
   },
@@ -478,36 +614,37 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
-    },
-    "errors": []
-  },
-  {
-    "row": 27,
-    "verdict": "FAIL",
-    "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
-    "tier_summary": {
-      "presence": 0,
-      "format": 0,
-      "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 7, but should be 9. Corrected GTIN would be 614140000259."
-      },
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000242.",
+        "trigger": null
+      }
+    ]
+  },
+  {
+    "row": 27,
+    "verdict": "FAIL",
+    "fields_checked": 15,
+    "pass_count": 14,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 1
+    },
+    "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000257."
+        "message": "GTIN check failed: Check digit is 7, but should be 9. Corrected GTIN would be 614140000259.",
+        "trigger": null
       }
     ]
   },
@@ -521,9 +658,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000266.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 29,
@@ -535,15 +680,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "country_of_origin",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'country_of_origin' is required but missing or empty."
+        "message": "'country_of_origin' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000273.",
+        "trigger": null
       }
     ]
   },
@@ -551,28 +703,21 @@
     "row": 30,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
+    "pass_count": 14,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 1, but should be 0. Corrected GTIN would be 614140000280."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000281."
+        "message": "GTIN check failed: Check digit is 1, but should be 0. Corrected GTIN would be 614140000280.",
+        "trigger": null
       }
     ]
   },
@@ -586,9 +731,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000297.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 32,
@@ -600,15 +753,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "country_of_origin",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'country_of_origin' is required but missing or empty."
+        "message": "'country_of_origin' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000303.",
+        "trigger": null
       }
     ]
   },
@@ -616,28 +776,21 @@
     "row": 33,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
+    "pass_count": 14,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 6, but should be 0. Corrected GTIN would be 614140000310."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000316."
+        "message": "GTIN check failed: Check digit is 6, but should be 0. Corrected GTIN would be 614140000310.",
+        "trigger": null
       }
     ]
   },
@@ -645,42 +798,35 @@
     "row": 34,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 13,
-    "fail_count": 4,
+    "pass_count": 12,
+    "fail_count": 3,
     "tier_summary": {
       "presence": 2,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 9, but should be 7. Corrected GTIN would be 614140000327."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000329."
+        "message": "GTIN check failed: Check digit is 9, but should be 7. Corrected GTIN would be 614140000327.",
+        "trigger": null
       }
     ]
   },
@@ -688,28 +834,21 @@
     "row": 35,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 15,
-    "fail_count": 2,
+    "pass_count": 14,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 9, but should be 4. Corrected GTIN would be 614140000334."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000339."
+        "message": "GTIN check failed: Check digit is 9, but should be 4. Corrected GTIN would be 614140000334.",
+        "trigger": null
       }
     ]
   },
@@ -723,9 +862,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000341.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 37,
@@ -737,9 +884,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000358.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 38,
@@ -751,9 +906,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000365.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 39,
@@ -765,9 +928,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000372.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 40,
@@ -779,15 +950,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000389.",
+        "trigger": null
       }
     ]
   },
@@ -801,15 +979,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000396.",
+        "trigger": null
       }
     ]
   },
@@ -823,9 +1008,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000402.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 43,
@@ -837,15 +1030,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000419.",
+        "trigger": null
       }
     ]
   },
@@ -853,35 +1053,28 @@
     "row": 44,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 14,
-    "fail_count": 3,
+    "pass_count": 13,
+    "fail_count": 2,
     "tier_summary": {
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 1, but should be 6. Corrected GTIN would be 614140000426."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000421."
+        "message": "GTIN check failed: Check digit is 1, but should be 6. Corrected GTIN would be 614140000426.",
+        "trigger": null
       }
     ]
   },
@@ -895,15 +1088,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000433.",
+        "trigger": null
       }
     ]
   },
@@ -917,15 +1117,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000440.",
+        "trigger": null
       }
     ]
   },
@@ -939,15 +1146,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000457.",
+        "trigger": null
       }
     ]
   },
@@ -961,43 +1175,44 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000464.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 49,
     "verdict": "FAIL",
     "fields_checked": 15,
-    "pass_count": 14,
-    "fail_count": 3,
+    "pass_count": 13,
+    "fail_count": 2,
     "tier_summary": {
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 4, but should be 1. Corrected GTIN would be 614140000471."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000474."
+        "message": "GTIN check failed: Check digit is 4, but should be 1. Corrected GTIN would be 614140000471.",
+        "trigger": null
       }
     ]
   },
@@ -1011,9 +1226,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000488.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 51,
@@ -1025,8 +1248,16 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: This is a 12-digit UPC-A. Some systems require the 13-digit GTIN-13 format (with a leading zero). Your GTIN-13 equivalent would be 0614140000495.",
+        "trigger": null
+      }
+    ]
   }
 ]
