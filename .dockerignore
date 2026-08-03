@@ -6,3 +6,9 @@ docs
 tests
 __pycache__
 *.pyc
+
+# --- lailara engagement scaffold ---
+client-data/
+client-output/
+engagement.yml
+engagement.yaml
