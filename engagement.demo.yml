@@ -1,0 +1,18 @@
+# Demo engagement config (safe to deploy: demo: true).
+# Maps the Cinderhaven demo master headers onto the Walmart Item 360 schema.
+# For a club/distributor partner (costco/unfi/kehe) the `upc` field is the
+# case-level GTIN-14 — map `upc: "gtin14"` instead.
+client:
+  name: "Cinderhaven Provisions (demo)"
+engagement:
+  id: "DEMO-ITEMSETUP-001"
+as_of_date: "2026-01-31"
+prepared_by: "Lailara LLC"
+partner: "walmart"
+demo: true
+columns:
+  # canonical field -> client header (identity matches are implicit)
+  upc: "upc"
+  brand: "brand_owner"
+  case_gross_weight_lb: "case_weight_lbs"
+  calories: "calories_per_serving"

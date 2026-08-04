@@ -21,6 +21,11 @@ dev = [
 [project.scripts]
 item-preflight = "src.cli.audit:cli"
 
+[tool.pytest.ini_options]
+# Collect both the mirrored tests/ suite (test_*.py) and the root-level
+# client-mode surface (tests_golden.py, tests_client_mode.py).
+python_files = ["test_*.py", "tests_*.py"]
+
 [tool.ruff]
 line-length = 88
 

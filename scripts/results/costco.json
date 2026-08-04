@@ -9,36 +9,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -52,36 +59,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -95,9 +109,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 5,
@@ -109,15 +131,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_gross_weight_lb",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_gross_weight_lb' is required but missing or empty."
+        "message": "'case_gross_weight_lb' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -131,9 +160,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 7,
@@ -145,9 +182,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 8,
@@ -159,36 +204,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -202,9 +254,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 10,
@@ -216,36 +276,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -253,56 +320,49 @@
     "row": 11,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 12,
-    "fail_count": 6,
+    "pass_count": 11,
+    "fail_count": 5,
     "tier_summary": {
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 1, but should be 9. Corrected GTIN would be 00614140000099."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 1, but should be 9. Corrected GTIN would be 00614140000099.",
+        "trigger": null
       }
     ]
   },
@@ -316,9 +376,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 13,
@@ -330,9 +398,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 14,
@@ -344,36 +420,37 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
-    },
-    "errors": []
-  },
-  {
-    "row": 15,
-    "verdict": "FAIL",
-    "fields_checked": 16,
-    "pass_count": 16,
-    "fail_count": 2,
-    "tier_summary": {
-      "presence": 0,
-      "format": 0,
-      "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 0, but should be 6. Corrected GTIN would be 00614140000136."
-      },
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
+  },
+  {
+    "row": 15,
+    "verdict": "FAIL",
+    "fields_checked": 16,
+    "pass_count": 15,
+    "fail_count": 1,
+    "tier_summary": {
+      "presence": 0,
+      "format": 0,
+      "conditional": 0,
+      "gtin": 1
+    },
+    "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 0, but should be 6. Corrected GTIN would be 00614140000136.",
+        "trigger": null
       }
     ]
   },
@@ -387,15 +464,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_gross_weight_lb",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_gross_weight_lb' is required but missing or empty."
+        "message": "'case_gross_weight_lb' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -403,28 +487,21 @@
     "row": 17,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 16,
-    "fail_count": 2,
+    "pass_count": 15,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 4, but should be 0. Corrected GTIN would be 00614140000150."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 4, but should be 0. Corrected GTIN would be 00614140000150.",
+        "trigger": null
       }
     ]
   },
@@ -432,56 +509,49 @@
     "row": 18,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 12,
-    "fail_count": 6,
+    "pass_count": 11,
+    "fail_count": 5,
     "tier_summary": {
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 4, but should be 7. Corrected GTIN would be 00614140000167."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 4, but should be 7. Corrected GTIN would be 00614140000167.",
+        "trigger": null
       }
     ]
   },
@@ -495,9 +565,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 20,
@@ -509,36 +587,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -552,64 +637,65 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 22,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 12,
-    "fail_count": 6,
+    "pass_count": 11,
+    "fail_count": 5,
     "tier_summary": {
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 5, but should be 4. Corrected GTIN would be 00614140000204."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 5, but should be 4. Corrected GTIN would be 00614140000204.",
+        "trigger": null
       }
     ]
   },
@@ -623,36 +709,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -666,9 +759,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 25,
@@ -680,9 +781,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 26,
@@ -694,9 +803,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 27,
@@ -708,9 +825,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 28,
@@ -722,9 +847,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 29,
@@ -736,15 +869,22 @@
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "country_of_origin",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'country_of_origin' is required but missing or empty."
+        "message": "'country_of_origin' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -752,28 +892,21 @@
     "row": 30,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 16,
-    "fail_count": 2,
+    "pass_count": 15,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 9, but should be 0. Corrected GTIN would be 00614140000280."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 9, but should be 0. Corrected GTIN would be 00614140000280.",
+        "trigger": null
       }
     ]
   },
@@ -787,43 +920,44 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 32,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 15,
-    "fail_count": 3,
+    "pass_count": 14,
+    "fail_count": 2,
     "tier_summary": {
       "presence": 1,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "country_of_origin",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'country_of_origin' is required but missing or empty."
+        "message": "'country_of_origin' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 7, but should be 3. Corrected GTIN would be 00614140000303."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 7, but should be 3. Corrected GTIN would be 00614140000303.",
+        "trigger": null
       }
     ]
   },
@@ -831,28 +965,21 @@
     "row": 33,
     "verdict": "FAIL",
     "fields_checked": 16,
-    "pass_count": 16,
-    "fail_count": 2,
+    "pass_count": 15,
+    "fail_count": 1,
     "tier_summary": {
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 2
+      "gtin": 1
     },
     "errors": [
       {
         "field": "upc",
         "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "GTIN check failed: Check digit is 7, but should be 0. Corrected GTIN would be 00614140000310."
-      },
-      {
-        "field": "upc",
-        "error_type": "GTIN_HIERARCHY_WRONG",
-        "trigger": null,
-        "severity": "CRITICAL",
-        "message": "GTIN check failed: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format."
+        "message": "GTIN check failed: Check digit is 7, but should be 0. Corrected GTIN would be 00614140000310.",
+        "trigger": null
       }
     ]
   },
@@ -866,43 +993,50 @@
       "presence": 5,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_length_in' is required but missing or empty."
+        "message": "'case_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -916,9 +1050,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 36,
@@ -930,9 +1072,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 37,
@@ -944,9 +1094,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 38,
@@ -958,9 +1116,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 39,
@@ -972,9 +1138,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 40,
@@ -986,36 +1160,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1029,36 +1210,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1072,9 +1260,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 43,
@@ -1086,36 +1282,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_width_in' is required but missing or empty."
+        "message": "'case_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1129,36 +1332,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1172,36 +1382,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1215,36 +1432,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1258,36 +1482,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1301,9 +1532,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 49,
@@ -1315,36 +1554,43 @@
       "presence": 4,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
     "errors": [
       {
         "field": "case_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'case_height_in' is required but missing or empty."
+        "message": "'case_height_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_length_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_length_in' is required but missing or empty."
+        "message": "'club_pack_length_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_width_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_width_in' is required but missing or empty."
+        "message": "'club_pack_width_in' is required but missing or empty.",
+        "trigger": null
       },
       {
         "field": "club_pack_height_in",
         "error_type": "PRESENCE_MISSING",
-        "trigger": null,
         "severity": "CRITICAL",
-        "message": "'club_pack_height_in' is required but missing or empty."
+        "message": "'club_pack_height_in' is required but missing or empty.",
+        "trigger": null
+      },
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
       }
     ]
   },
@@ -1358,9 +1604,17 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   },
   {
     "row": 51,
@@ -1372,8 +1626,16 @@
       "presence": 0,
       "format": 0,
       "conditional": 0,
-      "gtin": 0
+      "gtin": 1
     },
-    "errors": []
+    "errors": [
+      {
+        "field": "upc",
+        "error_type": "GTIN_HIERARCHY_WRONG",
+        "severity": "INFO",
+        "message": "GTIN advisory: GTIN-14 has indicator digit 0, which means this is a base unit (each) expressed in 14-digit format.",
+        "trigger": null
+      }
+    ]
   }
 ]
