@@ -3,7 +3,7 @@
 # For a club/distributor partner (costco/unfi/kehe) the `upc` field is the
 # case-level GTIN-14 — map `upc: "gtin14"` instead.
 client:
-  name: "Cinderhaven Foods (demo)"
+  name: "Cinderhaven Provisions (demo)"
 engagement:
   id: "DEMO-ITEMSETUP-001"
 as_of_date: "2026-01-31"
